@@ -1,0 +1,14 @@
+# Cloudflare 用のHTTPヘッダー設定
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
+  Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'
+
+# 内容を書き換えたとき、閲覧者に確実に届くようにする
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
