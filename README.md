@@ -2,9 +2,12 @@
 
 `https://ynsysapp.com/` に置く、運営者とサービスの案内ページ。ビルド不要の静的サイト。
 
-- `index.html` — ページ本体（1枚）
-- `robots.txt` — 検索エンジンに読み取りを許可する
-- `_headers` — Cloudflare 用のセキュリティヘッダーと、更新が届くようにする設定
+- `public/index.html` — ページ本体（1枚）
+- `public/robots.txt` — 検索エンジンに読み取りを許可する
+- `public/_headers` — Cloudflare 用のセキュリティヘッダーと、更新が届くようにする設定
+- `wrangler.toml` — Cloudflare の配信設定（`public/` の中だけを公開する）
+
+配信するファイルを `public/` に分けているのは、README や設定ファイルが公開されないようにするためです。
 
 ## なぜ置くのか
 
@@ -12,7 +15,7 @@
 
 審査する人がまず見る場所なので、**何を提供しているか・誰が運営しているか・データをどう扱うか**が一目で分かる作りにしています。学校のネットワーク担当者向けに、許可が必要な通信先の一覧も載せています。相談を受けたときは、このURLを渡すだけで済みます。
 
-## 公開手順（Cloudflare Pages ＋ GitHub）
+## 公開手順（Cloudflare Workers ＋ GitHub）
 
 出欠記録アプリと同じく、GitHub に push すると自動で公開される形にします。
 
@@ -22,17 +25,18 @@ GitHub Desktop で「Add existing repository」からこのフォルダを追加
 
 ### 2. Cloudflare につなぐ
 
-1. https://dash.cloudflare.com/ → **Workers & Pages** → 「作成」→ **Pages** → 「Git に接続」
+1. https://dash.cloudflare.com/ → **Workers & Pages** → 「作成」→ Git からインポート
 2. リポジトリ `ynsysapp-site` を選択
 3. ビルド設定
 
 | 項目 | 値 |
 |---|---|
-| フレームワークプリセット | なし（None） |
-| **ビルドコマンド** | **空欄**（`package.json` が無いので、何か入っていると失敗します） |
-| ビルド出力ディレクトリ | `/` |
+| **Build command（ビルドコマンド）** | **空欄**（`package.json` が無いので、何か入っていると失敗します） |
+| **Deploy command（デプロイコマンド）** | `npx wrangler deploy` ← 既定のまま |
 
-4. 「保存してデプロイ」
+`wrangler.toml` に配信の設定が書いてあるので、デプロイコマンドは既定のままで通ります。
+
+4. 「Deploy」
 
 以降は `main` ブランチに push するたびに自動で公開されます。
 

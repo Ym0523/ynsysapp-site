@@ -1,0 +1,8 @@
+# Cloudflare Workers（静的アセット配信）の設定。
+# GitHub に push すると、Cloudflare が `npx wrangler deploy` を実行してこの設定で公開する。
+name = "ynsysapp-site"
+compatibility_date = "2026-08-28"
+
+# public/ の中だけを配信する。README や設定ファイルは公開されない
+[assets]
+directory = "./public"
