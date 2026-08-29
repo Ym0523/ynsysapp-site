@@ -2,10 +2,13 @@
 
 `https://ynsysapp.com/` に置く、運営者とサービスの案内ページ。ビルド不要の静的サイト。
 
-- `public/index.html` — ページ本体（1枚）
+- `public/index.html` — ルートページ（運営者とサービスの案内）
+- `public/shukketsu/index.html` — **出欠記録アプリの案内ページ（LP）**。検索から来た先生が最初に読む1枚
+- `public/sitemap.xml` — 検索エンジンに渡すページ一覧（ページを増やしたらここも足す）
 - `public/robots.txt` — 検索エンジンに読み取りを許可する
 - `public/_headers` — Cloudflare 用のセキュリティヘッダーと、更新が届くようにする設定
 - `wrangler.toml` — Cloudflare の配信設定（`public/` の中だけを公開する）
+- `SEO.md` — 検索への登録（Search Console）と、フィルタリング各社への申請手順
 
 配信するファイルを `public/` に分けているのは、README や設定ファイルが公開されないようにするためです。
 
