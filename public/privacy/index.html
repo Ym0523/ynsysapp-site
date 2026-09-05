@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プライバシーポリシー｜ynsysapp</title>
+<meta name="description" content="出欠記録アプリのプライバシーポリシー。生徒の氏名・出欠・欠席理由は提供者に送信されず、利用者ご自身のGoogleドライブと端末にのみ保存されます。">
+<link rel="canonical" href="https://ynsysapp.com/privacy/">
+<meta name="robots" content="index,follow">
+<style>
+:root{
+  --bg:#f4f6f9; --card:#fff; --line:#dfe3ea; --fg:#1b2430; --muted:#6b7684; --accent:#2563eb;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);line-height:1.85;
+  font-family:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+  font-size:16px;-webkit-text-size-adjust:100%}
+a{color:var(--accent)}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+header{background:#fff;border-bottom:1px solid var(--line)}
+header .wrap{padding:22px 20px}
+.home{font-size:14px;color:var(--muted);text-decoration:none}
+.home span{color:var(--accent)}
+h1{font-size:22px;margin:12px 0 4px}
+.lead{color:var(--muted);margin:0;font-size:14px}
+main .wrap{padding:8px 20px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:18px 0}
+h2{font-size:17px;margin:24px 0 8px}
+h2:first-child{margin-top:0}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+ul{margin:0 0 12px;padding-left:1.3em}
+li{margin-bottom:6px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:12px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;white-space:nowrap}
+code{background:#eef1f6;border-radius:6px;padding:1px 6px;font-size:14px;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.note{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14px;color:var(--muted)}
+footer{color:var(--muted);font-size:13px;padding:24px 0 48px;text-align:center}
+footer a{color:var(--muted)}
+.lead{overflow-wrap:anywhere}
+@media(max-width:600px){
+  section{padding:18px 16px}body{font-size:15px}
+  th{white-space:normal}table{font-size:13px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="home" href="/">ynsys<span>app</span></a>
+    <h1>プライバシーポリシー</h1>
+    <p class="lead">出欠記録アプリ（https://shukketsu.ynsysapp.com/）に適用されます。</p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <section>
+    <h2>1. 当方が取得しない情報</h2>
+    <p>本アプリは、<b>生徒の氏名・出席番号・出欠の記録・欠席理由を、当方に送信しません。</b>これらは利用者の端末（ブラウザ）と、<b>利用者ご自身のGoogleドライブ</b>にのみ保存されます。当方はサーバーもデータベースも持たず、これらの情報を閲覧することはできません。</p>
+
+    <h2>2. 当方が取得する情報</h2>
+    <ul>
+      <li>お問い合わせの際にお送りいただく内容（メールアドレス、本文、アプリの版、記録の件数などの動作確認用の情報）</li>
+      <li>ページの表示数などのアクセス状況（Cloudflare Web Analytics。<b>Cookieを使わず、個人を特定する情報も、アプリに記録された内容も含みません</b>）</li>
+    </ul>
+    <p class="note">お問い合わせの画面では、<b>生徒の氏名や欠席理由を書かないようご案内しています。</b>自動で付く動作確認用の情報も、件数のみで個人情報を含みません。誤ってお送りいただいた場合は、返信せずに削除します。</p>
+
+    <h2>3. 利用目的</h2>
+    <ul>
+      <li>お問い合わせへの回答、不具合の調査</li>
+      <li>本アプリの改善</li>
+    </ul>
+
+    <h2>4. 第三者提供</h2>
+    <p>当方は、取得した情報を、法令に基づく場合を除き第三者に提供しません。</p>
+
+    <h2>5. 外部サービス</h2>
+    <p>本アプリは、利用者の操作にもとづき Google のサービス（ログイン、Googleドライブ、Googleスプレッドシート）を利用します。これらの取扱いは Google のプライバシーポリシーに従います。当方が Google から取得するのは、<b>ログイン中のメールアドレスのみ</b>です。</p>
+
+    <h2>6. Googleユーザーデータの取り扱い</h2>
+    <p>本アプリが求める権限は、次の2つだけです。</p>
+    <table>
+      <tr><th><code>drive.file</code></th><td>本アプリが作成したファイルのみの読み書き。<b>利用者のドライブにある他のファイルにはアクセスできません。</b>端末間の同期と、利用者が指定した相手との共有に使います。</td></tr>
+      <tr><th><code>userinfo.email</code></th><td>ログイン中のアカウントの確認。画面への表示と、別のアカウントの記録が混ざらないようにするために使います。</td></tr>
+    </table>
+    <p>本アプリによる Google ユーザーデータの取得・利用・保存・共有は、<b>Google API サービスのユーザーデータに関するポリシー</b>（限定使用の要件を含みます）に準拠します。取得した情報は、利用者ご自身の端末間での同期と、利用者が指定した相手との共有のためだけに使用し、<b>広告等の目的には一切利用せず、第三者への転送も行いません。</b>人が内容を読むことはありません（当方は技術的にも閲覧できません）。</p>
+
+    <h2>7. 授業の共有について</h2>
+    <p>本アプリの共有機能は、<b>Googleドライブの共有機能</b>を使います。利用者ご自身のドライブ上のファイルを、利用者が指定した相手に見せる仕組みで、<b>当方のサーバーを経由しません。</b>共有の相手・範囲・解除は、利用者の操作によって決まります。</p>
+
+    <h2>8. 保存期間</h2>
+    <p>お問い合わせの記録は、対応の完了から1年を目安に削除します。</p>
+
+    <h2>9. 開示・訂正・削除の請求</h2>
+    <p><a href="mailto:info@ynsysapp.com">info@ynsysapp.com</a> までご連絡ください。平日2営業日以内に一次回答します。</p>
+
+    <h2>10. 事業者</h2>
+    <table>
+      <tr><th>運営</th><td>ynsysapp（個人による開発・運営）</td></tr>
+      <tr><th>連絡先</th><td><a href="mailto:info@ynsysapp.com">info@ynsysapp.com</a></td></tr>
+      <tr><th>氏名・所在地</th><td>ご請求があれば遅滞なく開示します</td></tr>
+    </table>
+
+    <h2>11. 改定</h2>
+    <p>内容を変更する場合は、このページで告知します。有料機能の提供を開始する際には、決済に関する項目を追加します。</p>
+    <p class="note">制定日：2026年9月3日</p>
+  </section>
+</div>
+</main>
+
+<footer><a href="/">ynsysapp</a> ・ <a href="/terms/">利用規約</a> ・ © 2026 ynsysapp</footer>
+</body>
+</html>

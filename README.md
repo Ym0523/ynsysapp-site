@@ -8,6 +8,8 @@
 - `public/robots.txt` — 検索エンジンに読み取りを許可する
 - `public/_headers` — Cloudflare 用のセキュリティヘッダーと、更新が届くようにする設定
 - `wrangler.toml` — Cloudflare の配信設定（`public/` の中だけを公開する）
+- `public/terms/index.html` — 利用規約
+- `public/privacy/index.html` — プライバシーポリシー（GoogleのOAuth同意画面にURLを登録している）
 - `SEO.md` — 検索への登録（Search Console）と、フィルタリング各社への申請手順
 
 配信するファイルを `public/` に分けているのは、README や設定ファイルが公開されないようにするためです。
