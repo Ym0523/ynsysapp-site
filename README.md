@@ -2,7 +2,9 @@
 
 `https://ynsysapp.com/` に置く、運営者とサービスの案内ページ。ビルド不要の静的サイト。
 
-- `public/index.html` — ルートページ（運営者とサービスの案内）
+- `public/index.html` — ルートページ＝ynsys の会社ホームページ（2026-10-05〜。お仕事・実績・費用目安・問い合わせ）
+- `public/demo/` — 実績カードから開くデモ（salon / pos / qr / genba）。どれも単一HTML・架空の店名・データは閲覧者のブラウザ内だけ・noindex
+- `public/school/index.html` — 学校のフィルタリング審査担当・ネットワーク担当向けの案内（旧ルートページ。HPのフッターからリンク）
 - `public/sitemap.xml` — 検索エンジンに渡すページ一覧（ページを増やしたらここも足す）
 - `public/_redirects` — 旧URL /shukketsu/ を、案内ページ（shukketsu.ynsysapp.com）へ転送する
 - `public/robots.txt` — 検索エンジンに読み取りを許可する

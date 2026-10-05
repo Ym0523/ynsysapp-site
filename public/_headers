@@ -5,12 +5,18 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
-  Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'
 
 # 内容を書き換えたとき、閲覧者に確実に届くようにする
 /
   Cache-Control: no-cache
 /index.html
+  Cache-Control: no-cache
+/school/
+  Cache-Control: no-cache
+/school/index.html
+  Cache-Control: no-cache
+/demo/*
   Cache-Control: no-cache
 /shukketsu/
   Cache-Control: no-cache

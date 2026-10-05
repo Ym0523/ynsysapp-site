@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<title>ひだまり ご予約（デモ）</title>
+<style>
+  :root{
+    --paper:#f6f2ea; --card:#fffdf8; --ink:#2c2b31; --sub:#7c7784; --line:#e7ddce;
+    --marine:#245c68; --marine-d:#1c4b55; --amethyst:#7d6aa8; --gold:#b1802f;
+    --amber:#c0872b; --jade:#3f8f6e; --ame:#8a6fb0; --short:#3f7f8c;
+    --shadow:0 1px 2px rgba(40,50,45,.05),0 10px 30px rgba(40,60,60,.07);
+    --serif:"Hiragino Mincho ProN","Yu Mincho",YuMincho,"Noto Serif JP",serif;
+    --sans:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#14151a; --card:#1c1d23; --ink:#ece9f1; --sub:#9a94a6; --line:#2d2e37;
+      --marine:#63b6c3; --marine-d:#7cc4d0; --amethyst:#a793d6; --gold:#d3a85f;
+      --amber:#d3a256; --jade:#5cb491; --ame:#a98fce; --short:#5aa6b3;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35); }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.7;font-size:15px}
+  .app{max-width:460px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:118px}
+
+  header.bar{padding:18px 20px 14px;text-align:center;position:relative;border-bottom:1px solid var(--line)}
+  header.bar .brand{font-family:var(--serif);font-size:23px;letter-spacing:.14em;color:var(--marine);font-weight:600}
+  header.bar .tag{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--sub);margin-top:3px}
+  header.bar .demo{position:absolute;top:12px;right:12px;font-size:9px;letter-spacing:.12em;color:var(--sub);border:1px solid var(--line);border-radius:20px;padding:2px 8px}
+  header.bar .back{position:absolute;top:16px;left:14px;font-size:24px;line-height:1;color:var(--marine);cursor:pointer;visibility:hidden}
+
+  .steps{display:flex;justify-content:center;gap:0;font-size:10.5px;color:var(--sub);letter-spacing:.06em;padding:12px 0 2px}
+  .steps .s{display:flex;align-items:center;gap:6px;padding:0 7px}
+  .steps .s .dot{width:19px;height:19px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px}
+  .steps .s.on{color:var(--marine);font-weight:700}
+  .steps .s.on .dot{background:var(--marine);color:#fff;border-color:var(--marine)}
+  .steps .sep{color:var(--line)}
+
+  .screen{padding:16px 20px;display:none;animation:fade .25s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+  .lead{font-family:var(--serif);font-size:18px;margin:6px 2px 4px;font-weight:600}
+  .lede{font-size:12.5px;color:var(--sub);margin:0 2px 16px}
+
+  /* course cards */
+  .courses{display:flex;flex-direction:column;gap:13px}
+  .course{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0;overflow:hidden;cursor:pointer;transition:.18s;box-shadow:var(--shadow);display:flex}
+  .course:active{transform:scale(.99)}
+  .course.sel{border-color:var(--marine);box-shadow:0 0 0 1.5px var(--marine),var(--shadow)}
+  .course .stripe{width:6px;flex:0 0 6px}
+  .course .body{padding:15px 16px;flex:1}
+  .course .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .course .nm{font-family:var(--serif);font-size:19px;font-weight:600;letter-spacing:.04em}
+  .course .badge{font-size:10px;font-weight:700;color:var(--marine);background:color-mix(in srgb,var(--marine) 12%,transparent);padding:2px 9px;border-radius:20px;white-space:nowrap}
+  .course .meta{display:flex;gap:12px;font-size:12.5px;color:var(--sub);margin-top:3px}
+  .course .price{font-family:var(--serif);color:var(--gold);font-weight:600}
+  .course .desc{font-size:12px;color:var(--sub);margin-top:7px;line-height:1.6}
+  .amber .stripe{background:var(--amber)} .jade .stripe{background:var(--jade)}
+  .ametrine .stripe{background:var(--ame)} .short .stripe{background:var(--short)}
+  .note-incl{font-size:11px;color:var(--sub);text-align:center;margin:14px 2px 0;line-height:1.6}
+
+  /* options */
+  .opt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:11px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:.15s;box-shadow:var(--shadow)}
+  .opt.sel{border-color:var(--amethyst);box-shadow:0 0 0 1.5px var(--amethyst),var(--shadow)}
+  .opt .chk{width:22px;height:22px;border-radius:7px;border:1.6px solid var(--line);flex:0 0 auto;margin-top:2px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+  .opt.sel .chk{background:var(--amethyst);border-color:var(--amethyst)}
+  .opt .onm{font-weight:700;font-size:15px}
+  .opt .ometa{font-size:12px;color:var(--sub)}
+  .opt .oprice{font-family:var(--serif);color:var(--gold);font-weight:600;font-size:13px}
+  .opt .odesc{font-size:11.5px;color:var(--sub);margin-top:4px}
+  .opt.disabled{opacity:.42;cursor:not-allowed}
+  .skip{text-align:center;font-size:12.5px;color:var(--sub);margin-top:6px}
+
+  /* matrix */
+  .mbar{background:color-mix(in srgb,var(--marine) 8%,transparent);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:12.5px;margin-bottom:12px}
+  .mbar b{color:var(--marine)}
+  .weeknav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+  .weeknav .wk{flex:1;text-align:center;font-weight:700;font-size:13.5px}
+  .nb{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer;color:var(--ink);font-family:inherit;white-space:nowrap}
+  .nb:disabled{opacity:.35}
+  .mwrap{overflow:auto;max-height:58vh;border:1px solid var(--line);border-radius:12px;background:var(--card);-webkit-overflow-scrolling:touch}
+  table.mx{border-collapse:collapse;width:100%;table-layout:fixed;min-width:360px}
+  table.mx th,table.mx td{border:1px solid color-mix(in srgb,var(--line) 60%,transparent);text-align:center;font-size:12px;height:34px}
+  table.mx thead th{position:sticky;top:0;background:color-mix(in srgb,var(--paper) 40%,var(--card));z-index:5;font-weight:700;line-height:1.15;padding:4px 0}
+  table.mx thead th span{font-size:10px;color:var(--sub);font-weight:600}
+  table.mx th.tc{width:46px;background:color-mix(in srgb,var(--paper) 40%,var(--card));color:var(--sub);font-weight:600;position:sticky;left:0;z-index:4}
+  table.mx thead th.tc{z-index:6}
+  table.mx td{font-weight:700}
+  table.mx td.ok{color:var(--marine);cursor:pointer}
+  table.mx td.ok:active{background:color-mix(in srgb,var(--marine) 10%,transparent)}
+  table.mx td.bk{color:#b98;background:color-mix(in srgb,var(--gold) 12%,transparent)}
+  table.mx td.no{color:color-mix(in srgb,var(--sub) 50%,transparent);background:color-mix(in srgb,var(--line) 35%,transparent)}
+  table.mx td.er{color:var(--amethyst);background:color-mix(in srgb,var(--amethyst) 15%,transparent)}
+  table.mx td.iv{color:color-mix(in srgb,var(--sub) 75%,transparent);background:color-mix(in srgb,var(--line) 55%,transparent)}
+  table.mx td.sel{color:#fff;background:var(--marine);cursor:pointer;font-weight:700}
+  table.mx td.sel:active{opacity:.85}
+  table.mx th.sun{color:#c0607a} table.mx th.sat{color:#5a86c0}
+  .mxnote{font-size:11px;color:var(--sub);margin-top:8px}
+
+  /* form */
+  .fld{display:block;margin-bottom:15px}
+  .fld .l{font-size:13px;font-weight:700;margin-bottom:6px;display:block}
+  .fld .l .req{color:#c0607a;font-size:10px;margin-left:5px}
+  input,textarea,select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;font-size:15px;font-family:inherit;background:var(--card);color:var(--ink)}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--marine)}
+  textarea{resize:vertical;min-height:70px}
+  .err{font-size:12px;color:#c0607a;margin-top:4px;display:none}
+  .fld.bad input{border-color:#c0607a} .fld.bad .err{display:block}
+  .cbrow{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;font-weight:600;cursor:pointer}
+  .cbrow input{width:20px;height:20px;flex:0 0 auto;margin-top:1px;accent-color:var(--marine)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+
+  /* summary rows */
+  .sum{background:color-mix(in srgb,var(--marine) 6%,transparent);border-radius:12px;padding:6px 14px;margin-bottom:16px}
+  .sum .r{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13.5px;border-bottom:1px dashed var(--line)}
+  .sum .r:last-child{border-bottom:none}
+  .sum .r .k{color:var(--sub)} .sum .r .v{font-weight:600;text-align:right}
+  .sum .r.total .v{font-family:var(--serif);color:var(--gold);font-size:17px}
+
+  .done{text-align:center;padding:36px 20px}
+  .done .ring{width:74px;height:74px;border-radius:50%;background:var(--marine);margin:0 auto 18px;display:flex;align-items:center;justify-content:center}
+  .done .ring svg{width:34px;height:34px}
+  .done h2{font-family:var(--serif);font-size:21px;margin:0 0 8px;font-weight:600}
+  .done p{color:var(--sub);font-size:13.5px;margin:0}
+  .done .rc{text-align:left;margin:22px 0}
+
+  /* footer cta */
+  .cta{position:fixed;bottom:0;left:0;right:0;max-width:460px;margin:0 auto;background:linear-gradient(to top,var(--paper) 76%,transparent);padding:12px 20px 16px;z-index:20}
+  .cta .mini{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--sub);margin-bottom:8px;padding:0 2px}
+  .cta .mini b{font-family:var(--serif);color:var(--gold);font-size:16px}
+  .btn{width:100%;border:none;border-radius:30px;padding:15px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;background:var(--marine);color:#fff}
+  .btn:active{transform:scale(.985)}
+  .btn:disabled{background:color-mix(in srgb,var(--marine) 35%,var(--line));cursor:not-allowed}
+  .btn.soft{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:24px;font-size:13px;opacity:0;transition:.3s;z-index:120;pointer-events:none;max-width:88%;text-align:center}
+  .toast.show{opacity:.95}
+  .storelink{text-align:center;font-size:11.5px;color:var(--sub);margin-top:22px;cursor:pointer;letter-spacing:.04em}
+
+  /* ===== 店側 ===== */
+  .store{max-width:520px;margin:0 auto;min-height:100vh;display:none;padding-bottom:78px}
+  .store.on{display:block}
+  .shead{background:var(--marine);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+  .shead .st{font-family:var(--serif);font-size:16px;letter-spacing:.08em}
+  .shead .toc{font-size:12px;opacity:.9;cursor:pointer;background:rgba(255,255,255,.18);padding:5px 11px;border-radius:20px}
+  .sscreen{display:none;padding:16px 18px;animation:fade .2s ease}
+  .sscreen.on{display:block}
+  .sh2{font-family:var(--serif);font-size:16px;margin:2px 0 12px;font-weight:600}
+  .daterow{display:flex;gap:8px;margin-bottom:12px}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:6px 14px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--sub)}
+  .chip.on{background:var(--marine);color:#fff;border-color:var(--marine)}
+
+  .brow{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+  .brow .tm{font-family:var(--serif);font-size:16px;color:var(--marine);width:52px;flex:0 0 auto}
+  .brow .bi{flex:1;min-width:0}
+  .brow .bn{font-weight:700;font-size:14px}
+  .brow .bc{font-size:12px;color:var(--sub)}
+  .stt{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+  .stt.yoyaku{background:color-mix(in srgb,var(--marine) 12%,transparent);color:var(--marine)}
+  .stt.done{background:color-mix(in srgb,var(--jade) 16%,transparent);color:var(--jade)}
+  .stt.kaikei{background:color-mix(in srgb,var(--gold) 16%,transparent);color:var(--gold)}
+  .minibtn{border:none;background:var(--marine);color:#fff;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+  .minibtn.ghost{background:transparent;color:var(--marine);border:1px solid var(--marine)}
+  .minibtn.ghost.cancel{color:#c0607a;border-color:color-mix(in srgb,#c0607a 55%,transparent)}
+  .minibtn.sm{padding:6px 10px;font-size:11.5px}
+  .acts{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;min-width:76px}
+  .acts .minibtn{width:100%;text-align:center}
+
+  /* KPI */
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+  .kpi .kl{font-size:11.5px;color:var(--sub)}
+  .kpi .kv{font-family:var(--serif);font-size:24px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+  .kpi .kv.money{color:var(--gold)}
+  .kpi .ks{font-size:11px;color:var(--sub);margin-top:1px}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .panel h3{font-size:12.5px;color:var(--sub);font-weight:700;margin:0 0 12px;letter-spacing:.04em}
+  .bar{display:grid;grid-template-columns:88px 1fr auto;align-items:center;gap:10px;margin:9px 0;font-size:12.5px}
+  .bar .bl{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{height:11px;background:color-mix(in srgb,var(--line) 55%,transparent);border-radius:6px;overflow:hidden}
+  .bar .fill{height:100%;background:var(--marine);border-radius:6px}
+  .bar .bv{font-variant-numeric:tabular-nums;color:var(--sub);font-weight:600;white-space:nowrap}
+  .spark{display:flex;align-items:flex-end;gap:5px;height:64px;margin-top:4px}
+  .spark .sb{flex:1;background:color-mix(in srgb,var(--marine) 78%,transparent);border-radius:4px 4px 0 0;min-height:4px;position:relative}
+  .spark .sb.today{background:var(--gold)}
+  .sparklab{display:flex;gap:5px;margin-top:5px}
+  .sparklab span{flex:1;text-align:center;font-size:9.5px;color:var(--sub)}
+
+  /* カルテ */
+  .crow{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px;cursor:pointer;box-shadow:var(--shadow)}
+  .crow .cn{font-weight:700;font-size:14px;display:flex;justify-content:space-between}
+  .crow .cn .cvi{font-size:11px;color:var(--marine);font-weight:700}
+  .crow .cm{font-size:11.5px;color:var(--sub);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* 設定 */
+  .setrow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .setrow:last-child{border-bottom:none}
+  .setrow .sk{color:var(--sub)} .setrow .sv{font-weight:600}
+  .badge-yen{font-family:var(--serif);color:var(--gold);font-weight:600}
+
+  /* 会計オーバーレイ */
+  .ov{position:fixed;inset:0;background:rgba(20,25,25,.45);display:none;align-items:flex-end;justify-content:center;z-index:60}
+  .ov.on{display:flex}
+  .sheet-k{background:var(--paper);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px 20px 26px;max-height:86vh;overflow:auto}
+  .sheet-k h3{font-family:var(--serif);font-size:17px;margin:0 0 4px}
+  .kitem{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .kitem.tot{border-bottom:none;border-top:2px solid var(--line);margin-top:4px;padding-top:12px}
+  .kitem.tot .kv{font-family:var(--serif);color:var(--gold);font-size:20px;font-weight:600}
+  .kadd{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .kadd .ka{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--ink)}
+  .kadd .ka.on{background:color-mix(in srgb,var(--amethyst) 15%,transparent);border-color:var(--amethyst);color:var(--amethyst)}
+
+  /* 店側 電話予約ウィザード（客画面風のフロー） */
+  .sbook{position:fixed;inset:0;max-width:520px;margin:0 auto;background:var(--paper);z-index:70;display:none;flex-direction:column}
+  .sbook.on{display:flex}
+  .sbook .sb-head{background:var(--marine);color:#fff;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto}
+  .sbook .sb-head .t{font-family:var(--serif);font-size:15px;letter-spacing:.06em}
+  .sbook .sb-head .x,.sbook .sb-head .bk{cursor:pointer;font-size:20px;line-height:1;background:rgba(255,255,255,.18);border-radius:20px;width:30px;height:30px;display:flex;align-items:center;justify-content:center}
+  .sbook .sb-steps{display:flex;justify-content:center;gap:0;font-size:10px;color:var(--sub);padding:10px 0 2px;flex:0 0 auto;background:var(--card);border-bottom:1px solid var(--line)}
+  .sbook .sb-steps .s{display:flex;align-items:center;gap:5px;padding:0 6px}
+  .sbook .sb-steps .s .dot{width:18px;height:18px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9.5px}
+  .sbook .sb-steps .s.on{color:var(--marine);font-weight:700}
+  .sbook .sb-steps .s.on .dot{background:var(--marine);color:#fff;border-color:var(--marine)}
+  .sbook .sb-steps .sep{color:var(--line)}
+  .sbook .sb-body{flex:1;overflow:auto;padding:14px 16px;-webkit-overflow-scrolling:touch}
+  .sbook .sb-foot{flex:0 0 auto;padding:12px 16px 16px;border-top:1px solid var(--line);background:var(--paper);display:none}
+
+  .stabs{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;background:var(--card);border-top:1px solid var(--line);display:none;z-index:20}
+  .stabs.on{display:flex}
+  .stabs button{flex:1;border:none;background:none;padding:9px 0 11px;font-size:10.5px;color:var(--sub);cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .stabs button .ti{font-size:17px;line-height:1}
+  .stabs button.on{color:var(--marine);font-weight:700}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <span class="back" id="back">‹</span>
+    <span class="demo">デモ</span>
+    <div class="brand">ひだまり</div>
+    <div class="tag">relaxation salon</div>
+  </header>
+
+  <div class="steps" id="steps">
+    <span class="s" data-s="course"><span class="dot">1</span>コース</span>
+    <span class="sep">―</span>
+    <span class="s" data-s="option"><span class="dot">2</span>オプション</span>
+    <span class="sep">―</span>
+    <span class="s" data-s="grid"><span class="dot">3</span>日時</span>
+    <span class="sep">―</span>
+    <span class="s" data-s="form"><span class="dot">4</span>ご入力</span>
+  </div>
+
+  <!-- 1 コース -->
+  <section class="screen active" id="scr-course">
+    <div id="myBookings"></div>
+    <div class="lead">基本コースをお選びください</div>
+    <div class="lede">全コース フットバス・カウンセリング・アフターティー込み。ご来店〜お帰りまで、施術に加え前後のゆとり時間（約30分）をお取りしています。</div>
+    <div class="courses" id="courseList"></div>
+    <div class="note-incl">リラクゼーションサロン ／ お支払いは当日 現金のみ</div>
+    <!-- 店舗管理は別URL（#store）。お客様画面からは導線を出さない -->
+    <div class="storelink" id="toStore" style="display:none">スタッフ用 · 店舗管理 →</div>
+  </section>
+
+  <!-- 2 オプション -->
+  <section class="screen" id="scr-option">
+    <div class="lead">オプション（任意）</div>
+    <div class="lede">コースに組み合わせできます。選ばずに進むこともできます。</div>
+    <div id="optionList"></div>
+    <div class="skip">追加なしでこのまま日時選択へ進めます</div>
+  </section>
+
+  <!-- 3 日時 -->
+  <section class="screen" id="scr-grid">
+    <div class="mbar" id="gridBar"></div>
+    <div class="weeknav">
+      <button class="nb" id="prevW">‹ 前の週</button>
+      <span class="wk" id="wkLabel"></span>
+      <button class="nb" id="nextW">次の週 ›</button>
+    </div>
+    <div class="mwrap"><div id="matrix"></div></div>
+    <div class="mxnote">○＝空き／×＝予約済み／—＝ご予約いただけません（受付時間外・過去・前後の予約と重なる）。○をタップして進みます。</div>
+  </section>
+
+  <!-- 4 入力 -->
+  <section class="screen" id="scr-form">
+    <div class="sum" id="formSum"></div>
+    <div class="card">
+      <label class="fld" id="f-name"><span class="l">お名前<span class="req">必須</span></span>
+        <input type="text" id="i-name" placeholder="山田 花子"><span class="err">お名前をご入力ください</span></label>
+      <label class="fld" id="f-tel"><span class="l">お電話番号<span class="req">必須</span><span style="color:var(--sub);font-size:11px;font-weight:400;margin-left:6px">ハイフンなしでご入力ください</span></span>
+        <input type="tel" id="i-tel" placeholder="09012345678" inputmode="numeric"><span class="err">お電話番号をご入力ください</span></label>
+      <label class="fld"><span class="l">ご要望・気になる箇所（任意）</span>
+        <textarea id="i-note" placeholder="例）肩と首のこわばりが気になります"></textarea></label>
+    </div>
+    <div class="card" id="f-consent" style="margin-top:12px">
+      <label class="cbrow"><input type="checkbox" id="i-consent"><span>予約内容の確認・ご連絡のため、お名前と連絡先の利用に同意します<span class="req" style="color:#c0607a;font-size:10px;margin-left:5px">必須</span></span></label>
+      <span class="err" id="consent-err" style="display:none">同意にチェックしてください</span>
+    </div>
+  </section>
+
+  <!-- 確認 -->
+  <section class="screen" id="scr-confirm">
+    <div class="lead">ご予約内容の確認</div>
+    <div class="sum" id="confirmSum" style="margin-top:12px"></div>
+    <div class="card" style="border-color:color-mix(in srgb,var(--gold) 40%,var(--line));background:color-mix(in srgb,var(--gold) 6%,transparent);font-size:12.5px;line-height:1.7">
+      <b style="color:var(--gold)">仮予約について</b><br>
+      この時点では<b>「仮予約」</b>です。サロンが内容を確認し、<b>確定するとLINEでお知らせ</b>します（枠はこの時点で確保されます）。<br>
+      <span style="color:var(--sub)">※ <b>当日のキャンセルはできません</b>。やむを得ない場合は公式LINEからご連絡ください。お支払いは当日 <b>現金のみ</b>。</span>
+    </div>
+  </section>
+
+  <!-- 完了 -->
+  <section class="screen" id="scr-done">
+    <div class="done">
+      <div class="ring" style="background:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+      <h2>仮予約を承りました</h2>
+      <p>サロンが内容を確認し、<br><b>確定しましたらLINEでお知らせ</b>します。<br>いましばらくお待ちください。</p>
+      <div class="card rc" id="doneSum"></div>
+      <p class="mxnote">※ 当日のキャンセルはできません。やむを得ない場合は公式LINEからご連絡ください。<br>※ デモです。本番では仮予約の受付・確定・前日リマインドがLINEに自動送信されます。</p>
+    </div>
+  </section>
+
+  <div class="cta" id="cta" style="display:none">
+    <div class="mini" id="ctaMini"></div>
+    <button class="btn" id="ctaBtn">次へ</button>
+  </div>
+</div>
+<!-- ===== 店舗管理（デモ） ===== -->
+<div class="store" id="store">
+  <div class="shead">
+    <span class="st">ひだまり 店舗管理</span>
+    <span class="toc" id="toCustomer">← お客様画面</span>
+  </div>
+
+  <!-- 予約 -->
+  <section class="sscreen on" id="s-yoyaku">
+    <div class="sh2">予約一覧</div>
+    <div id="bookingRows"></div>
+  </section>
+
+  <!-- 売上 -->
+  <section class="sscreen" id="s-uriage">
+    <div class="sh2">売上</div>
+    <div class="weeknav" style="margin-bottom:12px">
+      <button class="nb" id="salesPrev">‹ 前の月</button>
+      <span class="wk" id="salesMonthLabel"></span>
+      <button class="nb" id="salesNext">次の月 ›</button>
+    </div>
+    <div class="kpis" style="grid-template-columns:1fr 1fr">
+      <div class="kpi"><div class="kl">売上（この月）</div><div class="kv money" id="salesTotal">¥0</div></div>
+      <div class="kpi"><div class="kl">会計件数</div><div class="kv" id="salesCount">0件</div></div>
+    </div>
+    <div class="panel">
+      <h3>メニュー別 売上</h3>
+      <div id="menuBars"></div>
+    </div>
+    <div class="panel">
+      <h3>売上一覧</h3>
+      <div id="salesList"></div>
+    </div>
+  </section>
+
+  <!-- カルテ -->
+  <section class="sscreen" id="s-karute">
+    <div class="sh2">顧客カルテ</div>
+    <div id="customerRows"></div>
+  </section>
+
+  <!-- 設定 -->
+  <section class="sscreen" id="s-settei">
+    <div class="sh2">営業設定</div>
+    <div class="panel">
+      <h3>営業時間・定休日</h3>
+      <div id="hoursRows"></div>
+    </div>
+    <div class="panel">
+      <h3>お休み・休憩の設定（不定休）</h3>
+      <div id="closedRows"></div>
+      <button class="minibtn ghost" id="addClosed" style="width:100%;padding:11px;margin-top:10px;border-radius:12px;font-size:13px">＋ お休み・休憩を追加</button>
+      <p class="mxnote" style="margin-top:8px">終日のお休みも、時間を指定した休憩・中抜けも、ここで登録します。足し引きするだけで、お客様の予約カレンダーに<b>その場で反映</b>されます。</p>
+    </div>
+    <div class="panel">
+      <h3>メニューと料金</h3>
+      <div id="menuPrice"></div>
+    </div>
+    <div class="panel" style="border-color:color-mix(in srgb,#c0607a 30%,var(--line))">
+      <h3 style="color:#c0607a">データ初期化</h3>
+      <p class="mxnote" style="margin:0 0 10px">デモのサンプル（予約・売上・カルテ・カレンダーの既存予約）と、テスト中に入れた予約・お休みを<b>すべて消して真っ新</b>にします。</p>
+      <button class="minibtn ghost cancel" id="resetData" style="width:100%;padding:11px;border-radius:12px;font-size:13px">すべてのデータを初期化</button>
+    </div>
+    <p class="mxnote">※ デモの仮設定です。実際の内容に合わせて変更できます。</p>
+  </section>
+
+  <div class="stabs on" id="stabs">
+    <button class="on" data-t="yoyaku"><span class="ti">📋</span>予約</button>
+    <button data-t="uriage"><span class="ti">📊</span>売上</button>
+    <button data-t="karute"><span class="ti">🗂️</span>カルテ</button>
+    <button data-t="settei"><span class="ti">⚙️</span>設定</button>
+  </div>
+</div>
+
+<!-- 会計オーバーレイ -->
+<div class="ov" id="ov">
+  <div class="sheet-k" id="sheetK"></div>
+</div>
+
+<!-- 店側 電話予約ウィザード -->
+<div class="sbook" id="sbook">
+  <div class="sb-head">
+    <span class="bk" id="sbookBack">‹</span>
+    <span class="t">電話予約の登録</span>
+    <span class="x" id="sbookClose">✕</span>
+  </div>
+  <div class="sb-steps" id="sbookSteps"></div>
+  <div class="sb-body" id="sbookBody"></div>
+  <div class="sb-foot" id="sbookFoot"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WD=["日","月","火","水","木","金","土"];
+let COURSES=[
+  {key:"amber",  cls:"amber",   name:"スタンダード",   tag:"基本",       care:90, occupy:110, price:9900,  desc:"全身をやさしくほぐし、一部オイルで流して整える基本コース。"},
+  {key:"jade",   cls:"jade",    name:"リッチ",   tag:"人気No.1",   care:120,occupy:140, price:13000, desc:"全身ほぐし＋全身オイルで、深く緩め、巡りまで整えるコース。"},
+  {key:"ametrine",cls:"ametrine",name:"プレミアム", tag:"特別",       care:150,occupy:170, price:16500, desc:"全身ほぐし＋オイルをじっくり組み合わせ、深い巡りと調和へ導く特別コース。"},
+  {key:"short",  cls:"short",   name:"ショートケア",tag:"気軽に",     care:60, occupy:85,  price:6600,  desc:"お時間が限られている方へ。お疲れの箇所を中心に整えます。"},
+];
+let OPTIONS=[
+  {key:"sauna",  name:"ハーブテントサウナ",     min:30, price:3300, desc:"伝統的なハーブの蒸気に包まれる温熱ケア。冷え・美容ケアに。"},
+  {key:"ball",   name:"ハーブボール",           min:30, price:3300, desc:"蒸したハーブボールを当てる昔ながらの温熱ケア。肩・首のこわばりに。"},
+  {key:"goitong",name:"お腹ケア", min:30, price:3300, desc:"お腹まわりの専門ケア。オールハンドで優しくほぐします。"},
+];
+// BUFFER=施術後の片付け・入替の余白。1予約に一律30分。枠=施術（コース＋オプション）＋30分
+const OPEN=9*60+30, CLOSE=18*60+30, STEP=30, BUFFER=30; // 営業 9:30〜18:30
+const LAST_START=17*60+30; // 予約受付の最終開始時刻（これ以降の枠は表示しない）
+const LAST_END=18*60+30;   // 施術枠は最大18:30まで（＝閉店。施術がここまでに終わること）
+const SPECIAL_END=20*60;   // 特別枠（お得意さま向け延長）の施術終了上限＝20:00
+const yen=n=>"¥"+n.toLocaleString();
+const pad=n=>String(n).padStart(2,"0");
+const hhmm=m=>pad(Math.floor(m/60))+":"+pad(m%60);
+const toMin=s=>{const[a,b]=s.split(":").map(Number);return a*60+b;};
+// 電話番号チェック：ハイフン/空白/括弧を除いた数字が「0始まりの10〜11桁」なら有効（日本の固定・携帯・IP・フリーダイヤル相当）
+const telDigits=s=>(s||"").replace(/[‐-‒–—―ー－\-()（）\s.]/g,"").replace(/[^0-9]/g,"");
+function validTel(s){ return /^0\d{9,10}$/.test(telDigits(s)); }
+function ymd(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function mondayOf(d){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x;}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x;}
+function jdate(s){const d=new Date(s+"T00:00:00");return (d.getMonth()+1)+"月"+d.getDate()+"日（"+WD[d.getDay()]+"）";}
+const jmd=s=>{const d=new Date(s+"T00:00:00");return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")";};
+
+// 見栄え用の擬似予約（○×—が混ざるように）
+const SEED=[]; (function(){
+  const mon=mondayOf(new Date());
+  [[1,"11:00",150],[1,"15:30",120],[2,"13:00",180],[3,"10:00",90],[4,"14:00",150],[5,"16:00",120],[6,"11:30",180]]
+    .forEach(([dow,t,occ])=>SEED.push({date:ymd(addDays(mon,dow)),start:toMin(t),block:occ}));
+})();
+
+// お客様に公開する予約枠は「当該週＋3週分」まで
+const HORIZON_WEEKS=3;
+const lastBookableDate=()=>ymd(addDays(mondayOf(new Date()), HORIZON_WEEKS*7+6));
+
+// 実際に入った予約（お客様の仮予約・店側の手入力＝電話予約/休憩）。枠押さえにも使う
+let LIVE=[];
+// 不定休：定休日は固定せず、店主が休みを手軽に足し引きする（設定画面で編集・範囲制限なし）
+// 終日休業＝CLOSED_DATES、時間指定休業＝CLOSED_SLOTS
+let CLOSED_DATES=[ ymd(addDays(new Date(),3)) ]; // デモ用に1日サンプルで終日休業
+let CLOSED_SLOTS=[];
+let wiped=false; // データ初期化フラグ：true のときサンプル/カレンダーの既存予約を一切出さない
+// 売上：会計を確定するたびに1件記録（実額）。取消はvoidedフラグ（削除しない）
+let SALES=[];
+function curMonth(){ const d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1); }
+function shiftMonth(ym,delta){ let [y,m]=ym.split("-").map(Number); m+=delta; while(m<1){m+=12;y--;} while(m>12){m-=12;y++;} return y+"-"+pad(m); }
+let salesMonth=curMonth();
+(function seedSales(){ // デモ用サンプル売上（今月＋先月）
+  const base=new Date(), y=base.getFullYear(), m=base.getMonth(), today=base.getDate();
+  const menus=[["リッチ",13000],["プレミアム",16500],["スタンダード",9900],["ショートケア",6600]];
+  const names=["佐藤 みか","鈴木 あや","田中 花子","山本 拓也","中村 大輔","小林 さくら"];
+  let seq=0;
+  const add=(yy,mm,dd,mi)=>{ const mn=menus[Math.abs(mi)%menus.length]; SALES.push({id:"seed"+(seq++),date:yy+"-"+pad(mm+1)+"-"+pad(dd),name:names[seq%names.length],menu:mn[0],amount:mn[1],voided:false}); };
+  for(let d=1; d<=today; d++){ if(d%2===0)add(y,m,d,d); if(d%3===0)add(y,m,d,d+1); }
+  const pm=new Date(y,m,0), py=pm.getFullYear(), pmo=pm.getMonth(), pdays=pm.getDate();
+  for(let d=1; d<=pdays; d++){ if(d%2===0)add(py,pmo,d,d); if(d%4===0)add(py,pmo,d,d+2); }
+})();
+// 顧客（カルテ）：会計するたびに来店を記録。
+// ★識別は電話番号（正規化）で行う。電話予約にはLINE IDを振らない（＝実在のLINE IDと衝突しない）。
+//   LINEアプリ経由(kind:"app")の予約のみ lineLinked=true。本番では実LINE userId（U+32桁）を別途保持し、電話番号で名寄せ。
+let CUSTOMERS=[];
+function telKeyDigits(tel){ const d=telDigits(tel); return d||""; }
+// デモ用の疑似LINE userId（本番は実LINEの値。デモは電話番号ベースで一意＝ハッシュ衝突なし）
+function mockLineUserId(tel){ const d=telDigits(tel); return d ? ("Uline_"+d) : ""; }
+// 照合キー：LINE予約(kind:app)は LINE ID、電話予約は電話番号（名前空間を分けて衝突回避）
+function custKeyOf(b){
+  if(b && b.kind==="app"){ const lid=b.lineUserId || mockLineUserId(b&&b.tel); return lid ? ("line:"+lid) : ("name:"+((b&&b.name)||"")); }
+  const d=telKeyDigits(b&&b.tel); return d ? ("tel:"+d) : ("name:"+((b&&b.name)||""));
+}
+function custIdLabel(c){ return (c.lineLinked && c.lineUserId) ? ("LINE "+c.lineUserId) : (c.tel ? ("電話 "+c.tel+"（LINE未連携）") : "（連絡先なし）"); }
+// 顧客データ（過去に会計＝来店した人）と照合し、一致すれば「再来」／無ければ「新規」。LINE予約はLINE ID・電話予約は電話番号で照合
+function isReturning(b){ return CUSTOMERS.some(c=>c.key===custKeyOf(b)); }
+(function seedCustomers(){
+  const y=new Date().getFullYear();
+  [["鈴木 あや",15,`${y}-07-30`,"090-1111-2222",true,"常連。プレミアム＋ハーブボールが定番。冷え性、圧やや強め希望。"],
+   ["佐藤 みか",8,`${y}-07-20`,"080-3333-4444",false,"右肩のこり強め。アロマは苦手。施術中は眠られることが多い。"],
+   ["田中 花子",3,`${y}-07-28`,"070-5555-6666",true,"フットバス長めが好み。次回は巡りケア提案。"]]
+  .forEach(([name,visits,last,tel,line,note])=>CUSTOMERS.push({id:"seedcu_"+name,key:line?("line:"+mockLineUserId(tel)):("tel:"+telDigits(tel)),name,tel,lineLinked:line,lineUserId:line?mockLineUserId(tel):"",visits,first:last,last,history:[],notes:[{date:last,memo:note,condition:"",pref:""}]}));
+})();
+function upsertCustomer(b, amount){
+  const key=custKeyOf(b);
+  let c=CUSTOMERS.find(x=>x.key===key);
+  const today=ymd(new Date());
+  if(!c){ c={id:newKey("cu"),key,name:b.name||"お客様",tel:b.tel||"",lineLinked:false,lineUserId:"",visits:0,first:today,last:today,history:[],notes:[]}; CUSTOMERS.push(c); }
+  c.visits++; c.last=today; if(b.name)c.name=b.name; if(b.tel)c.tel=b.tel;
+  if(b.kind==="app"){ c.lineLinked=true; c.lineUserId=b.lineUserId||mockLineUserId(b.tel); } // LINE経由のみ連携
+  c.history.unshift({date:today,menu:b.course||"",amount:amount||0});
+}
+function allBusy(){
+  return (wiped?[]:SEED)
+    .concat(LIVE.filter(x=>x.date&&x.start!=null&&x.status!=="キャンセル").map(x=>({date:x.date,start:x.start,block:x.block})))
+    .concat(CLOSED_SLOTS.map(s=>({date:s.date,start:s.start,block:s.end-s.start})));
+}
+// 客URLと店主URLは分離。同一ブラウザ内では localStorage で予約・休業を共有（仮予約→承認のループが端末内で成立）
+const LS_KEY="ynsys_salon_demo_v1";
+function persist(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({LIVE,CLOSED_DATES,CLOSED_SLOTS,wiped,COURSES,OPTIONS,SALES,CUSTOMERS})); }catch(e){} }
+function restore(){ try{ const s=JSON.parse(localStorage.getItem(LS_KEY)||"null"); if(s){ if(Array.isArray(s.LIVE))LIVE=s.LIVE; if(Array.isArray(s.CLOSED_DATES))CLOSED_DATES=s.CLOSED_DATES; if(Array.isArray(s.CLOSED_SLOTS))CLOSED_SLOTS=s.CLOSED_SLOTS; wiped=!!s.wiped; if(Array.isArray(s.COURSES))COURSES=s.COURSES; if(Array.isArray(s.OPTIONS))OPTIONS=s.OPTIONS; if(Array.isArray(s.SALES))SALES=s.SALES; if(Array.isArray(s.CUSTOMERS))CUSTOMERS=s.CUSTOMERS; } }catch(e){} }
+// 全データ初期化（サンプル含め完全に空に）
+function resetAllData(){
+  LIVE=[]; CLOSED_DATES=[]; CLOSED_SLOTS=[]; SALES=[]; CUSTOMERS=[]; wiped=true;
+  persist();
+}
+
+let draft={course:null, options:[], date:null, start:null};
+let week=mondayOf(new Date());
+
+const totalCare=()=>(draft.course?draft.course.care:0)+draft.options.reduce((s,o)=>s+o.min,0);
+const totalOccupy=()=>totalCare()+BUFFER; // 枠＝施術＋30分バッファ
+const totalPrice=()=>(draft.course?draft.course.price:0)+draft.options.reduce((s,o)=>s+o.price,0);
+
+// ---- nav ----
+const screens=["course","option","grid","form","confirm","done"];
+let cur="course", stack=[];
+function show(name,push=true){
+  if(push&&name!==cur)stack.push(cur);
+  cur=name;
+  screens.forEach(s=>document.getElementById("scr-"+s).classList.toggle("active",s===name));
+  document.getElementById("back").style.visibility = name==="course"?"hidden":"visible";
+  const stepFor={course:"course",option:"option",grid:"grid",form:"form",confirm:"form",done:"form"}[name];
+  document.querySelectorAll(".steps .s").forEach(el=>el.classList.toggle("on", el.dataset.s===stepFor));
+  document.getElementById("steps").style.display = (name==="done")?"none":"flex";
+  if(name==="course") renderMyBookings();
+  renderCta(name);
+  window.scrollTo(0,0);
+}
+function back(){ if(stack.length)show(stack.pop(),false); else show("course",false); if(cur==="grid")renderGrid(); }
+
+function renderCta(name){
+  const cta=document.getElementById("cta"), mini=document.getElementById("ctaMini"), b=document.getElementById("ctaBtn");
+  const cfg={
+    option:{show:true,label:"日時を選ぶ",fn:()=>{show("grid");renderGrid();}},
+    grid:{show:false},
+    form:{show:true,label:"確認へ進む",fn:submitForm},
+    confirm:{show:true,label:"この内容で仮予約する",fn:()=>{
+      // 確定の瞬間に再判定（開いたままの間に他の予約が入っていないか）＝二重予約防止の最終ガード
+      if(cellState(draft.date,draft.start)!=="ok"){ toast("申し訳ありません、この時間は先に埋まってしまいました。別の時間をお選びください"); show("grid"); renderGrid(); return; }
+      createPending();renderDone();show("done");
+    }},
+    done:{show:true,label:"最初に戻る",soft:true,fn:()=>{draft={course:null,options:[],date:null,start:null};stack=[];renderCourses();renderOptions();show("course",false);}},
+  }[name]||{show:false};
+  cta.style.display=cfg.show?"block":"none";
+  if(cfg.show){
+    b.textContent=cfg.label; b.className="btn"+(cfg.soft?" soft":""); b.onclick=cfg.fn; b.disabled=false;
+    if(draft.course && name!=="done"){ mini.innerHTML=`<span>${draft.course.name}${draft.options.length?" ＋"+draft.options.length+"点":""}・約${totalCare()}分</span><b>${yen(totalPrice())}</b>`; mini.style.display="flex"; }
+    else mini.style.display="none";
+  }
+}
+
+// ---- お客様のご予約状況（この端末から取った予約）----
+function renderMyBookings(){
+  const el=document.getElementById("myBookings"); if(!el)return;
+  const today=ymd(new Date());
+  const mine=LIVE.map((b,i)=>({b,i})).filter(x=>x.b.kind==="app" && x.b.status!=="キャンセル");
+  if(!mine.length){ el.innerHTML=""; return; }
+  mine.sort((a,b)=> a.b.date<b.b.date?-1 : a.b.date>b.b.date?1 : a.b.start-b.b.start);
+  el.innerHTML=`<div class="card" style="margin-bottom:18px;padding:15px 16px">
+    <div style="font-family:var(--serif);font-size:15px;margin-bottom:4px">ご予約状況</div>
+    ${mine.map(({b,i})=>{
+      const isToday=b.date===today;
+      const badge = b.status==="仮予約"
+        ? `<span style="font-size:10px;font-weight:700;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-radius:20px;padding:2px 8px;white-space:nowrap">承認待ち</span>`
+        : `<span style="font-size:10px;font-weight:700;color:var(--marine);border:1px solid color-mix(in srgb,var(--marine) 45%,transparent);border-radius:20px;padding:2px 8px;white-space:nowrap">確定</span>`;
+      const action = isToday
+        ? `<div class="mxnote" style="margin-top:7px;color:#c0607a">当日のキャンセルはできません。ご事情がある場合は<b>公式LINE</b>にてご連絡ください。</div>`
+        : `<button class="minibtn ghost cancel" data-mycancel="${i}" style="margin-top:9px;padding:7px 14px;border-radius:20px">キャンセルする</button>`;
+      return `<div style="padding:11px 0 2px;border-top:1px solid var(--line);margin-top:9px">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+          <span style="font-weight:700;font-size:13.5px">${jmd(b.date)} ${hhmm(b.start)}〜${hhmm(b.start+b.care)}</span>${badge}</div>
+        <div class="mxnote" style="margin:3px 0 0">${b.course}${b.opt?" ＋"+b.opt:""}・${yen(b.price)}</div>
+        ${action}</div>`;
+    }).join("")}
+  </div>`;
+  el.querySelectorAll("[data-mycancel]").forEach(x=>x.onclick=()=>openMyCancel(+x.dataset.mycancel));
+}
+function openMyCancel(i){
+  const b=LIVE[i]; if(!b||b.status==="キャンセル")return;
+  if(b.date===ymd(new Date())){ toast("当日のキャンセルはできません。公式LINEへご連絡ください"); return; }
+  document.getElementById("sheetK").innerHTML=`
+    <h3>ご予約をキャンセルしますか？</h3>
+    <div class="kitem"><span>日時</span><span class="kv">${jmd(b.date)} ${hhmm(b.start)}〜</span></div>
+    <div class="kitem"><span>コース</span><span class="kv">${b.course}${b.opt?" ＋"+b.opt:""}</span></div>
+    <p class="mxnote" style="margin:12px 0 16px">キャンセルすると元に戻せません。よろしいですか？</p>
+    <div style="display:flex;gap:10px"><button class="btn soft" style="flex:1" id="mcBack">戻る</button><button class="btn" style="flex:2;background:#c0607a" id="mcDo">キャンセルする</button></div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("mcBack").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("mcDo").onclick=()=>{
+    b.status="キャンセル"; persist();
+    document.getElementById("ov").classList.remove("on");
+    renderMyBookings();
+    toast("ご予約をキャンセルしました");
+  };
+}
+
+// ---- コース ----
+function renderCourses(){
+  const list=document.getElementById("courseList"); list.innerHTML="";
+  COURSES.forEach(c=>{
+    const el=document.createElement("div");
+    el.className="course "+c.cls+(draft.course&&draft.course.key===c.key?" sel":"");
+    el.innerHTML=`<div class="stripe"></div><div class="body">
+      <div class="top"><span class="nm">${c.name}</span><span class="badge">${c.tag}</span></div>
+      <div class="meta"><span>施術 約${c.care}分</span><span class="price">${yen(c.price)}</span></div>
+      <div class="desc">${c.desc}</div></div>`;
+    el.onclick=()=>{ draft.course=c; renderCourses(); setTimeout(()=>{show("option");renderOptions();},160); };
+    list.appendChild(el);
+  });
+}
+
+// ---- オプション ----
+function renderOptions(){
+  const list=document.getElementById("optionList"); list.innerHTML="";
+  OPTIONS.forEach(o=>{
+    const on=draft.options.some(x=>x.key===o.key);
+    const el=document.createElement("div"); el.className="opt"+(on?" sel":"");
+    el.innerHTML=`<span class="chk">${on?"✓":""}</span><div style="flex:1">
+      <div style="display:flex;justify-content:space-between;gap:8px"><span class="onm">${o.name}</span><span class="oprice">＋${yen(o.price)}</span></div>
+      <div class="ometa">${o.min}分</div><div class="odesc">${o.desc}</div></div>`;
+    el.onclick=()=>{ draft.options = on ? draft.options.filter(x=>x.key!==o.key) : [...draft.options,o]; renderOptions(); renderCta("option"); };
+    list.appendChild(el);
+  });
+}
+
+// ---- マトリクス ----
+function slotFree(date,startMin,block){
+  return !allBusy().some(b=>b.date===date && startMin<b.start+b.block && b.start<startMin+block);
+}
+function cellState(date,startMin){
+  const block=totalOccupy(); // 施術＋30分バッファ
+  const now=new Date(), today=ymd(now), nowMin=now.getHours()*60+now.getMinutes();
+  if(CLOSED_DATES.includes(date)) return "no";           // 終日休業
+  if(startMin<OPEN) return "no";
+  if(startMin>LAST_START) return "no";                   // 予約受付は17:30まで
+  if(startMin+totalCare()>LAST_END) return "no";         // 施術は18:30までに終わること（例:17:30は60分のみ）
+  if(date<today || (date===today && startMin<nowMin+60)) return "no"; // 予約は現在時刻の1時間後以降の枠のみ
+  if(date>lastBookableDate()) return "no";               // 公開は当該週＋3週分まで
+  const inBooking=allBusy().some(b=>b.date===date && startMin>=b.start && startMin<b.start+b.block);
+  if(slotFree(date,startMin,block)) return "ok";
+  return inBooking ? "bk" : "no";
+}
+function renderGrid(){
+  document.getElementById("gridBar").innerHTML=`<b>${draft.course.name}</b>${draft.options.length?"＋"+draft.options.map(o=>o.name).join("・"):""}　／　約${totalCare()}分・${yen(totalPrice())}`;
+  const days=[]; for(let i=0;i<7;i++){const d=addDays(week,i);days.push({date:ymd(d),md:(d.getMonth()+1)+"/"+d.getDate(),dow:d.getDay(),today:ymd(d)===ymd(new Date())});}
+  document.getElementById("wkLabel").textContent=`${new Date(days[0].date+"T00:00:00").getFullYear()}年 ${days[0].md}〜${days[6].md}`;
+  document.getElementById("prevW").disabled = ymd(week)<=ymd(mondayOf(new Date()));
+  document.getElementById("nextW").disabled = ymd(week)>=ymd(addDays(mondayOf(new Date()), HORIZON_WEEKS*7));
+  const times=[]; for(let m=OPEN;m<=LAST_START;m+=STEP)times.push(hhmm(m));
+  let h='<table class="mx"><thead><tr><th class="tc"></th>';
+  days.forEach(d=>h+=`<th class="${d.dow===0?'sun':d.dow===6?'sat':''}">${d.md}<br><span>${WD[d.dow]}</span></th>`);
+  h+='</tr></thead><tbody>';
+  const sym={ok:"○",bk:"×",no:"—"};
+  times.forEach(t=>{ h+=`<tr><th class="tc">${t}</th>`;
+    days.forEach(d=>{ const st=cellState(d.date,toMin(t));
+      h+=`<td class="${st}" ${st==="ok"?`data-d="${d.date}" data-t="${t}"`:""}>${sym[st]}</td>`; });
+    h+='</tr>'; });
+  h+='</tbody></table>';
+  const wrap=document.getElementById("matrix"); wrap.innerHTML=h;
+  wrap.querySelectorAll("td").forEach(td=>{
+    if(td.classList.contains("ok")) td.onclick=()=>{ draft.date=td.dataset.d; draft.start=toMin(td.dataset.t); show("form"); renderFormSum(); };
+    else if(td.classList.contains("bk")) td.onclick=()=>toast("この時間はすでに予約が入っています");
+    else if(td.classList.contains("no")) td.onclick=()=>toast("この時間はご予約いただけません");
+  });
+}
+
+function endLabel(){ return hhmm(draft.start)+"〜"+hhmm(draft.start+totalCare()); }
+function sumRows(){
+  const opt=draft.options.length?draft.options.map(o=>o.name).join("・"):"なし";
+  return [["コース",draft.course.name],["オプション",opt],["日時",jdate(draft.date)+" "+endLabel()],["所要","約"+totalCare()+"分"],["料金（現金）",yen(totalPrice())]];
+}
+function fillSum(id){
+  document.getElementById(id).innerHTML=sumRows().map(([k,v],i)=>`<div class="r${i===sumRows().length-1?" total":""}"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+}
+// 確認画面はお名前・お電話番号も表示
+function fillConfirmSum(){
+  const opt=draft.options.length?draft.options.map(o=>o.name).join("・"):"なし";
+  const rows=[
+    ["コース",draft.course.name],["オプション",opt],
+    ["日時",jdate(draft.date)+" "+endLabel()],["所要","約"+totalCare()+"分"],
+    ["お名前",draft.name||""],["お電話番号",draft.tel||""],
+    ["料金（現金）",yen(totalPrice())],
+  ];
+  document.getElementById("confirmSum").innerHTML=rows.map(([k,v],i)=>`<div class="r${i===rows.length-1?" total":""}"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+}
+function renderFormSum(){ fillSum("formSum");
+  document.getElementById("i-name").value=""; }
+
+function submitForm(){
+  const name=document.getElementById("i-name").value.trim();
+  const tel=document.getElementById("i-tel").value.trim();
+  const consent=document.getElementById("i-consent").checked;
+  let ok=true;
+  document.getElementById("f-name").classList.toggle("bad",!name); if(!name)ok=false;
+  // 電話番号：未入力／形式不正をチェック
+  let telBad=false, telMsg="";
+  if(!tel){ telBad=true; telMsg="お電話番号をご入力ください"; }
+  else if(!validTel(tel)){ telBad=true; telMsg="電話番号の形式が正しくありません（例：090-1234-5678）"; }
+  document.getElementById("f-tel").classList.toggle("bad",telBad);
+  if(telBad){ document.querySelector("#f-tel .err").textContent=telMsg; ok=false; }
+  document.getElementById("consent-err").style.display=consent?"none":"block"; if(!consent)ok=false;
+  if(!ok)return;
+  draft.name=name;
+  draft.tel=tel;
+  draft.note=document.getElementById("i-note").value.trim();
+  fillConfirmSum(); show("confirm");
+}
+function renderDone(){ fillSum("doneSum"); }
+
+// お客様の予約は「仮予約」として登録。その瞬間に枠を確保（承認待ちでも二重予約は防ぐ）
+function createPending(){
+  const b={
+    kind:"app", status:"仮予約",
+    date:draft.date, start:draft.start, care:totalCare(), block:totalOccupy(),
+    name:draft.name, tel:draft.tel||"", lineUserId:mockLineUserId(draft.tel),
+    course:draft.course.name,
+    opt:draft.options.map(o=>o.name).join("・"),
+    price:totalPrice(), note:draft.note||""
+  };
+  b.returning=isReturning(b); // LINE IDで照合
+  LIVE.unshift(b);
+  persist();
+}
+
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),2400);}
+
+document.getElementById("back").onclick=back;
+document.getElementById("prevW").onclick=()=>{week=addDays(week,-7);renderGrid();};
+document.getElementById("nextW").onclick=()=>{week=addDays(week,7);renderGrid();};
+
+restore(); renderCourses(); renderOptions(); show("course",false);
+
+/* ================= 店舗管理（デモ・サンプルデータ） ================= */
+const S_BOOKINGS=[
+  {time:"10:00", name:"佐藤 みか", course:"リッチ", opt:"ハーブテントサウナ", price:16300, status:"来店済"},
+  {time:"13:00", name:"田中 花子", course:"スタンダード", opt:"", price:9900, status:"予約"},
+  {time:"16:00", name:"鈴木 あや", course:"プレミアム", opt:"ハーブボール", price:19800, status:"予約"},
+  {time:"18:30", name:"山本 拓也", course:"ショートケア", opt:"", price:6600, status:"予約"},
+];
+const S_SALES7=[38500,0,52100,44300,61600,39800,42900]; // 直近7日（末尾=今日）
+const S_SALES7LAB=["7/28","29","30","31","8/1","2","3"];
+const S_MENU=[{n:"リッチ",v:182000},{n:"プレミアム",v:148500},{n:"スタンダード",v:99000},{n:"ショートケア",v:56700}];
+const S_CUST=[
+  {name:"鈴木 あや", visits:15, last:"7/30", note:"常連。プレミアム＋ハーブボールが定番。冷え性、圧やや強め希望。"},
+  {name:"佐藤 みか", visits:8, last:"7/20", note:"右肩のこり強め。アロマは苦手。施術中は眠られることが多い。"},
+  {name:"田中 花子", visits:3, last:"7/28", note:"フットバス長めが好み。次回は巡りケア提案。"},
+];
+const S_HOURS=[["月","9:30–18:30"],["火","9:30–18:30"],["水","9:30–18:30"],["木","9:30–18:30"],["金","9:30–18:30"],["土","9:30–18:30"],["日","9:30–18:30"]];
+
+function enterStore(){ document.querySelector(".app").style.display="none"; document.getElementById("store").classList.add("on"); document.getElementById("stabs").classList.add("on"); restore(); renderStore(); try{history.replaceState(null,"","#store");}catch(e){} window.scrollTo(0,0); }
+function exitStore(){ document.getElementById("store").classList.remove("on"); document.getElementById("stabs").classList.remove("on"); document.querySelector(".app").style.display="block"; try{history.replaceState(null,"",location.pathname+location.search);}catch(e){} window.scrollTo(0,0); }
+document.getElementById("toStore").onclick=enterStore;
+document.getElementById("toCustomer").onclick=exitStore;
+document.querySelectorAll("#stabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#stabs button").forEach(x=>x.classList.toggle("on",x===b));
+  ["yoyaku","uriage","karute","settei"].forEach(t=>document.getElementById("s-"+t).classList.toggle("on",t===b.dataset.t));
+  window.scrollTo(0,0);
+});
+
+function renderStore(){ renderBookings(); renderSales(); renderCustomers(); renderSettings(); }
+
+function liveRowHtml(b,idx,showDate){
+  const t=hhmm(b.start);
+  const dt = showDate ? jmd(b.date)+"・" : "";
+  const kindtag=b.kind==="phone"?"📞 ":"";
+  const karteBtn=`<button class="minibtn ghost sm" data-karte="${idx}">カルテ</button>`;
+  let right;
+  if(b.status==="仮予約") right=`<span class="acts"><button class="minibtn sm" data-confirm="${idx}">確定</button>${karteBtn}</span>`;
+  else if(b.status==="会計済") right=`<span class="stt kaikei">会計済</span>`;
+  else { const canKaikei = b.date<=ymd(new Date()); // 会計は当日以降のみ
+    const kaikeiBtn = canKaikei ? `<button class="minibtn sm" data-kai="${idx}">会計</button>` : `<button class="minibtn sm" style="opacity:.4;cursor:not-allowed" data-kailock="1">会計</button>`;
+    right=`<span class="acts">${kaikeiBtn}${karteBtn}<button class="minibtn ghost cancel sm" data-cancel="${idx}">キャンセル</button></span>`; }
+  const vip = b.special ? ` <span style="font-size:9.5px;font-weight:700;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);border-radius:20px;padding:1px 6px">⭐特別枠</span>` : "";
+  const vt = b.returning===true ? ` <span style="font-size:9.5px;font-weight:700;color:var(--marine);border:1px solid color-mix(in srgb,var(--marine) 45%,transparent);border-radius:20px;padding:1px 6px">再来</span>`
+           : b.returning===false ? ` <span style="font-size:9.5px;font-weight:700;color:var(--amethyst);border:1px solid color-mix(in srgb,var(--amethyst) 55%,transparent);border-radius:20px;padding:1px 6px">新規</span>` : "";
+  return `<div class="brow"${b.status==="仮予約"?' style="border-color:color-mix(in srgb,var(--gold) 45%,var(--line))"':''}>
+    <span class="tm">${t}</span>
+    <div class="bi"><div class="bn">${kindtag}${b.name} 様${vt}${vip}</div>
+      <div class="bc">${dt}${b.course}${b.opt?" ＋"+b.opt:""}${b.price?"・"+yen(b.price):""}</div></div>
+    ${right}</div>`;
+}
+function sampleRowHtml(b,i){
+  return `<div class="brow">
+    <span class="tm">${b.time}</span>
+    <div class="bi"><div class="bn">${b.name} 様</div><div class="bc">${b.course}${b.opt?" ＋"+b.opt:""}・${yen(b.price)}</div></div>
+    ${b.status==="来店済"?`<span class="acts"><button class="minibtn sm" data-k="${i}">会計</button><button class="minibtn ghost sm" data-karte-s="${i}">カルテ</button></span>`
+      :b.status==="会計済"?`<span class="stt kaikei">会計済</span>`
+      :`<span class="acts"><button class="minibtn sm" data-k="${i}">会計</button><button class="minibtn ghost sm" data-karte-s="${i}">カルテ</button><button class="minibtn ghost cancel sm" data-sk="${i}">キャンセル</button></span>`}</div>`;
+}
+
+function renderBookings(){
+  const rows=document.getElementById("bookingRows");
+  const today=ymd(new Date());
+  const pend=[];                 // 承認待ち（仮予約）
+  const confByDate={};           // 確定予約を日付ごとに
+  LIVE.forEach((b,i)=>{
+    if(b.status==="キャンセル"||b.status==="会計済")return; // 会計済は一覧に出さない
+    if(b.status==="仮予約"){ pend.push([b,i]); return; }
+    (confByDate[b.date]=confByDate[b.date]||[]).push({live:true,b,i});
+  });
+  // サンプル予約は本日ぶんとして扱う（初期化後・会計済は出さない）
+  if(!wiped) S_BOOKINGS.forEach((b,i)=>{ if(b.status==="キャンセル"||b.status==="会計済")return; (confByDate[today]=confByDate[today]||[]).push({live:false,b,i}); });
+
+  let h=`<button class="minibtn ghost" id="addManual" style="width:100%;padding:11px;margin-bottom:14px;border-radius:12px;font-size:13px">＋ 電話予約を追加</button>`;
+  if(pend.length){
+    pend.sort((A,B)=> A[0].date<B[0].date?-1 : A[0].date>B[0].date?1 : A[0].start-B[0].start);
+    h+=`<div class="sh2" style="font-size:13px;color:var(--gold);margin:2px 0 8px">承認待ち（仮予約）${pend.length}件</div>`;
+    h+=pend.map(([b,i])=>liveRowHtml(b,i,true)).join("");   // 承認待ちは日付を各行に表示
+  }
+  const dates=Object.keys(confByDate).sort();
+  if(dates.length){
+    dates.forEach(d=>{
+      const label = d===today ? `本日 ${jmd(d)}` : jmd(d);
+      const items=confByDate[d].sort((a,b)=>{
+        const sa=a.live?a.b.start:toMin(a.b.time), sb=b.live?b.b.start:toMin(b.b.time);
+        return sa-sb;
+      });
+      h+=`<div class="sh2" style="font-size:13px;margin:16px 0 8px">${label}<span style="color:var(--sub);font-weight:400">　${items.length}件</span></div>`;
+      h+=items.map(it=> it.live ? liveRowHtml(it.b,it.i,false) : sampleRowHtml(it.b,it.i)).join("");
+    });
+  }else if(!pend.length){
+    h+=`<div class="mxnote" style="text-align:center;margin-top:20px">予約はまだありません。</div>`;
+  }
+  rows.innerHTML=h;
+  document.getElementById("addManual").onclick=openSBook;
+  rows.querySelectorAll(".minibtn[data-confirm]").forEach(el=>el.onclick=()=>openConfirmDialog(+el.dataset.confirm));
+  rows.querySelectorAll(".minibtn[data-cancel]").forEach(el=>el.onclick=()=>openCancelDialog(+el.dataset.cancel));
+  rows.querySelectorAll(".minibtn[data-kai]").forEach(el=>el.onclick=()=>openKaikei(LIVE[+el.dataset.kai]));
+  rows.querySelectorAll(".minibtn[data-kailock]").forEach(el=>el.onclick=()=>toast("会計は当日以降にできます"));
+  rows.querySelectorAll(".minibtn[data-sk]").forEach(el=>el.onclick=()=>openCancelSample(+el.dataset.sk));
+  rows.querySelectorAll(".minibtn[data-k]").forEach(el=>el.onclick=()=>openKaikei(S_BOOKINGS[+el.dataset.k]));
+  rows.querySelectorAll(".minibtn[data-karte]").forEach(el=>el.onclick=()=>openKarteDetail(karteSubjectFromBooking(LIVE[+el.dataset.karte])));
+  rows.querySelectorAll(".minibtn[data-karte-s]").forEach(el=>el.onclick=()=>openKarteDetail(karteSubjectFromBooking(S_BOOKINGS[+el.dataset.karteS])));
+}
+
+// 確定は確認画面を挟む
+function openConfirmDialog(i){
+  const b=LIVE[i]; if(!b||b.status!=="仮予約")return;
+  document.getElementById("sheetK").innerHTML=`
+    <h3>この仮予約を確定しますか？</h3>
+    <p class="mxnote" style="margin:0 0 12px">確定すると、お客様にLINEで確定通知が届きます（デモ）。</p>
+    <div class="kitem"><span>お名前</span><span class="kv">${b.name} 様</span></div>
+    <div class="kitem"><span>日時</span><span class="kv">${jmd(b.date)} ${hhmm(b.start)}〜${hhmm(b.start+b.care)}</span></div>
+    <div class="kitem"><span>コース</span><span class="kv">${b.course}${b.opt?" ＋"+b.opt:""}</span></div>
+    <div class="kitem tot"><span>料金（現金）</span><span class="kv">${yen(b.price)}</span></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn soft" style="flex:1" id="cfBack">戻る</button>
+      <button class="btn" style="flex:2" id="cfDo">確定する</button>
+    </div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("cfBack").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("cfDo").onclick=()=>{ doConfirm(i); document.getElementById("ov").classList.remove("on"); };
+}
+function doConfirm(i){
+  if(!LIVE[i]||LIVE[i].status!=="仮予約")return;
+  const nm=LIVE[i].name;
+  LIVE[i].status="予約";
+  persist();
+  renderBookings();
+  toast(nm+" 様を確定しました（お客様へLINE通知・デモ）");
+}
+
+// キャンセルも確認画面を挟む
+function confirmCancel(b, onYes){
+  const when = (b.date?jmd(b.date)+" ":"") + (b.time||hhmm(b.start)) + (b.care?"〜"+hhmm(b.start+b.care):"");
+  document.getElementById("sheetK").innerHTML=`
+    <h3>この予約をキャンセルしますか？</h3>
+    <p class="mxnote" style="margin:0 0 12px">キャンセルすると枠が空きに戻ります。この操作は取り消せません。</p>
+    <div class="kitem"><span>お名前</span><span class="kv">${b.name} 様</span></div>
+    <div class="kitem"><span>日時</span><span class="kv">${when}</span></div>
+    <div class="kitem"><span>コース</span><span class="kv">${b.course}${b.opt?" ＋"+b.opt:""}</span></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn soft" style="flex:1" id="ccBack">戻る</button>
+      <button class="btn" style="flex:2;background:#c0607a" id="ccDo">キャンセルする</button>
+    </div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("ccBack").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("ccDo").onclick=()=>{ onYes(); document.getElementById("ov").classList.remove("on"); };
+}
+function openCancelDialog(i){
+  const b=LIVE[i]; if(!b||b.status!=="予約")return;
+  confirmCancel(b, ()=>{
+    b.status="キャンセル";        // voidして枠を解放（削除ではなく取消）
+    persist(); renderBookings(); if(cur==="grid")renderGrid();
+    toast(b.name+" 様の予約をキャンセルしました（お客様へLINE通知・デモ）");
+  });
+}
+function openCancelSample(i){
+  const b=S_BOOKINGS[i]; if(!b||b.status!=="予約")return;
+  confirmCancel(b, ()=>{
+    b.status="キャンセル";
+    renderBookings();
+    toast(b.name+" 様の予約をキャンセルしました（デモ）");
+  });
+}
+
+// ---- 店側 電話予約ウィザード：日時マトリクス → コース → オプション → 情報入力 ----
+const SB_STEPS=["grid","course","option","form","confirm"];
+let sdraft={}, sstep=0, sweek=mondayOf(new Date());
+let sbMode="booking";     // "booking"（電話予約）/ "break"（休憩・用事）
+let sbreakSel=new Set();  // 休憩・用事モードで選んだ30分セル（"date|start"）
+let sbExtended=false;     // 特別枠：お得意さま向けに受付枠を延長（管理者のみ・18:30以降も受付）
+function sbTotalCare(){ return (sdraft.course?sdraft.course.care:0)+(sdraft.options||[]).reduce((s,o)=>s+o.min,0); }
+function sbTotalOccupy(){ return sbTotalCare()+BUFFER; }
+function sbSumPrice(){ return (sdraft.course?sdraft.course.price:0)+(sdraft.options||[]).reduce((s,o)=>s+o.price,0); }
+// 店主マトリクスのセル種別：booked(×予約) / interval(＠バッファ) / errand(☆用事・休憩) / free(○空き) / no(—受付外)
+function sbCellKind(date,startMin){
+  const now=new Date(), today=ymd(now), nowMin=now.getHours()*60+now.getMinutes();
+  if(CLOSED_DATES.includes(date)) return "no";
+  if(startMin<OPEN || startMin>=SPECIAL_END) return "no"; // 特別枠の20:00まで（通常は表示側で17:30に制限）
+  if(date<today || (date===today && startMin<nowMin)) return "no";
+  if(CLOSED_SLOTS.some(s=>s.date===date && startMin>=s.start && startMin<s.end)) return "errand";
+  const bks=LIVE.filter(x=>x.date===date && x.start!=null && x.kind!=="break" && x.status!=="キャンセル")
+    .concat((wiped?[]:SEED).filter(b=>b.date===date).map(b=>({start:b.start,care:b.block-BUFFER,block:b.block})));
+  for(const b of bks){
+    const care=(b.care!=null)?b.care:(b.block-BUFFER);
+    if(startMin>=b.start && startMin<b.start+care) return "booked";        // 施術中＝×
+    if(startMin>=b.start+care && startMin<b.start+b.block) return "interval"; // バッファ＝＠
+  }
+  return "free"; // ○
+}
+// 選んだ枠に入れられる施術の最大分数（後ろの予約・閉店まで）。バッファ30分は次の予約に食い込まない
+function sbAvailCare(date,start){
+  let nextBusy=Infinity;
+  allBusy().forEach(b=>{ if(b.date===date && b.start>start && b.start<nextBusy) nextBusy=b.start; });
+  const byBusy = (nextBusy===Infinity)?Infinity:(nextBusy-start-BUFFER);
+  const end = sbExtended ? SPECIAL_END : LAST_END; // 特別枠なら20:00まで、通常は18:30まで
+  return Math.min(byBusy, end-start);
+}
+function openSBook(){ sbMode="booking"; sbExtended=false; sdraft={date:null,start:null,course:null,options:[]}; sstep=0; sweek=mondayOf(new Date()); document.getElementById("sbook").classList.add("on"); renderSBook(); }
+function openBreakPicker(){ sbMode="break"; sbreakSel=new Set(); sweek=mondayOf(new Date()); document.getElementById("sbook").classList.add("on"); renderSBook(); }
+function closeSBook(){ sbMode="booking"; document.getElementById("sbook").classList.remove("on"); }
+function renderSBook(){
+  const body=document.getElementById("sbookBody"), foot=document.getElementById("sbookFoot");
+  const titleEl=document.querySelector("#sbook .sb-head .t");
+  // 休憩・用事モード：マトリクスで30分セルを複数選択→登録
+  if(sbMode==="break"){
+    titleEl.textContent="休憩・用事の登録";
+    document.getElementById("sbookSteps").style.display="none";
+    document.getElementById("sbookBack").style.visibility="hidden";
+    renderSBookGrid(body);
+    foot.style.display="block";
+    foot.innerHTML=`<button class="btn" id="sbBreakReg" ${sbreakSel.size?"":"disabled"}>この時間を休憩・用事にする（${sbreakSel.size}枠）</button>`;
+    document.getElementById("sbBreakReg").onclick=sbBreakRegister;
+    return;
+  }
+  titleEl.textContent="電話予約の登録";
+  document.getElementById("sbookSteps").style.display="flex";
+  document.getElementById("sbookSteps").innerHTML=
+    ["日時","コース","オプション","お客様","確認"].map((l,i)=>`<span class="s ${i===sstep?'on':''}"><span class="dot">${i+1}</span>${l}</span>`).join('<span class="sep">―</span>');
+  document.getElementById("sbookBack").style.visibility = sstep===0?"hidden":"visible";
+  foot.style.display="none";
+  const step=SB_STEPS[sstep];
+  if(step==="grid") renderSBookGrid(body);
+  else if(step==="course"){
+    const avail=sbAvailCare(sdraft.date,sdraft.start);
+    const fit=COURSES.filter(c=>c.care<=avail);
+    body.innerHTML=`<div class="lead" style="margin-top:2px">コースを選択</div><div class="lede">${jmd(sdraft.date)} ${hhmm(sdraft.start)}〜　※この枠に入るコースのみ表示</div><div class="courses" id="sbCourses"></div>`;
+    const list=body.querySelector("#sbCourses");
+    if(!fit.length){
+      list.innerHTML=`<div class="card" style="text-align:center"><p class="mxnote" style="margin:0">この時間に入るコースがありません。<br>「‹」で戻って別の時間を選んでください。</p></div>`;
+    }else{
+      fit.forEach(c=>{ const el=document.createElement("div"); el.className="course "+c.cls+(sdraft.course&&sdraft.course.key===c.key?" sel":"");
+        el.innerHTML=`<div class="stripe"></div><div class="body"><div class="top"><span class="nm">${c.name}</span><span class="badge">${c.tag}</span></div><div class="meta"><span>施術 約${c.care}分</span><span class="price">${yen(c.price)}</span></div></div>`;
+        el.onclick=()=>{ sdraft.course=c; sdraft.options=[]; sstep=2; renderSBook(); };
+        list.appendChild(el); });
+    }
+  }
+  else if(step==="option"){
+    const avail=sbAvailCare(sdraft.date,sdraft.start);
+    body.innerHTML=`<div class="lead" style="margin-top:2px">オプション（任意）</div><div id="sbOpts"></div>`;
+    const list=body.querySelector("#sbOpts");
+    OPTIONS.forEach(o=>{
+      const on=sdraft.options.some(x=>x.key===o.key);
+      const fits = on || (sbTotalCare()+o.min <= avail);   // 選択中のものは常に外せる
+      const el=document.createElement("div"); el.className="opt"+(on?" sel":"")+(fits?"":" disabled");
+      el.innerHTML=`<span class="chk">${on?"✓":""}</span><div style="flex:1"><div style="display:flex;justify-content:space-between;gap:8px"><span class="onm">${o.name}</span><span class="oprice">＋${yen(o.price)}</span></div><div class="ometa">${o.min}分${fits?"":"　※この枠に入りません"}</div></div>`;
+      if(fits) el.onclick=()=>{ sdraft.options = on? sdraft.options.filter(x=>x.key!==o.key):[...sdraft.options,o]; renderSBook(); };
+      list.appendChild(el); });
+    foot.style.display="block";
+    foot.innerHTML=`<button class="btn" id="sbToForm">お客様情報へ（約${sbTotalCare()}分・${yen(sbSumPrice())}）</button>`;
+    document.getElementById("sbToForm").onclick=()=>{ sstep=3; renderSBook(); };
+  }
+  else if(step==="form"){
+    body.innerHTML=`<div class="lead" style="margin-top:2px">お客様情報</div>
+      <div class="sum" id="sbSum"></div>
+      <div class="card"><label class="fld" id="sbNameFld"><span class="l">お名前<span class="req">必須</span></span><input type="text" id="sbName" placeholder="電話のお客様" value="${sdraft.name||""}"><span class="err">お名前をご入力ください</span></label>
+      <label class="fld" id="sbTelFld" style="margin-bottom:0"><span class="l">お電話番号<span class="req">必須</span><span style="color:var(--sub);font-size:11px;font-weight:400;margin-left:6px">ハイフンなし</span></span><input type="tel" id="sbTel" placeholder="09012345678" inputmode="numeric" value="${sdraft.tel||""}"><span class="err">電話番号の形式が正しくありません</span></label></div>
+      <div style="height:45vh" aria-hidden="true"></div>`;
+    document.getElementById("sbSum").innerHTML=[["日時",jmd(sdraft.date)+" "+hhmm(sdraft.start)+"〜"+hhmm(sdraft.start+sbTotalCare())],["コース",sdraft.course.name],["オプション",sdraft.options.length?sdraft.options.map(o=>o.name).join("・"):"なし"],["料金（現金）",yen(sbSumPrice())]]
+      .map(([k,v],i,a)=>`<div class="r${i===a.length-1?' total':''}"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+    // キーボードで入力欄が隠れないよう、フォーカス時に中央へスクロール
+    ["sbName","sbTel"].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener("focus",()=>setTimeout(()=>el.scrollIntoView({block:"center",behavior:"smooth"}),300)); });
+    foot.style.display="block";
+    foot.innerHTML=`<button class="btn" id="sbToConfirm">確認へ</button>`;
+    document.getElementById("sbToConfirm").onclick=()=>{
+      const nameEl=document.getElementById("sbName"); const name=(nameEl.value||"").trim();
+      if(!name){ document.getElementById("sbNameFld").classList.add("bad"); nameEl.focus(); toast("お名前をご入力ください"); return; }
+      const tel=(document.getElementById("sbTel").value||"").trim();
+      if(!tel || !validTel(tel)){ document.getElementById("sbTelFld").classList.add("bad"); document.querySelector("#sbTelFld .err").textContent = tel?"電話番号の形式が正しくありません":"お電話番号をご入力ください"; document.getElementById("sbTel").focus(); toast(tel?"電話番号の形式が正しくありません":"お電話番号をご入力ください"); return; }
+      sdraft.name=name; sdraft.tel=tel; sstep=4; renderSBook();
+    };
+  }
+  else if(step==="confirm"){
+    body.innerHTML=`<div class="lead" style="margin-top:2px">この内容で登録します</div><div class="sum" id="sbConfirmSum"></div>`;
+    document.getElementById("sbConfirmSum").innerHTML=[
+      ["日時",jmd(sdraft.date)+" "+hhmm(sdraft.start)+"〜"+hhmm(sdraft.start+sbTotalCare())],
+      ["コース",sdraft.course.name],
+      ["オプション",sdraft.options.length?sdraft.options.map(o=>o.name).join("・"):"なし"],
+      ["所要","約"+sbTotalCare()+"分"],
+      ["お名前",sdraft.name||""],
+      ["お電話番号",sdraft.tel||""],
+      ["料金（現金）",yen(sbSumPrice())],
+    ].map(([k,v],i,a)=>`<div class="r${i===a.length-1?' total':''}"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+    foot.style.display="block";
+    foot.innerHTML=`<button class="btn" id="sbReg">この内容で登録</button>`;
+    document.getElementById("sbReg").onclick=sbRegister;
+  }
+}
+function renderSBookGrid(body){
+  const isBreak = sbMode==="break";
+  const days=[]; for(let i=0;i<7;i++){const d=addDays(sweek,i);days.push({date:ymd(d),md:(d.getMonth()+1)+"/"+d.getDate(),dow:d.getDay()});}
+  // 予約は17:30受付まで（特別枠なら19:30まで表示）。休憩・お休みは営業時間いっぱいまで指定可
+  const lastT = isBreak ? CLOSE-STEP : (sbExtended ? SPECIAL_END-STEP : LAST_START);
+  const times=[]; for(let m=OPEN;m<=lastT;m+=STEP)times.push(m);
+  const yr=new Date(days[0].date+"T00:00:00").getFullYear();
+  const title = isBreak ? "休憩・用事にする時間を選択" : "日時を選択";
+  let h=`<div class="lead" style="margin-top:2px">${title}</div>`;
+  if(!isBreak){
+    h+=`<label class="cbrow" style="font-size:12px;font-weight:600;margin:2px 2px 10px;padding:9px 11px;border:1px solid ${sbExtended?'var(--gold)':'var(--line)'};border-radius:11px;background:${sbExtended?'color-mix(in srgb,var(--gold) 9%,transparent)':'var(--card)'}">
+      <input type="checkbox" id="sbExt" ${sbExtended?'checked':''} style="accent-color:var(--gold)"><span>⭐ 特別枠で受付を延長（お得意さま向け・<b>18:30以降も受付</b>）</span></label>`;
+  }
+  h+=`<div class="weeknav"><button class="nb" id="sbPrev" ${ymd(sweek)<=ymd(mondayOf(new Date()))?"disabled":""}>‹ 前の週</button><span class="wk">${yr}年 ${days[0].md}〜${days[6].md}</span><button class="nb" id="sbNext">次の週 ›</button></div>
+    <div class="mwrap"><table class="mx"><thead><tr><th class="tc"></th>`;
+  days.forEach(d=>h+=`<th class="${d.dow===0?'sun':d.dow===6?'sat':''}">${d.md}<br><span>${WD[d.dow]}</span></th>`);
+  h+='</tr></thead><tbody>';
+  const sym={free:"○",booked:"×",errand:"☆",interval:"＠",no:"—"};
+  const clsOf={free:"ok",booked:"bk",errand:"er",interval:"iv",no:"no"};
+  times.forEach(t=>{ h+=`<tr><th class="tc">${hhmm(t)}</th>`;
+    days.forEach(d=>{
+      const k=sbCellKind(d.date,t);
+      const selected = isBreak && sbreakSel.has(d.date+"|"+t);
+      const hasData = (k==="free") || selected;     // 空きセル（と選択済み）だけタップ可
+      const cls = selected ? "sel" : clsOf[k];
+      const label = selected ? "▣" : sym[k];
+      h+=`<td class="${cls}" ${hasData?`data-d="${d.date}" data-t="${t}"`:''}>${label}</td>`;
+    });
+    h+='</tr>'; });
+  h+='</tbody></table></div>';
+  h+=`<div class="mxnote">○＝空き　×＝予約　☆＝用事　＠＝インターバル　—＝受付外。${isBreak?"○をタップで選択／もう一度で解除。":"○をタップして選びます（施術時間の重なりは登録時に確認します）。"}</div>`;
+  body.innerHTML=h;
+  document.getElementById("sbPrev").onclick=()=>{ if(ymd(sweek)>ymd(mondayOf(new Date()))){sweek=addDays(sweek,-7);renderSBook();} };
+  document.getElementById("sbNext").onclick=()=>{ sweek=addDays(sweek,7); renderSBook(); };
+  const ext=document.getElementById("sbExt"); if(ext) ext.onchange=()=>{ sbExtended=ext.checked; renderSBook(); };
+  body.querySelectorAll("td[data-d]").forEach(td=>td.onclick=()=>{
+    if(isBreak){
+      // スクロール維持のため再描画せず、タップしたセルだけその場で切替
+      const key=td.dataset.d+"|"+td.dataset.t;
+      if(sbreakSel.has(key)){ sbreakSel.delete(key); td.className="ok"; td.textContent="○"; }
+      else { sbreakSel.add(key); td.className="sel"; td.textContent="▣"; }
+      updateBreakFoot();
+    }else{
+      sdraft.date=td.dataset.d; sdraft.start=+td.dataset.t; sstep=1; renderSBook();
+    }
+  });
+}
+function updateBreakFoot(){
+  const btn=document.getElementById("sbBreakReg");
+  if(btn){ btn.disabled=!sbreakSel.size; btn.textContent=`この時間を休憩・用事にする（${sbreakSel.size}枠）`; }
+}
+function sbRegister(){
+  const name=(sdraft.name||"").trim();
+  const tel=(sdraft.tel||"").trim();
+  if(!name || !tel || !validTel(tel)){ toast("お客様情報をご入力ください"); sstep=3; renderSBook(); return; }
+  // 登録時の最終チェック：施術＋バッファが閉店・他予約に収まるか
+  const endLimit = sbExtended ? SPECIAL_END : LAST_END;
+  if(sdraft.start+sbTotalCare()>endLimit || !slotFree(sdraft.date,sdraft.start,sbTotalOccupy())){
+    toast("この時間には施術時間が入りきりません。別の時間を選び直してください"); sstep=0; renderSBook(); return;
+  }
+  LIVE.unshift({kind:"phone",status:"予約",date:sdraft.date,start:sdraft.start,care:sbTotalCare(),block:sbTotalOccupy(),
+    name, course:sdraft.course.name, opt:sdraft.options.map(o=>o.name).join("・"), price:sbSumPrice(), tel, returning:isReturning({kind:"phone",tel}), note:"電話予約", special:sbExtended});
+  persist();
+  closeSBook();
+  renderBookings();
+  if(cur==="grid")renderGrid();
+  toast("電話予約を登録しました");
+}
+function sbBreakRegister(){
+  if(!sbreakSel.size){ toast("休憩・用事にする時間を選んでください"); return; }
+  // 選んだ30分セルを日付ごとに連続範囲へまとめて CLOSED_SLOTS に登録
+  const byDate={};
+  [...sbreakSel].forEach(k=>{ const i=k.indexOf("|"); const d=k.slice(0,i), s=+k.slice(i+1); (byDate[d]=byDate[d]||[]).push(s); });
+  Object.keys(byDate).forEach(d=>{
+    const starts=byDate[d].sort((a,b)=>a-b);
+    let runStart=starts[0], prev=starts[0];
+    for(let i=1;i<starts.length;i++){
+      if(starts[i]===prev+STEP){ prev=starts[i]; }
+      else { CLOSED_SLOTS.push({date:d,start:runStart,end:prev+STEP}); runStart=starts[i]; prev=starts[i]; }
+    }
+    CLOSED_SLOTS.push({date:d,start:runStart,end:prev+STEP});
+  });
+  persist();
+  closeSBook();
+  renderSettings();
+  if(cur==="grid")renderGrid();
+  toast("休憩・用事を登録しました");
+}
+document.getElementById("sbookClose").onclick=closeSBook;
+document.getElementById("sbookBack").onclick=()=>{ if(sstep>0){ sstep--; renderSBook(); } };
+function renderSales(){
+  const [y,m]=salesMonth.split("-").map(Number);
+  document.getElementById("salesMonthLabel").textContent=`${y}年${m}月`;
+  const inMonth=SALES.filter(s=>!s.voided && s.date.slice(0,7)===salesMonth);
+  const total=inMonth.reduce((a,s)=>a+s.amount,0);
+  document.getElementById("salesTotal").textContent=yen(total);
+  document.getElementById("salesCount").textContent=inMonth.length+"件";
+  // メニュー別
+  const byMenu={}; inMonth.forEach(s=>{ byMenu[s.menu]=(byMenu[s.menu]||0)+s.amount; });
+  const menus=Object.entries(byMenu).sort((a,b)=>b[1]-a[1]);
+  const mmax=Math.max(1,...menus.map(x=>x[1]));
+  document.getElementById("menuBars").innerHTML= menus.length
+    ? menus.map(([n,v])=>`<div class="bar"><span class="bl">${n}</span><div class="track"><div class="fill" style="width:${v/mmax*100}%"></div></div><span class="bv">${yen(v)}</span></div>`).join("")
+    : `<div class="mxnote">この月の売上はありません。</div>`;
+  // 一覧（新しい順）
+  const list=[...inMonth].sort((a,b)=> a.date<b.date?1 : a.date>b.date?-1 : 0);
+  document.getElementById("salesList").innerHTML= list.length
+    ? list.map(s=>`<div class="brow">
+        <span class="tm" style="width:auto;min-width:38px;font-size:12.5px">${(+s.date.slice(8))}日</span>
+        <div class="bi"><div class="bn">${s.menu}</div><div class="bc">${s.name} 様</div></div>
+        <span style="display:inline-flex;gap:10px;align-items:center;white-space:nowrap"><span class="sv badge-yen">${yen(s.amount)}</span><span style="color:#c0607a;cursor:pointer;font-size:12px" data-void="${s.id}">取消</span></span></div>`).join("")
+    : `<div class="mxnote">この月の売上はありません。</div>`;
+  document.querySelectorAll("#salesList [data-void]").forEach(el=>el.onclick=()=>voidSale(el.dataset.void));
+  document.getElementById("salesPrev").onclick=()=>{ salesMonth=shiftMonth(salesMonth,-1); renderSales(); };
+  document.getElementById("salesNext").onclick=()=>{ salesMonth=shiftMonth(salesMonth,1); renderSales(); };
+}
+function voidSale(id){
+  const s=SALES.find(x=>x.id===id); if(!s||s.voided)return;
+  document.getElementById("sheetK").innerHTML=`
+    <h3 style="color:#c0607a">この売上を取り消しますか？</h3>
+    <div class="kitem"><span>メニュー</span><span class="kv">${s.menu}</span></div>
+    <div class="kitem"><span>お名前</span><span class="kv">${s.name} 様</span></div>
+    <div class="kitem"><span>金額</span><span class="kv">${yen(s.amount)}</span></div>
+    <p class="mxnote" style="margin:12px 0 16px">取り消すと売上の集計から除外されます。（記録自体は残ります）</p>
+    <div style="display:flex;gap:10px"><button class="btn soft" style="flex:1" id="vsBack">やめる</button><button class="btn" style="flex:2;background:#c0607a" id="vsDo">取り消す</button></div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("vsBack").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("vsDo").onclick=()=>{ s.voided=true; persist(); document.getElementById("ov").classList.remove("on"); renderSales(); toast("売上を取り消しました"); };
+}
+function renderCustomers(){
+  // 初期化後はサンプルがCUSTOMERSから消えているだけ。会計や新規作成で入った実データは常に表示する
+  const sorted=[...CUSTOMERS].sort((a,b)=> (b.last||"").localeCompare(a.last||""));
+  document.getElementById("customerRows").innerHTML= sorted.length
+    ? sorted.map(c=>{
+        const latest=c.notes&&c.notes[0]? [c.notes[0].memo,c.notes[0].condition,c.notes[0].pref].filter(Boolean).join(" / ") : "";
+        return `<div class="crow" data-cid="${c.id}">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+            <div style="flex:1;min-width:0">
+              <div class="cn"><span>${c.name} 様</span><span class="cvi">来店${c.visits}回</span></div>
+              <div class="cm">${custIdLabel(c)}　/　最終 ${c.last||"—"}${latest?"　/　"+latest:""}</div>
+            </div>
+            <button class="minibtn sm" data-karteinput="${c.id}" style="flex:0 0 auto">カルテ入力</button>
+          </div></div>`;
+      }).join("")
+    : `<div class="mxnote">まだ顧客カルテがありません。</div>`;
+  // カード＝カルテ閲覧／「カルテ入力」ボタン＝記録フォーム
+  document.querySelectorAll("#customerRows [data-karteinput]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); const c=CUSTOMERS.find(x=>x.id===el.dataset.karteinput); if(c)openKarteForm(c); });
+  document.querySelectorAll("#customerRows .crow").forEach(el=>el.onclick=(e)=>{ if(e.target.closest("[data-karteinput]"))return; const c=CUSTOMERS.find(x=>x.id===el.dataset.cid); if(c)openKarteDetail(c); });
+}
+
+// ===== カルテ：予約カードの「カルテ」ボタン／顧客カードから開く =====
+function karteSubjectFromBooking(b){
+  const key=custKeyOf(b);
+  const c=CUSTOMERS.find(x=>x.key===key);
+  return c || {id:null, key, name:b.name, tel:b.tel||"", lineLinked:b.kind==="app", lineUserId:b.kind==="app"?mockLineUserId(b.tel):"", visits:0, first:null, last:null, history:[], notes:[]};
+}
+function openKarteDetail(sub){
+  const c = sub.id ? (CUSTOMERS.find(x=>x.id===sub.id)||sub) : sub;
+  const hist = c.history.length
+    ? c.history.slice(0,8).map(h=>`<div class="kitem"><span>${h.date}</span><span class="kv">${h.menu||"—"}${h.amount?" / "+yen(h.amount):""}</span></div>`).join("")
+    : `<div class="mxnote">来店履歴はありません。</div>`;
+  const notes = c.notes.length
+    ? c.notes.map(n=>`<div style="border-top:1px solid var(--line);padding:9px 0">
+        <div style="font-size:11px;color:var(--sub);margin-bottom:2px">${n.date}</div>
+        ${[["施術メモ",n.memo],["体の状態",n.condition],["好み・注意",n.pref]].filter(x=>x[1]).map(x=>`<div style="font-size:12.5px;line-height:1.6"><b>${x[0]}：</b>${x[1]}</div>`).join("")||`<div class="mxnote" style="margin:0">（記載なし）</div>`}
+      </div>`).join("")
+    : `<div class="mxnote">まだカルテ記録はありません。</div>`;
+  document.getElementById("sheetK").innerHTML=`
+    <h3>${c.name} 様のカルテ</h3>
+    <p class="mxnote" style="margin:0 0 12px">${custIdLabel(c)}　/　来店 ${c.visits}回${c.last?"　/　最終 "+c.last:""}</p>
+    <div style="font-size:12px;color:var(--sub);font-weight:700;margin:4px 0 2px">来店履歴</div>${hist}
+    <div style="font-size:12px;color:var(--sub);font-weight:700;margin:14px 0 2px">カルテ記録</div>${notes}
+    <div style="margin-top:18px">
+      <button class="btn soft" style="width:100%" id="kdClose">閉じる</button>
+    </div>
+    <p class="mxnote" style="text-align:center;margin-top:8px">※ カルテの記録は「カルテ」タブから行えます。</p>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("kdClose").onclick=()=>document.getElementById("ov").classList.remove("on");
+}
+let karteDraft={};
+function openKarteForm(c){ karteDraft={sub:c, memo:"", condition:"", pref:""}; renderKarteForm(); document.getElementById("ov").classList.add("on"); }
+function renderKarteForm(){
+  const c=karteDraft.sub; const esc=s=>(s||"").replace(/"/g,"&quot;");
+  const histPrev=(c.notes&&c.notes.length)?`<div style="margin:0 0 12px">${c.notes.slice(0,2).map(n=>`<div style="font-size:11px;color:var(--sub);border-left:2px solid var(--line);padding-left:8px;margin:3px 0">${n.date}：${[n.memo,n.condition,n.pref].filter(Boolean).join(" / ")||"—"}</div>`).join("")}</div>`:"";
+  document.getElementById("sheetK").innerHTML=`
+    <h3>カルテ記録　${c.name} 様</h3>
+    <p class="mxnote" style="margin:0 0 ${histPrev?"6":"12"}px">${custIdLabel(c)}　/　来店 ${c.visits}回</p>
+    ${histPrev}
+    <label class="fld"><span class="l">施術メモ</span><textarea id="kfMemo" placeholder="この日の施術内容・気づき">${esc(karteDraft.memo)}</textarea></label>
+    <label class="fld"><span class="l">体の状態・気になる箇所</span><textarea id="kfCond" placeholder="肩こり・冷え など">${esc(karteDraft.condition)}</textarea></label>
+    <label class="fld" style="margin-bottom:4px"><span class="l">好み・注意点</span><textarea id="kfPref" placeholder="圧の強さ・アロマの好み・NG など">${esc(karteDraft.pref)}</textarea></label>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <button class="btn soft" style="flex:1" id="kfCancel">閉じる</button>
+      <button class="btn" style="flex:2" id="kfNext">確認へ</button>
+    </div>
+    <div style="height:40vh" aria-hidden="true"></div>`;
+  // キーボードで入力欄・ボタンが隠れないよう、フォーカス時に中央へスクロール
+  ["kfMemo","kfCond","kfPref"].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener("focus",()=>setTimeout(()=>el.scrollIntoView({block:"center",behavior:"smooth"}),300)); });
+  document.getElementById("kfCancel").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("kfNext").onclick=()=>{
+    karteDraft.memo=document.getElementById("kfMemo").value.trim();
+    karteDraft.condition=document.getElementById("kfCond").value.trim();
+    karteDraft.pref=document.getElementById("kfPref").value.trim();
+    if(!karteDraft.memo&&!karteDraft.condition&&!karteDraft.pref){ toast("いずれかご入力ください"); return; }
+    renderKarteConfirm();
+  };
+}
+function renderKarteConfirm(){
+  const c=karteDraft.sub;
+  const row=(k,v)=> v?`<div class="kitem"><span>${k}</span><span class="kv" style="max-width:62%;text-align:right;white-space:pre-wrap">${v}</span></div>`:"";
+  document.getElementById("sheetK").innerHTML=`
+    <h3>この内容で登録しますか？</h3>
+    <p class="mxnote" style="margin:0 0 12px">${c.name} 様（${custIdLabel(c)}）</p>
+    ${row("施術メモ",karteDraft.memo)}${row("体の状態",karteDraft.condition)}${row("好み・注意",karteDraft.pref)}
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn soft" style="flex:1" id="kcBack">戻る</button>
+      <button class="btn" style="flex:2" id="kcDo">この内容で登録</button>
+    </div>`;
+  document.getElementById("kcBack").onclick=()=>renderKarteForm();
+  document.getElementById("kcDo").onclick=()=>{
+    const s=karteDraft.sub;
+    let c = s.id ? CUSTOMERS.find(x=>x.id===s.id) : CUSTOMERS.find(x=>x.key===s.key);
+    if(!c){ c={id:newKey("cu"),key:s.key,name:s.name,tel:s.tel||"",lineLinked:!!s.lineLinked,lineUserId:s.lineUserId||"",visits:s.visits||0,first:ymd(new Date()),last:s.last||null,history:s.history||[],notes:[]}; CUSTOMERS.push(c); }
+    if(karteDraft.memo||karteDraft.condition||karteDraft.pref){ c.notes.unshift({date:ymd(new Date()),memo:karteDraft.memo,condition:karteDraft.condition,pref:karteDraft.pref}); }
+    persist(); document.getElementById("ov").classList.remove("on"); renderCustomers(); toast("カルテを登録しました");
+  };
+}
+function renderSettings(){
+  document.getElementById("hoursRows").innerHTML=
+    S_HOURS.map(([d,h])=>`<div class="setrow"><span class="sk">${d}曜</span><span class="sv">${h}</span></div>`).join("")
+    +`<div class="setrow"><span class="sk">定休日</span><span class="sv" style="color:var(--marine)">不定休</span></div>`;
+  renderClosed();
+  const acts=(edit,del)=>`<span style="display:inline-flex;gap:10px;align-items:center;margin-left:8px">
+      <span style="color:var(--marine);cursor:pointer;font-size:12px" ${edit}>編集</span>
+      <span style="color:#c0607a;cursor:pointer;font-size:12px" ${del}>削除</span></span>`;
+  document.getElementById("menuPrice").innerHTML=
+    `<div style="font-size:11.5px;color:var(--sub);font-weight:700;margin:2px 0 4px">コース</div>`
+    +COURSES.map(c=>`<div class="setrow"><span class="sk">${c.name}（施術${c.care}分／枠${c.care+BUFFER}分）</span><span style="white-space:nowrap"><span class="sv badge-yen">${yen(c.price)}</span>${acts(`data-ec="${c.key}"`,`data-dc="${c.key}"`)}</span></div>`).join("")
+    +`<button class="minibtn ghost" id="addCourse" style="width:100%;padding:9px;margin:8px 0 14px;border-radius:12px;font-size:12.5px">＋ コースを追加</button>`
+    +`<div style="font-size:11.5px;color:var(--sub);font-weight:700;margin:2px 0 4px">オプション</div>`
+    +OPTIONS.map(o=>`<div class="setrow"><span class="sk">＋${o.name}（${o.min}分）</span><span style="white-space:nowrap"><span class="sv badge-yen">${yen(o.price)}</span>${acts(`data-eo="${o.key}"`,`data-do="${o.key}"`)}</span></div>`).join("")
+    +`<button class="minibtn ghost" id="addOpt" style="width:100%;padding:9px;margin-top:8px;border-radius:12px;font-size:12.5px">＋ オプションを追加</button>`;
+  const mp=document.getElementById("menuPrice");
+  mp.querySelectorAll("[data-ec]").forEach(el=>el.onclick=()=>openCourseEditor(el.dataset.ec));
+  mp.querySelectorAll("[data-dc]").forEach(el=>el.onclick=()=>delCourse(el.dataset.dc));
+  mp.querySelectorAll("[data-eo]").forEach(el=>el.onclick=()=>openOptEditor(el.dataset.eo));
+  mp.querySelectorAll("[data-do]").forEach(el=>el.onclick=()=>delOpt(el.dataset.do));
+  document.getElementById("addCourse").onclick=()=>openCourseEditor(null);
+  document.getElementById("addOpt").onclick=()=>openOptEditor(null);
+  document.getElementById("resetData").onclick=openResetDialog;
+}
+let _keySeq=0;
+function newKey(p){ return p+Date.now().toString(36)+(_keySeq++); }
+function openCourseEditor(key){
+  const c = key ? COURSES.find(x=>x.key===key) : {name:"",care:60,price:0,tag:"",cls:"short",desc:""};
+  if(!c) return;
+  const cares=[30,60,90,120,150,180];
+  const colors=[["short","藍（青緑）"],["jade","翡翠（緑）"],["amber","琥珀（橙）"],["ametrine","紫水晶（紫）"]];
+  const esc=s=>(s||"").replace(/"/g,"&quot;");
+  document.getElementById("sheetK").innerHTML=`
+    <h3>${key?"コースを編集":"コースを追加"}</h3>
+    <label class="fld"><span class="l">コース名<span class="req">必須</span></span><input id="ceName" value="${esc(c.name)}" placeholder="例）スタンダード"></label>
+    <label class="fld"><span class="l">施術時間</span><select id="ceCare">${cares.map(m=>`<option value="${m}" ${m===c.care?'selected':''}>${m}分（枠${m+BUFFER}分）</option>`).join("")}</select></label>
+    <label class="fld"><span class="l">料金（円）<span class="req">必須</span></span><input id="cePrice" type="number" inputmode="numeric" value="${c.price}"></label>
+    <label class="fld"><span class="l">バッジ（任意）</span><input id="ceTag" value="${esc(c.tag)}" placeholder="人気No.1 など"></label>
+    <label class="fld"><span class="l">色</span><select id="ceCls">${colors.map(([v,n])=>`<option value="${v}" ${v===c.cls?'selected':''}>${n}</option>`).join("")}</select></label>
+    <label class="fld"><span class="l">説明（任意）</span><textarea id="ceDesc" placeholder="コースの説明">${esc(c.desc)}</textarea></label>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn soft" style="flex:1" id="ceCancel">閉じる</button>
+      <button class="btn" style="flex:2" id="ceSave">保存</button>
+    </div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("ceCancel").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("ceSave").onclick=()=>{
+    const name=document.getElementById("ceName").value.trim();
+    const price=parseInt(document.getElementById("cePrice").value,10);
+    if(!name){ toast("コース名を入力してください"); return; }
+    if(!(price>=0)){ toast("料金を入力してください"); return; }
+    const care=+document.getElementById("ceCare").value;
+    const tag=document.getElementById("ceTag").value.trim()||"コース";
+    const cls=document.getElementById("ceCls").value;
+    const desc=document.getElementById("ceDesc").value.trim();
+    if(key){ Object.assign(COURSES.find(x=>x.key===key),{name,care,occupy:care+BUFFER,price,tag,cls,desc}); }
+    else { COURSES.push({key:newKey("c"),cls,name,tag,care,occupy:care+BUFFER,price,desc}); }
+    persist(); document.getElementById("ov").classList.remove("on"); renderSettings(); toast(key?"コースを更新しました":"コースを追加しました");
+  };
+}
+function delCourse(key){
+  const c=COURSES.find(x=>x.key===key); if(!c)return;
+  document.getElementById("sheetK").innerHTML=`
+    <h3 style="color:#c0607a">コースを削除しますか？</h3>
+    <p class="mxnote" style="margin:0 0 16px"><b>${c.name}</b> をメニューから削除します。すでに入っている予約には影響しません。</p>
+    <div style="display:flex;gap:10px"><button class="btn soft" style="flex:1" id="dcBack">やめる</button><button class="btn" style="flex:2;background:#c0607a" id="dcDo">削除する</button></div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("dcBack").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("dcDo").onclick=()=>{ COURSES=COURSES.filter(x=>x.key!==key); persist(); document.getElementById("ov").classList.remove("on"); renderSettings(); toast("コースを削除しました"); };
+}
+function openOptEditor(key){
+  const o = key ? OPTIONS.find(x=>x.key===key) : {name:"",min:30,price:0,desc:""};
+  if(!o) return;
+  const mins=[30,60,90];
+  const esc=s=>(s||"").replace(/"/g,"&quot;");
+  document.getElementById("sheetK").innerHTML=`
+    <h3>${key?"オプションを編集":"オプションを追加"}</h3>
+    <label class="fld"><span class="l">オプション名<span class="req">必須</span></span><input id="oeName" value="${esc(o.name)}" placeholder="例）ハーブボール"></label>
+    <label class="fld"><span class="l">所要時間</span><select id="oeMin">${mins.map(m=>`<option value="${m}" ${m===o.min?'selected':''}>${m}分</option>`).join("")}</select></label>
+    <label class="fld"><span class="l">料金（円）<span class="req">必須</span></span><input id="oePrice" type="number" inputmode="numeric" value="${o.price}"></label>
+    <label class="fld"><span class="l">説明（任意）</span><textarea id="oeDesc" placeholder="オプションの説明">${esc(o.desc)}</textarea></label>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn soft" style="flex:1" id="oeCancel">閉じる</button>
+      <button class="btn" style="flex:2" id="oeSave">保存</button>
+    </div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("oeCancel").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("oeSave").onclick=()=>{
+    const name=document.getElementById("oeName").value.trim();
+    const price=parseInt(document.getElementById("oePrice").value,10);
+    if(!name){ toast("オプション名を入力してください"); return; }
+    if(!(price>=0)){ toast("料金を入力してください"); return; }
+    const min=+document.getElementById("oeMin").value;
+    const desc=document.getElementById("oeDesc").value.trim();
+    if(key){ Object.assign(OPTIONS.find(x=>x.key===key),{name,min,price,desc}); }
+    else { OPTIONS.push({key:newKey("o"),name,min,price,desc}); }
+    persist(); document.getElementById("ov").classList.remove("on"); renderSettings(); toast(key?"オプションを更新しました":"オプションを追加しました");
+  };
+}
+function delOpt(key){
+  const o=OPTIONS.find(x=>x.key===key); if(!o)return;
+  document.getElementById("sheetK").innerHTML=`
+    <h3 style="color:#c0607a">オプションを削除しますか？</h3>
+    <p class="mxnote" style="margin:0 0 16px"><b>${o.name}</b> をメニューから削除します。すでに入っている予約には影響しません。</p>
+    <div style="display:flex;gap:10px"><button class="btn soft" style="flex:1" id="doBack">やめる</button><button class="btn" style="flex:2;background:#c0607a" id="doDo">削除する</button></div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("doBack").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("doDo").onclick=()=>{ OPTIONS=OPTIONS.filter(x=>x.key!==key); persist(); document.getElementById("ov").classList.remove("on"); renderSettings(); toast("オプションを削除しました"); };
+}
+function openResetDialog(){
+  document.getElementById("sheetK").innerHTML=`
+    <h3 style="color:#c0607a">データを初期化しますか？</h3>
+    <p class="mxnote" style="margin:0 0 16px">サンプルを含む<b>すべての予約・売上・カルテ・お休み</b>が消え、まっさらな状態になります。この操作は取り消せません。</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn soft" style="flex:1" id="rsBack">やめる</button>
+      <button class="btn" style="flex:2;background:#c0607a" id="rsDo">初期化する</button>
+    </div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("rsBack").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("rsDo").onclick=()=>{
+    resetAllData();
+    document.getElementById("ov").classList.remove("on");
+    renderStore();
+    if(cur==="grid")renderGrid();
+    toast("すべてのデータを初期化しました");
+  };
+}
+function renderClosed(){
+  const wrap=document.getElementById("closedRows");
+  const items=[];
+  [...CLOSED_DATES].sort().forEach(d=>items.push({label:jmd(d)+"　終日お休み", rm:()=>{CLOSED_DATES=CLOSED_DATES.filter(x=>x!==d);}}));
+  CLOSED_SLOTS.slice().sort((a,b)=> a.date<b.date?-1 : a.date>b.date?1 : a.start-b.start)
+    .forEach(s=>items.push({label:jmd(s.date)+"　"+hhmm(s.start)+"–"+hhmm(s.end)+" 休憩", rm:()=>{CLOSED_SLOTS=CLOSED_SLOTS.filter(x=>x!==s);}}));
+  wrap.innerHTML = items.length
+    ? items.map((it,i)=>`<div class="setrow"><span class="sk" style="color:var(--ink);font-weight:600">${it.label}</span><span class="sv" style="color:#c0607a;cursor:pointer" data-i="${i}">解除 ✕</span></div>`).join("")
+    : `<div class="mxnote">設定中のお休み・休憩はありません。</div>`;
+  wrap.querySelectorAll("[data-i]").forEach(el=>el.onclick=()=>{ items[+el.dataset.i].rm(); persist(); renderClosed(); if(cur==="grid")renderGrid(); toast("休業を解除しました"); });
+  document.getElementById("addClosed").onclick=openAddClosed;
+}
+function openAddClosed(){
+  document.getElementById("sheetK").innerHTML=`
+    <h3>お休み・休憩を追加</h3>
+    <p class="mxnote" style="margin:0 0 14px">どちらを登録しますか？</p>
+    <button class="btn" id="chDay" style="margin-bottom:10px">終日休む</button>
+    <button class="btn soft" id="chTime">時間で休む（休憩・用事）</button>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("chDay").onclick=openRestDay;
+  document.getElementById("chTime").onclick=()=>{ document.getElementById("ov").classList.remove("on"); openBreakPicker(); };
+}
+// その日に入っている有効な予約の件数（終日休みの可否判定に使う）。デモ用サンプルは数えない
+function bookingsOnDate(date){
+  return LIVE.filter(b=>b.date===date && b.start!=null && b.kind!=="break" && b.status!=="キャンセル").length;
+}
+function openRestDay(){
+  const days=[]; for(let i=0;i<120;i++){const d=ymd(addDays(new Date(),i)); if(!CLOSED_DATES.includes(d))days.push(d);} // 範囲制限なし（約4か月先まで）
+  document.getElementById("sheetK").innerHTML=`
+    <h3>終日休む</h3>
+    <p class="mxnote" style="margin:0 0 14px">お休みにする日を選んでください。お客様の予約カレンダーから即座に外れます。</p>
+    <label class="fld"><span class="l">日付</span>
+      <select id="rDate">${days.map(d=>{const n=bookingsOnDate(d);return `<option value="${d}">${jmd(d)}${n?`（予約${n}件あり）`:""}</option>`;}).join("")}</select></label>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn soft" style="flex:1" id="rCancel">閉じる</button>
+      <button class="btn" style="flex:2" id="rAdd">この日を休みにする</button>
+    </div>`;
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("rCancel").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("rAdd").onclick=()=>{
+    const v=document.getElementById("rDate").value;
+    const n=bookingsOnDate(v);
+    if(n>0){ showRestBlocked(v,n); return; }   // 予約が入っている日は終日休みにできない
+    if(v&&!CLOSED_DATES.includes(v))CLOSED_DATES.push(v);
+    persist(); document.getElementById("ov").classList.remove("on"); renderClosed(); if(cur==="grid")renderGrid(); toast("終日お休みを追加しました");
+  };
+}
+function showRestBlocked(date,n){
+  document.getElementById("sheetK").innerHTML=`
+    <h3 style="color:#c0607a">終日休みにできません</h3>
+    <p class="mxnote" style="margin:0 0 12px"><b>${jmd(date)}</b> は すでに <b>${n}件の予約</b> が入っています。終日休みにすると予約が宙に浮いてしまうため、設定できません。</p>
+    <p class="mxnote" style="margin:0 0 16px">先に該当日の予約をキャンセル・変更してから、あらためて休みを設定してください。</p>
+    <button class="btn" id="rbBack">戻る</button>`;
+  document.getElementById("rbBack").onclick=openRestDay;
+}
+
+// 会計オーバーレイ
+let kBooking=null, kExtras=[], kMenu=[];
+function openKaikei(b){ if(!b)return; kBooking=b; kExtras=[]; kMenu=OPTIONS.map(o=>({n:o.name,v:o.price})); renderKaikei(); document.getElementById("ov").classList.add("on"); }
+function renderKaikei(){
+  const b=kBooking;
+  const extra=kExtras.reduce((s,e)=>s+e.v,0);
+  const total=b.price+extra;
+  document.getElementById("sheetK").innerHTML=`
+    <h3>会計</h3>
+    <p class="mxnote" style="margin:0 0 12px">${b.name} 様 ／ ${b.course}${b.opt?" ＋"+b.opt:""}</p>
+    <div class="kitem"><span>コース・オプション</span><span class="kv">${yen(b.price)}</span></div>
+    ${kExtras.map(e=>`<div class="kitem"><span>${e.n}</span><span class="kv">${e.v<0?'-':''}¥${Math.abs(e.v).toLocaleString()}</span></div>`).join("")}
+    <div class="kitem tot"><span>合計（現金）</span><span class="kv">${yen(total)}</span></div>
+    <div style="font-size:12px;color:var(--sub);margin:12px 0 4px">追加メニュー</div>
+    <div class="kadd" id="kadd">${kMenu.map((e,j)=>`<span class="ka${kExtras.includes(e)?' on':''}" data-j="${j}">${e.n}</span>`).join("")}</div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn soft" style="flex:1" id="kCancel">閉じる</button>
+      <button class="btn" style="flex:2" id="kDone">会計を確定</button>
+    </div>`;
+  document.querySelectorAll("#kadd .ka").forEach(el=>el.onclick=()=>{const e=kMenu[+el.dataset.j]; kExtras=kExtras.includes(e)?kExtras.filter(x=>x!==e):[...kExtras,e]; renderKaikei();});
+  document.getElementById("kCancel").onclick=()=>document.getElementById("ov").classList.remove("on");
+  document.getElementById("kDone").onclick=()=>{
+    kBooking.status="会計済";
+    kBooking.settled=kBooking.price+kExtras.reduce((s,e)=>s+e.v,0); // 会計時の実額を確定記録（再計算しない）
+    SALES.push({id:newKey("s"), date:ymd(new Date()), name:kBooking.name, menu:kBooking.course, amount:kBooking.settled, voided:false}); // 売上に反映
+    upsertCustomer(kBooking, kBooking.settled); // 顧客データに登録（LINE IDで紐付け・来店履歴を追加）
+    salesMonth=curMonth();
+    persist();
+    document.getElementById("ov").classList.remove("on"); renderBookings(); renderSales(); renderCustomers(); toast("会計を記録しました（デモ）");
+  };
+}
+document.getElementById("ov").onclick=(e)=>{ if(e.target.id==="ov") document.getElementById("ov").classList.remove("on"); };
+
+/* ===== 客URL / 店主URL の分離（#store）＋ 端末内データ共有 ===== */
+function isStoreOpen(){ return document.getElementById("store").classList.contains("on"); }
+function routeByHash(){ const wantStore=location.hash==="#store"; if(wantStore&&!isStoreOpen())enterStore(); else if(!wantStore&&isStoreOpen())exitStore(); }
+window.addEventListener("hashchange",routeByHash);
+// 別タブ（客↔店主）での予約・休業の変更をリアルタイム反映
+window.addEventListener("storage",e=>{ if(e.key===LS_KEY){ restore(); if(isStoreOpen()){ renderBookings(); renderSettings(); } else if(cur==="grid"){ renderGrid(); } else if(cur==="course"){ renderMyBookings(); } } });
+routeByHash();
+</script>
+</body>
+</html>

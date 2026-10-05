@@ -3,135 +3,508 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ynsysapp — 学校と店舗の現場のための道具</title>
-<meta name="description" content="学校の先生や店舗の方が毎日使う小さな道具を作っています。出欠記録アプリを公開中。個人情報を預からない設計です。">
-<meta name="robots" content="index,follow">
-<meta property="og:title" content="ynsysapp">
-<meta property="og:description" content="学校と店舗の現場のための、小さな道具を作っています。">
+<title>ynsys｜宮崎のまちのIT顧問</title>
+<meta name="description" content="宮崎の小さな会社・お店のための、ホームページ保守・Googleマップ運用・業務アプリ開発。契約縛りなし、データは全部お渡しします。">
+<link rel="canonical" href="https://ynsysapp.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ynsysapp.com/">
+<meta property="og:title" content="ynsys｜宮崎のまちのIT顧問">
+<meta property="og:description" content="宮崎の小さな会社・お店のための、ホームページ保守・Googleマップ運用・業務アプリ開発。契約縛りなし、データは全部お渡しします。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Inter:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f4f6f9; --card:#fff; --line:#dfe3ea; --fg:#1b2430; --muted:#6b7684;
-  --accent:#2563eb; --accent-w:#e8efff; --ok:#177245;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--fg);line-height:1.75;
-  font-family:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
-  font-size:16px;-webkit-text-size-adjust:100%}
-a{color:var(--accent)}
-.wrap{max-width:760px;margin:0 auto;padding:0 20px}
-header{background:#fff;border-bottom:1px solid var(--line)}
-header .wrap{padding-top:26px;padding-bottom:26px}
-.logo{font-size:20px;font-weight:700;letter-spacing:.02em;margin:0}
-.logo span{color:var(--accent)}
-.lead{color:var(--muted);margin:8px 0 0;font-size:15px}
-main .wrap{padding-top:8px;padding-bottom:8px}
-section{background:var(--card);border:1px solid var(--line);border-radius:14px;
-  padding:22px 24px;margin:18px 0}
-h2{font-size:15px;margin:0 0 14px;color:var(--muted);font-weight:600;letter-spacing:.06em}
-h3{font-size:17px;margin:0 0 4px}
-p{margin:0 0 12px}
-p:last-child{margin-bottom:0}
-ul{margin:0 0 12px;padding-left:1.3em}
-li{margin-bottom:6px}
-.svc{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
-.svc .body{flex:1;min-width:240px}
-.chip{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;
-  background:#e7f6ec;color:var(--ok);vertical-align:middle;margin-left:8px}
-.chip.soon{background:#eef1f6;color:var(--muted)}
-.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
-  border-radius:10px;padding:10px 18px;font-size:15px;font-weight:600;margin-top:6px}
-.btn:hover{filter:brightness(1.08)}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
-th{color:var(--muted);font-weight:600;white-space:nowrap;font-size:13px}
-code{background:#eef1f6;border-radius:6px;padding:1px 6px;font-size:14px;
-  font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
-.note{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
-  font-size:14px;color:var(--muted);margin-top:14px}
-.muted{color:var(--muted);font-size:14px}
-footer{color:var(--muted);font-size:13px;padding:24px 0 48px;text-align:center}
-@media(max-width:600px){
-  section{padding:18px 16px;border-radius:12px}
-  body{font-size:15px}
-}
+  :root {
+    --ink: #1c2430;
+    --ink-soft: #4a5565;
+    --line: #e4e8ee;
+    --bg: #ffffff;
+    --bg-soft: #f5f7fa;
+    --brand: #1f6f5c;      /* 宮崎の山と海の深緑 */
+    --brand-deep: #154f42;
+    --accent: #f2a541;     /* 日向の日差し */
+    --radius: 18px;
+    --wrap: 1120px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Zen Kaku Gothic New", system-ui, sans-serif;
+    line-height: 1.9; font-size: 16px; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  img, svg { display: block; max-width: 100%; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.92);
+    backdrop-filter: blur(8px); box-shadow: 0 1px 0 var(--line);
+  }
+  .nav { display: flex; align-items: center; gap: 40px; height: 76px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark { width: 38px; height: 38px; }
+  .logo-text { font-family: Inter, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: .02em; }
+  .nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 14px; font-weight: 500; }
+  .nav ul a { text-decoration: none; color: var(--ink-soft); }
+  .nav ul a:hover { color: var(--brand); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none; border: 0; cursor: pointer;
+    background: var(--brand); color: #fff; font: inherit; font-weight: 700; font-size: 14px;
+    padding: 12px 26px; border-radius: 999px; transition: background .2s, transform .2s;
+  }
+  .btn:hover { background: var(--brand-deep); transform: translateY(-1px); }
+  .btn svg { width: 16px; height: 16px; }
+  .nav .btn { margin-left: auto; }
+
+  /* ---------- Section common ---------- */
+  section { padding: 110px 0; }
+  .eyebrow { font-family: Inter, sans-serif; font-size: 13px; font-weight: 700; color: var(--brand); letter-spacing: .14em; text-transform: uppercase; }
+  h1, h2, h3 { line-height: 1.4; margin: 0; font-weight: 900; }
+  h2 { font-size: clamp(28px, 4vw, 38px); margin: 6px 0 48px; }
+
+  /* ---------- Concept (hero) ---------- */
+  .hero { padding: 80px 0 110px; }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+  .hero h1 { font-size: clamp(34px, 5.4vw, 56px); margin: 8px 0 32px; }
+  .hero h1 em { font-style: normal; color: var(--brand); }
+  .hero p { margin: 0 0 4px; color: var(--ink-soft); font-size: 17px; }
+  .hero .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  .badge { font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: var(--bg-soft); border: 1px solid var(--line); }
+  .badge::before { content: "✓ "; color: var(--brand); }
+  .hero-visual {
+    aspect-ratio: 1; border-radius: 50%; border: 10px solid var(--brand);
+    display: grid; place-items: center; background: radial-gradient(circle at 50% 65%, #eef6f3, #fff 70%);
+    max-width: 460px; justify-self: end; width: 100%;
+  }
+  .hero-visual svg { width: 72%; }
+
+  /* ---------- Work (services) ---------- */
+  #work { background: var(--bg-soft); }
+  .services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .service {
+    background: #fff; border-radius: var(--radius); padding: 36px 36px 32px; border: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .service.featured { grid-column: 1 / -1; border: 2px solid var(--brand); display: grid; grid-template-columns: 1fr 280px; gap: 40px; align-items: center; }
+  .service-icon { width: 52px; height: 52px; border-radius: 14px; background: #e3f0ec; display: grid; place-items: center; margin-bottom: 18px; }
+  .service-icon svg { width: 28px; height: 28px; stroke: var(--brand); }
+  .service h3 { font-size: 22px; margin-bottom: 12px; }
+  .service p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+  .service .tag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--brand-deep); background: #e3f0ec; padding: 3px 12px; border-radius: 999px; margin-bottom: 14px; }
+  .price-box { background: var(--bg-soft); border-radius: 14px; padding: 24px; text-align: center; }
+  .price-box .amount { font-family: Inter, sans-serif; font-size: 40px; font-weight: 700; color: var(--brand); line-height: 1.2; }
+  .price-box .amount small { font-size: 15px; color: var(--ink-soft); font-family: "Zen Kaku Gothic New", sans-serif; }
+  .price-box ul { list-style: none; padding: 0; margin: 14px 0 0; font-size: 13px; text-align: left; }
+  .price-box li { padding: 6px 0; border-top: 1px dashed var(--line); }
+  .price-box li::before { content: "● "; color: var(--accent); font-size: 10px; vertical-align: 2px; }
+  .stack { margin-top: 16px; font-family: Inter, sans-serif; font-size: 12px; color: var(--ink-soft); }
+
+  /* ---------- Work Log ---------- */
+  .logs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .log { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
+  .log:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(28,36,48,.08); }
+  .log-thumb { aspect-ratio: 16/9; display: grid; place-items: center; }
+  .log-thumb svg { width: 56px; height: 56px; stroke: #fff; opacity: .95; }
+  .log-body { padding: 22px 24px 26px; }
+  .log-cat { font-size: 12px; font-weight: 700; color: var(--brand); }
+  .log h3 { font-size: 17px; margin: 4px 0 10px; }
+  .log p { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
+  .log-body { flex: 1; display: flex; flex-direction: column; }
+  .log-price { margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 14px; font-weight: 700; }
+  .log-price span { display: inline-block; font-size: 11px; color: var(--brand-deep); background: #e3f0ec; padding: 1px 8px; border-radius: 4px; margin-right: 8px; vertical-align: 1px; }
+  .log-link { align-self: flex-start; margin: -4px 0 16px; font-family: Inter, sans-serif; font-size: 13px; font-weight: 700; color: var(--brand); text-decoration: none; word-break: break-all; }
+  .log-link::after { content: " ↗"; }
+  .log-link:hover { text-decoration: underline; }
+  .log-demo { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 16px; }
+  .log-demo a { font-size: 13px; font-weight: 700; text-decoration: none; color: var(--brand); border: 1.5px solid var(--brand); padding: 5px 14px; border-radius: 999px; transition: background .2s, color .2s; }
+  .log-demo a:hover { background: var(--brand); color: #fff; }
+  .log-note { margin: 20px 0 0; font-size: 13px; color: var(--ink-soft); }
+
+  /* ---------- Flow ---------- */
+  #flow { background: var(--bg-soft); }
+  .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: step; list-style: none; padding: 0; margin: 0; }
+  .flow li { background: #fff; border-radius: var(--radius); padding: 28px 24px; border: 1px solid var(--line); position: relative; }
+  .flow li::before { counter-increment: step; content: "0" counter(step); font-family: Inter, sans-serif; font-weight: 700; font-size: 28px; color: var(--accent); }
+  .flow h3 { font-size: 17px; margin: 4px 0 8px; }
+  .flow p { margin: 0; font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
+
+  /* ---------- Profile ---------- */
+  .profile { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: start; }
+  .profile p { margin: 0 0 14px; color: var(--ink-soft); }
+  .profile .profile-lead { font-size: 20px; font-weight: 700; color: var(--ink); }
+  .career { list-style: none; margin: 0; padding: 8px 0 0 24px; border-left: 3px solid var(--brand); }
+  .career li { position: relative; padding: 0 0 22px; font-size: 15px; }
+  .career li::before { content: ""; position: absolute; left: -32px; top: 9px; width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 3px solid var(--brand); }
+  .career span { display: block; font-family: Inter, sans-serif; font-weight: 700; font-size: 13px; color: var(--brand); }
+  @media (max-width: 900px) { .profile { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* ---------- Contact ---------- */
+  #contact { background: var(--bg-soft); }
+  .contact-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; }
+  .contact-grid > div > p { color: var(--ink-soft); margin: 0 0 16px; }
+  .mail-link { font-family: Inter, sans-serif; font-weight: 700; color: var(--brand); }
+  form { display: grid; gap: 22px; }
+  label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .req, .opt { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-right: 8px; vertical-align: 1px; }
+  .req { background: #c8423b; color: #fff; }
+  .opt { background: var(--line); color: var(--ink-soft); }
+  input, select, textarea {
+    width: 100%; font: inherit; font-size: 16px; padding: 13px 16px; border-radius: 10px;
+    border: 1px solid #cfd6df; background: #fff; color: var(--ink);
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: transparent; }
+  textarea { min-height: 160px; resize: vertical; }
+  form .btn { justify-self: start; padding: 14px 40px; font-size: 15px; }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--ink); color: #c9d1db; padding: 56px 0 36px; font-size: 14px; }
+  .foot { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  footer .logo-text { color: #fff; }
+  footer ul { display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; }
+  footer ul a { text-decoration: none; }
+  footer ul a:hover { color: #fff; }
+  .copy a { color: #b8c2cf; }
+  .copy { margin-top: 32px; padding-top: 24px; border-top: 1px solid #2f3a48; font-size: 12px; color: #8a96a6; }
+
+  /* ---------- Reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .nav ul { display: none; }
+    .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { justify-self: center; max-width: 320px; order: -1; }
+    .services { grid-template-columns: 1fr; }
+    .service.featured { grid-template-columns: 1fr; gap: 24px; }
+    .logs { grid-template-columns: 1fr 1fr; }
+    .flow { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 0 16px; }
+    section { padding: 72px 0; }
+    .hero { padding: 40px 0 72px; }
+    .nav { gap: 16px; height: 64px; }
+    .nav .btn { padding: 10px 18px; }
+    .service { padding: 28px 22px; }
+    .logs, .flow { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ===== Header ===== -->
 <header>
-  <div class="wrap">
-    <h1 class="logo">ynsys<span>app</span></h1>
-    <p class="lead">学校と店舗の現場で、毎日使う小さな道具を作っています。</p>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="ynsys ホーム">
+      <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="#1f6f5c"/>
+        <path d="M6 27 L15 16 L21 22 L26 17 L34 27 Z" fill="#fff" opacity=".95"/>
+        <circle cx="28" cy="11" r="4" fill="#f2a541"/>
+      </svg>
+      <span class="logo-text">ynsys</span>
+    </a>
+    <ul>
+      <li><a href="#top">ホーム</a></li>
+      <li><a href="#work">お仕事</a></li>
+      <li><a href="#log">実績</a></li>
+      <li><a href="#flow">ご依頼の流れ</a></li>
+      <li><a href="#profile">代表について</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+    <a class="btn" href="#contact">お問い合わせ
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
   </div>
 </header>
 
-<main>
-<div class="wrap">
+<main id="top">
 
-  <section>
-    <h2>公開中のサービス</h2>
-    <div class="svc">
-      <div class="body">
-        <h3>出欠記録<span class="chip">公開中</span></h3>
-        <p class="muted">中学・高校の先生向けの、授業ごとの出欠を記録するWebアプリ。座席表または名簿をタップして出欠をつけ、学期末に校務支援システムへ転記する数値（クラス・出席番号・授業時数・欠席時数）を出力します。</p>
-        <p><a class="btn" href="https://shukketsu.ynsysapp.com/">出欠記録のご案内を見る</a></p>
-        <p class="muted">インストール不要。ブラウザで開くだけで使えます。現在は無償で提供しています。</p>
+<!-- ===== Concept ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <div class="eyebrow">Concept</div>
+      <h1>宮崎の、<br><em>顔が見える</em>IT顧問。</h1>
+      <p>宮崎県を拠点に、小さな会社やお店のホームページ・Googleマップ・業務アプリをお手伝いしています。</p>
+      <p>「毎月払っているけど、何をしてもらっているか分からない」<br>「予約の電話に出られない」「Excelの転記で一日が終わる」</p>
+      <p>そんな困りごとを、専門用語を使わずに一緒に整理して、必要な分だけ仕組みにします。</p>
+      <div class="badges">
+        <span class="badge">契約縛りなし</span>
+        <span class="badge">データは全部お渡し</span>
+        <span class="badge">対面で相談OK</span>
       </div>
     </div>
-  </section>
-
-  <section>
-    <h2>準備中</h2>
-    <p>店舗向けの予約と会計の道具を開発しています。公開しだい、このページでご案内します。<span class="chip soon">準備中</span></p>
-  </section>
-
-  <section>
-    <h2>データの取り扱い</h2>
-    <p>現場の道具は、扱う情報が重いわりに作りは小さくあるべきだと考えています。そのため<b>提供者側にデータを持たない設計</b>にしています。</p>
-    <ul>
-      <li><b>生徒・顧客の情報を、当方のサーバーに保存することはありません。</b>出欠記録アプリの場合、記録は利用者の端末と、利用者ご自身の Google ドライブにのみ保存されます。</li>
-      <li>Google アカウントに求める権限は、<b>アプリが作成したファイルだけを読み書きできる権限（<code>drive.file</code>）</b>と、画面表示用のメールアドレスのみです。ドライブ内の他のファイルは読み取れません。</li>
-      <li>広告は表示しません。生徒・顧客の情報を外部サービスへ送ることもありません。</li>
-      <li>ページの表示数の把握に Cloudflare のアクセス解析を使っています。<b>Cookie を使わず、個人を特定する情報も、アプリに記録された内容も含みません。</b></li>
-      <li>通信はすべて HTTPS です。</li>
-    </ul>
-    <p class="muted">お問い合わせフォームには、生徒の氏名や欠席理由を書かないようご案内しています。自動で付く動作確認用の情報も、件数のみで個人情報を含みません。</p>
-  </section>
-
-  <section>
-    <h2>学校のネットワーク担当者の方へ</h2>
-    <p>校内のフィルタリングやSSLインスペクションの設定でご確認が必要な場合、下記をご参照ください。</p>
-    <table>
-      <tr><th>ドメイン</th><th>用途</th><th>必須</th></tr>
-      <tr><td><code>shukketsu.ynsysapp.com</code></td><td>出欠記録アプリ本体の表示</td><td>必須</td></tr>
-      <tr><td><code>accounts.google.com</code></td><td>Googleアカウントでのログイン</td><td>任意</td></tr>
-      <tr><td><code>www.googleapis.com</code></td><td>利用者自身のGoogleドライブへの保存・読み込み</td><td>任意</td></tr>
-      <tr><td><code>sheets.googleapis.com</code></td><td>スプレッドシートへの出力・読み込み</td><td>任意</td></tr>
-      <tr><td><code>docs.google.com</code></td><td>作成したスプレッドシートを開くリンク先</td><td>任意</td></tr>
-    </table>
-    <div class="note">
-      アプリは HTML と JavaScript のみの静的なページで、ファイルのダウンロード実行やプラグインの導入は不要です。
-      Google への通信を許可できない場合も、アプリ単体で出欠の記録はできます（記録は端末内のみに保存されます）。
-      詳しい資料が必要でしたら <a href="mailto:info@ynsysapp.com">info@ynsysapp.com</a> までご連絡ください。
+    <div class="hero-visual reveal" aria-hidden="true">
+      <svg viewBox="0 0 240 200" fill="none">
+        <!-- 山と太陽と海、その上にPC・スマホ・地図ピン -->
+        <circle cx="178" cy="48" r="20" fill="#f2a541"/>
+        <path d="M10 150 L80 70 L120 112 L150 84 L230 150 Z" fill="#1f6f5c"/>
+        <path d="M10 150 L80 70 L96 88 L70 150 Z" fill="#154f42"/>
+        <path d="M10 158 q20 -8 40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#5fa8c9" stroke-width="5" stroke-linecap="round"/>
+        <path d="M10 174 q20 -8 40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#9fcbe0" stroke-width="5" stroke-linecap="round"/>
+        <rect x="36" y="22" width="52" height="36" rx="5" fill="#fff" stroke="#1c2430" stroke-width="3"/>
+        <path d="M46 34h22M46 44h32" stroke="#1f6f5c" stroke-width="3" stroke-linecap="round"/>
+        <path d="M54 58v8M44 68h30" stroke="#1c2430" stroke-width="3" stroke-linecap="round"/>
+        <rect x="126" y="26" width="24" height="40" rx="5" fill="#fff" stroke="#1c2430" stroke-width="3"/>
+        <circle cx="138" cy="58" r="2.5" fill="#1c2430"/>
+        <path d="M206 92c0 12-14 26-14 26s-14-14-14-26a14 14 0 0 1 28 0z" fill="#fff" stroke="#1c2430" stroke-width="3"/>
+        <circle cx="192" cy="92" r="5" fill="#c8423b"/>
+      </svg>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <h2>運営者・お問い合わせ</h2>
-    <table>
-      <tr><th>運営</th><td>個人による開発・運営</td></tr>
-      <tr><td colspan="2" style="border:0;padding:0"></td></tr>
-      <tr><th>連絡先</th><td><a href="mailto:info@ynsysapp.com">info@ynsysapp.com</a></td></tr>
-      <tr><th>所在地</th><td>ご請求があれば遅滞なく開示します</td></tr>
-    </table>
-    <p class="muted" style="margin-top:12px">不具合のご連絡・ご要望も、上記のメールアドレスで承ります。出欠記録アプリの画面からもお送りいただけます。</p>
-  </section>
+<!-- ===== Work ===== -->
+<section id="work">
+  <div class="wrap">
+    <div class="eyebrow reveal">Work</div>
+    <h2 class="reveal">ynsys のお仕事</h2>
 
-</div>
+    <div class="services">
+      <article class="service featured reveal">
+        <div>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <span class="tag">いちばん人気</span>
+          <h3>Web顧問（ホームページ保守・MEO）</h3>
+          <p>ホームページの更新、Googleマップ（Googleビジネスプロフィール）の運用、予約までの導線づくりをまとめてお引き受けします。<br>
+          県外の制作会社に払っている保守費・MEO費の中身を一緒に確認し、本当に必要なことだけを、顔の見える距離で続けます。</p>
+        </div>
+        <div class="price-box">
+          <div class="amount">15,000<small> 円 / 月</small></div>
+          <ul>
+            <li>契約期間の縛りなし</li>
+            <li>サイトのデータは全部お渡し</li>
+            <li>月2回まで相談（各30分）</li>
+            <li>初回の棚卸し診断 30,000円</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="service reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9l2 2-2 2M12 13h4"/></svg></div>
+        <h3>業務アプリ開発</h3>
+        <p>LINE予約、レジ（POS）、QRオーダー、シフト・配置表など、お店や現場に合わせた仕組みをつくります。既製品では合わない「うちのやり方」に合わせて、必要な分だけ。</p>
+        <div class="stack">STACK — LINE (LIFF) / Firebase / React / Cloudflare</div>
+      </article>
+
+      <article class="service reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></div>
+        <h3>AI・DXのご相談</h3>
+        <p>大企業のDX担当として現場の業務改善を4年間続けてきた経験から、「どこを仕組みにすると一番楽になるか」を一緒に考えます。AI活用セミナーの講師もお引き受けします。</p>
+      </article>
+
+      <article class="service reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div>
+        <h3>AI電話受付</h3>
+        <p>施術中・調理中で出られない予約の電話を、AIが代わりに受けます。受けた内容を予約台帳へ転記するところまで込みで運用します。Web顧問のオプションとしてご利用いただけます。</p>
+      </article>
+
+      <article class="service reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></svg></div>
+        <h3>ちょっとしたITの困りごと</h3>
+        <p>パソコンやスマホの設定、独自ドメインのメール、ネットのトラブル、クラウドの使い方など。「誰に聞けばいいか分からない」を気軽にご相談ください。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Work Log ===== -->
+<section id="log">
+  <div class="wrap">
+    <div class="eyebrow reveal">Work Log</div>
+    <h2 class="reveal">お仕事の記録</h2>
+
+    <div class="logs">
+      <article class="log reveal">
+        <div class="log-thumb" style="background:#1f6f5c"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 15h3"/></svg></div>
+        <div class="log-body">
+          <div class="log-cat">業務アプリ</div>
+          <h3>サロン様のLINE予約システム</h3>
+          <p>リラクゼーションサロン様の予約をLINEで完結できるようにしました。Googleカレンダーとも連携しています。</p>
+          <div class="log-demo"><a href="demo/salon/index.html" target="_blank" rel="noopener">▶ お客様の予約画面</a><a href="demo/salon/index.html#store" target="_blank" rel="noopener">▶ お店の管理画面</a></div>
+          <div class="log-price"><span>費用目安</span>初期 0円 ／ 月額 3,000円〜</div>
+        </div>
+      </article>
+      <article class="log reveal">
+        <div class="log-thumb" style="background:#2b5f8a"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 9h20M6 14h4"/></svg></div>
+        <div class="log-body">
+          <div class="log-cat">業務アプリ</div>
+          <h3>ビリヤード店様の会計（POS）システム</h3>
+          <p>卓ごとの時間課金と会計をタブレットひとつで。複数店舗での運用に対応しています。</p>
+          <div class="log-demo"><a href="demo/pos/index.html" target="_blank" rel="noopener">▶ 受付・会計画面</a><a href="demo/pos/index.html#display" target="_blank" rel="noopener">▶ お客様向け表示</a></div>
+          <div class="log-price"><span>費用目安</span>初期 10万円〜 ／ 月額 5,000円〜</div>
+        </div>
+      </article>
+      <article class="log reveal">
+        <div class="log-thumb" style="background:#c46a2d"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg></div>
+        <div class="log-body">
+          <div class="log-cat">業務アプリ</div>
+          <h3>飲食店様のQRオーダー＋レジ</h3>
+          <p>席のQRコードからスマホで注文、厨房とレジへそのまま連携。注文の聞き間違いと二度手間をなくします。</p>
+          <div class="log-demo"><a href="demo/qr/index.html" target="_blank" rel="noopener">▶ デモを触ってみる</a></div>
+          <div class="log-price"><span>費用目安</span>初期 10万円〜（機器代込み） ／ 月額 6,000円〜</div>
+        </div>
+      </article>
+      <article class="log reveal">
+        <div class="log-thumb" style="background:#6a5a9e"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <div class="log-body">
+          <div class="log-cat">業務アプリ</div>
+          <h3>先生のための出欠記録アプリ</h3>
+          <p>紙の出席簿をタブレットで。現役の先生にご利用いただいています。</p>
+          <a class="log-link" href="https://shukketsu.ynsysapp.com/" target="_blank" rel="noopener">shukketsu.ynsysapp.com</a>
+          <div class="log-price"><span>費用目安</span>個別にお見積り</div>
+        </div>
+      </article>
+      <article class="log reveal">
+        <div class="log-thumb" style="background:#3d7a4a"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div class="log-body">
+          <div class="log-cat">業務アプリ</div>
+          <h3>便利屋様の現場配置・シフト管理</h3>
+          <p>受付から見積、人とトラックの配置、シフト、人件費までを一つの画面でつなげました。</p>
+          <div class="log-demo"><a href="demo/genba/index.html" target="_blank" rel="noopener">▶ デモを触ってみる</a></div>
+          <div class="log-price"><span>費用目安</span>個別にお見積り</div>
+        </div>
+      </article>
+      <article class="log reveal">
+        <div class="log-thumb" style="background:#8a6d2b"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></div>
+        <div class="log-body">
+          <div class="log-cat">Web顧問</div>
+          <h3>ホームページ・Googleマップの棚卸し</h3>
+          <p>長年更新が止まっていたホームページと、MEO業者の月次レポートを読み解き、現状と改善案を1枚にまとめました。</p>
+          <div class="log-price"><span>費用目安</span>診断 30,000円 ／ 顧問 月額 15,000円</div>
+        </div>
+      </article>
+      <article class="log reveal">
+        <div class="log-thumb" style="background:#1c2430"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h4v4H3zM3 15h4v4H3zM7 7h3v10H7M10 12h4M14 10h4v4h-4z"/></svg></div>
+        <div class="log-body">
+          <div class="log-cat">自社サービス</div>
+          <h3>ビリヤード大会運営「POOL TOOLS Web」</h3>
+          <p>参加者を登録するだけでトーナメント表・リーグ表を作成し、PCの大きな画面で大会の進行を管理できるWebサービスです。</p>
+          <a class="log-link" href="https://pool-tools-web.web.app/" target="_blank" rel="noopener">pool-tools-web.web.app</a>
+          <div class="log-price"><span>費用目安</span>同様のシステム開発は個別にお見積り</div>
+        </div>
+      </article>
+    </div>
+    <p class="log-note reveal">※ 費用は過去の事例をもとにした目安です。内容や規模によって変わりますので、お気軽にご相談ください。</p>
+  </div>
+</section>
+
+<!-- ===== Flow ===== -->
+<section id="flow">
+  <div class="wrap">
+    <div class="eyebrow reveal">Flow</div>
+    <h2 class="reveal">ご依頼の流れ</h2>
+    <ol class="flow">
+      <li class="reveal"><h3>お問い合わせ</h3><p>フォームかメールでお気軽に。まだ何を頼むか決まっていなくても大丈夫です。</p></li>
+      <li class="reveal"><h3>お話を聞く</h3><p>対面またはオンラインで、今の困りごとや、毎月払っているものを伺います。</p></li>
+      <li class="reveal"><h3>ご提案・お見積り</h3><p>必要なこと・不要なことを1枚にまとめてお渡しします。無理な営業はしません。</p></li>
+      <li class="reveal"><h3>スタート</h3><p>作って終わりではなく、使いながら一緒に直していきます。</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== Profile ===== -->
+<section id="profile">
+  <div class="wrap">
+    <div class="eyebrow reveal">Profile</div>
+    <h2 class="reveal">代表について</h2>
+    <div class="profile reveal">
+      <div>
+        <p class="profile-lead">話を聞くところから、使い続けるところまで。</p>
+        <p>高専で電気電子を学んだあと、原子力発電所の保守と、福島第一原発の事故対応ロボットの開発に携わりました。構想から機械・電気設計、プログラミングまで一気通貫で担当してきました。</p>
+        <p>その後、大手化学メーカーで工場の電気設備保守を経て、社内DXチームのリーダーとして約4年間、現場や経営層の困りごとを聞き取り、業務の見直しと仕組みづくりを進めてきました。</p>
+        <p>現在は宮崎に移住し、地域の小さな会社・お店のための「顔が見えるIT担当」として活動しています。</p>
+      </div>
+      <ul class="career">
+        <li><span>2009</span>佐世保高専 電気電子工学科 卒業</li>
+        <li><span>2009〜</span>原子力発電所の保守／事故対応ロボットの開発</li>
+        <li><span>2019〜</span>大手化学メーカー 電気設備保守 → 社内DXチームリーダー</li>
+        <li><span>2026〜</span>ynsys として独立（宮崎県）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section id="contact">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <div class="eyebrow">Contact</div>
+      <h2>お問い合わせ</h2>
+      <p>ご相談やご質問など、お気軽にどうぞ。<br>メールで折り返しご連絡いたします。</p>
+      <p>メール：<a class="mail-link" href="mailto:info@ynsysapp.com">info@ynsysapp.com</a></p>
+    </div>
+    <form class="reveal" id="contact-form">
+      <div>
+        <label for="f-name"><span class="req">必須</span>お名前</label>
+        <input id="f-name" name="name" required autocomplete="name">
+      </div>
+      <div>
+        <label for="f-email"><span class="req">必須</span>メールアドレス</label>
+        <input id="f-email" name="email" type="email" required autocomplete="email">
+      </div>
+      <div>
+        <label for="f-type"><span class="req">必須</span>お問い合わせの種類</label>
+        <select id="f-type" name="type" required>
+          <option value="Web顧問（ホームページ・MEO）について">Web顧問（ホームページ・MEO）について</option>
+          <option value="業務アプリ開発のご相談">業務アプリ開発のご相談</option>
+          <option value="AI・DX、セミナーのご相談">AI・DX、セミナーのご相談</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div>
+        <label for="f-body"><span class="opt">任意</span>お問い合わせ内容</label>
+        <textarea id="f-body" name="body"></textarea>
+      </div>
+      <button class="btn" type="submit">送信する</button>
+    </form>
+  </div>
+</section>
+
 </main>
 
-<footer><a href="/terms/">利用規約</a> ・ <a href="/privacy/">プライバシーポリシー</a> ・ © 2026 ynsysapp</footer>
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="logo" href="#top">
+        <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="19" fill="#1f6f5c"/>
+          <path d="M6 27 L15 16 L21 22 L26 17 L34 27 Z" fill="#fff" opacity=".95"/>
+          <circle cx="28" cy="11" r="4" fill="#f2a541"/>
+        </svg>
+        <span class="logo-text">ynsys</span>
+      </a>
+      <ul>
+        <li><a href="#top">ホーム</a></li>
+        <li><a href="#work">お仕事</a></li>
+        <li><a href="#log">実績</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <div class="copy"><a href="/school/">学校のネットワーク担当の方へ</a> ・ <a href="/terms/">利用規約</a> ・ <a href="/privacy/">プライバシーポリシー</a><br>© 2026 ynsys — 宮崎県</div>
+  </div>
+</footer>
+
+<script>
+  // スクロールでふわっと表示
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  // 送信：今はメールソフトを開く（公開時は Formspree 等のフォームサービスに差し替え）
+  document.getElementById('contact-form').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const f = ev.target;
+    const subject = `【HPお問い合わせ】${f.type.value}`;
+    const body = `お名前：${f.name.value}\nメール：${f.email.value}\n\n${f.body.value}`;
+    location.href = `mailto:info@ynsysapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>BILLIARD POCKET 会計デモ</title>
+<style>
+:root {
+  --bg:#EEF0ED; --surface:#FFFFFF; --surface-2:#E5E9E4;
+  --ink:#16201C; --ink-2:#5C6A64; --ink-3:#8B9791;
+  --line:#D3D9D3; --line-2:#BFC7C0;
+  --accent:#2F6F8F; --accent-in:#FFFFFF; --accent-sf:#DCE9F0;
+  --bil:#2C7A57; --bil-sf:#D8ECE2;
+  --dar:#B0472E; --dar-sf:#F7E0D8;
+  --mem:#8A5F0C; --mem-sf:#F7EACC;
+  --reg:#2F6F8F; --reg-sf:#DCE9F0;
+  --alert:#A33A3A; --alert-sf:#F6DEDE;
+  --shadow:0 1px 2px rgba(22,32,28,.08), 0 8px 24px rgba(22,32,28,.06);
+  --shadow-lg:0 24px 64px rgba(22,32,28,.22);
+  --font-ui:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP",sans-serif;
+  --r:10px; --r-lg:16px;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg:#101512; --surface:#19211D; --surface-2:#222B26;
+  --ink:#E9EFEA; --ink-2:#97A59D; --ink-3:#6E7C75;
+  --line:#2B3732; --line-2:#3A4842;
+  --accent:#7FB6D9; --accent-in:#0C1418; --accent-sf:#1B2C36;
+  --bil:#63C79B; --bil-sf:#16281F;
+  --dar:#F09A82; --dar-sf:#34201A;
+  --mem:#E0AE55; --mem-sf:#322610;
+  --reg:#7FB6D9; --reg-sf:#1B2C36;
+  --alert:#E58C8C; --alert-sf:#301A1A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  --shadow-lg:0 24px 64px rgba(0,0,0,.6);
+  color-scheme: dark;
+}}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 15px; line-height: 1.5; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---- 上部バー ---- */
+.bar { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top, 0px)); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.brand { display: grid; line-height: 1.2; margin-right: auto; }
+.brand small { color: var(--ink-2); font-size: 11px; letter-spacing: .08em; }
+.brand b { font-size: 18px; }
+.demo-tag { display: inline-block; font-size: 11px; font-weight: 700; background: var(--alert-sf); color: var(--alert); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; }
+.stat { display: grid; line-height: 1.2; text-align: right; }
+.stat small { color: var(--ink-2); font-size: 11px; }
+.stat b { font-size: 20px; }
+.btn { border-radius: var(--r); padding: 10px 16px; font-weight: 700; background: var(--surface-2); min-height: 44px; }
+.btn:hover { filter: brightness(.97); }
+.btn.pri { background: var(--accent); color: var(--accent-in); }
+.btn.big { padding: 14px 22px; font-size: 17px; }
+.btn.ghost { background: transparent; border: 1px solid var(--line-2); }
+.btn.danger { background: var(--alert-sf); color: var(--alert); }
+.btn:disabled { opacity: .4; cursor: default; }
+
+.demobar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 16px; background: var(--surface-2); border-bottom: 1px solid var(--line); font-size: 13px; color: var(--ink-2); }
+.demobar .sep { width: 1px; height: 20px; background: var(--line-2); margin: 0 4px; }
+.chipbtn { border-radius: 999px; padding: 5px 12px; background: var(--surface); border: 1px solid var(--line-2); font-weight: 600; font-size: 13px; }
+.chipbtn.on { background: var(--accent); color: var(--accent-in); border-color: var(--accent); }
+
+/* ---- 台一覧 ---- */
+main { padding: 16px; display: grid; gap: 22px; max-width: 1400px; margin: 0 auto; }
+.zone h2 { font-size: 15px; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.zone h2 .cnt { color: var(--ink-2); font-weight: 400; font-size: 13px; }
+.tables { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.tcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); display: flex; flex-direction: column; min-width: 0; }
+.tcard.empty { box-shadow: none; background: transparent; border-style: dashed; }
+.thead { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.tcard.empty .thead { border-bottom: 0; }
+.tno { font-weight: 800; font-size: 16px; }
+.sport { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 9px; }
+.sport.billiard { background: var(--bil-sf); color: var(--bil); }
+.sport.darts { background: var(--dar-sf); color: var(--dar); }
+.thead .sp { margin-left: auto; }
+.empty-add { margin-left: auto; color: var(--accent); font-weight: 700; font-size: 13px; padding: 6px 8px; }
+.guest { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.guest:last-of-type { border-bottom: 0; }
+.gname { font-weight: 700; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-width: 0; }
+.gyen { font-weight: 800; font-size: 18px; text-align: right; }
+.gsub { font-size: 12px; color: var(--ink-2); }
+.gsub.r { text-align: right; }
+.gact { grid-column: 1 / -1; display: flex; gap: 6px; margin-top: 6px; }
+.gact button { font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 8px; background: var(--surface-2); }
+.gact .pay { background: var(--accent); color: var(--accent-in); margin-left: auto; }
+.tfoot { padding: 10px 14px; border-top: 1px solid var(--line); display: flex; gap: 8px; margin-top: auto; }
+.tfoot button { flex: 1; }
+
+.cls { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+.cls.general { background: var(--surface-2); color: var(--ink-2); }
+.cls.reg { background: var(--reg-sf); color: var(--reg); }
+.cls.member { background: var(--mem); color: #fff; }
+.moved { font-size: 11px; color: var(--ink-3); }
+
+/* 月額会員の大きな表示 */
+.membox { border: 2px solid var(--mem); background: var(--mem-sf); color: var(--mem); border-radius: var(--r); padding: 10px 14px; display: flex; align-items: center; gap: 12px; }
+.membox b { font-size: 18px; }
+.membox .st { margin-left: auto; font-weight: 700; font-size: 13px; }
+.modal.wide { width: min(1040px, 100%); }
+.chipbtn:disabled { opacity: .35; cursor: default; }
+.delta { font-size: 12px; font-weight: 700; }
+.delta.up { color: var(--bil); }
+.delta.down { color: var(--alert); }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
+.cols2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.cols2 > div { min-width: 0; }
+.cls.unpaid { background: var(--alert-sf); color: var(--alert); }
+.mrow { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); align-items: center; }
+.mrow:last-child { border-bottom: 0; }
+.mrow .acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.mrow .acts button { font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 8px; background: var(--surface-2); }
+.mrow .acts .pri { background: var(--accent); color: var(--accent-in); }
+.membox.warn { border-color: var(--alert); background: var(--alert-sf); color: var(--alert); }
+
+/* ---- モーダル ---- */
+.scrim { position: fixed; inset: 0; background: rgba(10,15,12,.5); z-index: 20; display: flex; align-items: flex-end; justify-content: center; padding: 16px; }
+@media (min-width: 700px) { .scrim { align-items: center; } }
+.modal { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); width: min(720px, 100%); max-height: calc(100% - 16px); display: flex; flex-direction: column; }
+.mhead { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; }
+.mhead h3 { margin: 0; font-size: 18px; }
+.mhead .x { margin-left: auto; font-size: 22px; width: 40px; height: 40px; border-radius: 50%; }
+.mhead .x:hover { background: var(--surface-2); }
+.mbody { padding: 16px 20px; overflow: auto; display: grid; gap: 16px; }
+.mfoot { padding: 14px 20px; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.mfoot .sp { margin-right: auto; }
+.label { font-size: 12px; font-weight: 700; color: var(--ink-2); letter-spacing: .04em; margin-bottom: 6px; }
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button { border: 2px solid var(--line-2); border-radius: var(--r); padding: 10px 16px; font-weight: 700; min-height: 48px; background: var(--surface); }
+.seg button.on { border-color: var(--accent); background: var(--accent-sf); color: var(--accent); }
+.seg button.billiard.on { border-color: var(--bil); background: var(--bil-sf); color: var(--bil); }
+.seg button.darts.on { border-color: var(--dar); background: var(--dar-sf); color: var(--dar); }
+.seg button .busy { display: block; font-size: 11px; font-weight: 400; color: var(--ink-3); }
+.seg button:disabled { opacity: .35; }
+.stepper { display: flex; align-items: center; gap: 12px; }
+.stepper button { width: 48px; height: 48px; border-radius: 50%; background: var(--surface-2); font-size: 22px; font-weight: 700; }
+.stepper b { font-size: 26px; min-width: 2ch; text-align: center; }
+input[type=search], input[type=text] { font: inherit; color: inherit; width: 100%; padding: 12px 14px; border-radius: var(--r); border: 1px solid var(--line-2); background: var(--surface); }
+.reglist { display: grid; gap: 6px; max-height: 280px; overflow: auto; }
+.regrow { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r); text-align: left; background: var(--surface); }
+.regrow.on { border-color: var(--accent); background: var(--accent-sf); }
+.regrow .kana { font-size: 12px; color: var(--ink-3); }
+.regrow .right { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.picked { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { background: var(--surface-2); border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 700; display: inline-flex; gap: 6px; align-items: center; }
+
+.lines { display: grid; gap: 0; border: 1px solid var(--line); border-radius: var(--r); }
+.line { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); align-items: center; }
+.line:last-child { border-bottom: 0; }
+.line input[type=checkbox] { width: 22px; height: 22px; }
+.line .yen { font-weight: 800; font-size: 17px; }
+.line .desc { font-size: 12px; color: var(--ink-2); grid-column: 2 / -1; }
+.total { display: flex; align-items: baseline; gap: 12px; }
+.total b { font-size: 32px; }
+.change { font-size: 15px; color: var(--ink-2); }
+.change b { color: var(--ink); font-size: 20px; }
+
+.items { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+.item { border: 1px solid var(--line-2); border-radius: var(--r); padding: 12px; text-align: left; background: var(--surface); display: grid; gap: 2px; min-height: 72px; }
+.item:hover { border-color: var(--accent); }
+.item small { color: var(--ink-2); }
+.cart { display: grid; gap: 6px; }
+.cartrow { display: flex; align-items: center; gap: 10px; }
+.cartrow .q { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.cartrow .q button { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-2); font-weight: 700; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.kpi { background: var(--surface-2); border-radius: var(--r); padding: 12px 14px; display: grid; }
+.kpi small { color: var(--ink-2); font-size: 12px; }
+.kpi b { font-size: 22px; }
+.barrow { display: grid; grid-template-columns: 110px 1fr auto; white-space: nowrap; gap: 10px; align-items: center; font-size: 14px; }
+.track { height: 14px; background: var(--surface-2); border-radius: 7px; overflow: hidden; }
+.track i { display: block; height: 100%; border-radius: 7px; }
+table.hist { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.hist th, table.hist td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+table.hist td.r, table.hist th.r { text-align: right; }
+.scroll-x { overflow-x: auto; }
+
+/* レシート */
+.receipt { background: #fff; color: #111; width: 280px; margin: 0 auto; padding: 18px 16px; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; box-shadow: var(--shadow); border-radius: 4px; }
+.receipt h4 { text-align: center; margin: 0 0 4px; font-size: 15px; }
+.receipt .c { text-align: center; }
+.receipt .row { display: flex; justify-content: space-between; gap: 8px; }
+.receipt hr { border: 0; border-top: 1px dashed #999; margin: 8px 0; }
+.receipt .tot { font-size: 15px; font-weight: 700; }
+.drawer { text-align: center; font-weight: 700; color: var(--bil); }
+
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: var(--r); font-weight: 700; z-index: 40; box-shadow: var(--shadow-lg); max-width: calc(100% - 32px); }
+.note { font-size: 12px; color: var(--ink-2); }
+.warnnote { font-size: 13px; color: var(--alert); font-weight: 700; }
+
+/* ---- 客面表示 ---- */
+.disp { min-height: 100vh; background: #0E1512; color: #EAF1EC; padding: 28px clamp(16px, 4vw, 48px); display: grid; gap: 28px; align-content: start; }
+.disp-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.disp-head h1 { margin: 0; font-size: clamp(24px, 4vw, 40px); letter-spacing: .02em; }
+.disp-head .clock { margin-left: auto; font-size: clamp(22px, 3vw, 34px); font-weight: 700; }
+.en { color: #9FB8AB; font-weight: 500; }
+.rates { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.rate { border: 1px solid #2B3A33; border-radius: 16px; padding: 18px 20px; background: #16201B; display: grid; gap: 6px; }
+.rate .t { font-weight: 800; font-size: 20px; }
+.rate .p { font-size: 30px; font-weight: 800; }
+.rate .p small { font-size: 16px; font-weight: 600; }
+.rate .x { color: #C7D6CD; }
+.rate.m { border-color: #E0AE55; }
+.rate.m .p { color: #E0AE55; }
+.disp h2 { margin: 0 0 8px; font-size: 20px; }
+.disp table { width: 100%; border-collapse: collapse; font-size: clamp(16px, 2vw, 22px); }
+.disp th { text-align: left; font-size: 13px; color: #9FB8AB; font-weight: 600; padding: 6px 10px; border-bottom: 1px solid #2B3A33; }
+.disp td { padding: 12px 10px; border-bottom: 1px solid #22302A; }
+.disp .r { text-align: right; }
+.disp .co { position: fixed; inset: 0; background: rgba(8,12,10,.94); display: grid; place-items: center; padding: 24px; }
+.disp .cobox { width: min(760px, 100%); display: grid; gap: 18px; }
+.disp .cobox h2 { font-size: clamp(24px, 4vw, 36px); margin: 0; }
+.disp .coline { display: flex; justify-content: space-between; gap: 16px; font-size: clamp(17px, 2.4vw, 24px); border-bottom: 1px solid #22302A; padding: 8px 0; }
+.disp .cotot { display: flex; justify-content: space-between; align-items: baseline; font-size: clamp(22px, 3vw, 30px); font-weight: 800; }
+.disp .cotot b { font-size: clamp(44px, 8vw, 80px); color: #FFF; }
+.disp .thanks { text-align: center; font-size: clamp(30px, 5vw, 56px); font-weight: 800; }
+.disp-back { position: fixed; right: 12px; bottom: 12px; font-size: 12px; color: #6E7C75; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+/* =========================================================
+   BILLIARD POCKET 会計デモ
+   - データはこの端末のブラウザ内だけに保存（localStorage）
+   - 料金: 1時間未満も1時間分。以降30分ごとに延長（超過6分から）
+   ========================================================= */
+
+const STORE = "BILLIARD POCKET";
+const RECEIPT = { name: "BILLIARD POCKET（デモ）", addr: '宮崎県〇〇市〇〇町1-2-3', tel: 'TEL 0000-00-0000', regNo: '登録番号 T0000000000000' };
+const TYPE_JA = { time: '時間料金', drink: 'ドリンク', fee: '月会費' };
+const KEY = 'ynsys-pos-demo-v3';
+const GRACE = 5; // 延長は超過6分から（店舗確認済み）
+const DISP_KEY = 'ynsys-pos-display-v1';
+
+const RATES = {
+  general: { ja: '一般', en: 'General', hour: 700, ext: 350 },
+  reg:     { ja: '会員', en: 'Member', hour: 600, ext: 300 },
+  member:  { ja: '月額会員', en: 'Monthly Member', hour: 0, ext: 0 },
+};
+const SPORTS = {
+  billiard: { ja: 'ビリヤード', en: 'Billiards', tables: 5, prefix: 'B' },
+  darts:    { ja: 'ダーツ', en: 'Darts', tables: 2, prefix: 'D' },
+};
+const ITEMS = [
+  { id: 'd1', name: 'コーラ', en: 'Coke', yen: 150 },
+  { id: 'd2', name: 'ウーロン茶', en: 'Oolong Tea', yen: 150 },
+  { id: 'd3', name: '缶コーヒー', en: 'Coffee', yen: 150 },
+  { id: 'd4', name: 'ミネラルウォーター', en: 'Water', yen: 120 },
+  { id: 'd5', name: 'スポーツドリンク', en: 'Sports Drink', yen: 160 },
+  { id: 'd6', name: 'エナジードリンク', en: 'Energy Drink', yen: 250 },
+  { id: 'd7', name: 'ジンジャーエール', en: 'Ginger Ale', yen: 150 },
+  { id: 'd8', name: 'オレンジジュース', en: 'Orange Juice', yen: 150 },
+];
+
+/* ---------- ユーティリティ ---------- */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const yen = (n) => '¥' + Number(n).toLocaleString('ja-JP');
+const pad = (n) => String(n).padStart(2, '0');
+const hm = (min) => Math.floor(min / 60) + ':' + pad(Math.floor(min % 60));
+const clock = (t) => { const d = new Date(t); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+const uid = () => Math.random().toString(36).slice(2, 10);
+const tableLabel = (sport, no) => SPORTS[sport].prefix + no;
+
+/* ---------- 状態 ---------- */
+let S = load();
+function now() { return Date.now() + (S ? S.offsetMin : 0) * 60000; }
+
+function load() {
+  try { const raw = localStorage.getItem(KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+  return null;
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+  pushDisplay();
+}
+
+function seed() {
+  const t = Date.now();
+  const m = (min) => t - min * 60000;
+  const regulars = [
+    { id: 'r1', name: '田中 誠', kana: 'たなか まこと', cls: 'member', paidThrough: ym(t) },
+    { id: 'r2', name: '佐藤 美咲', kana: 'さとう みさき', cls: 'reg' },
+    { id: 'r3', name: 'Mike Johnson', kana: 'まいく じょんそん', cls: 'member', paidThrough: ym(t) },
+    { id: 'r4', name: 'Chris Walker', kana: 'くりす うぉーかー', cls: 'reg' },
+    { id: 'r5', name: '山口 健太', kana: 'やまぐち けんた', cls: 'member', paidThrough: ymAdd(ym(t), -1) },
+    { id: 'r6', name: '中村 翔', kana: 'なかむら しょう', cls: 'reg' },
+    { id: 'r7', name: 'Ashley Brown', kana: 'あしゅりー ぶらうん', cls: 'reg' },
+    { id: 'r8', name: '松尾 大輔', kana: 'まつお だいすけ', cls: 'member', paidThrough: ym(t) },
+    { id: 'r9', name: '吉田 恵', kana: 'よしだ めぐみ', cls: 'reg' },
+    { id: 'r10', name: 'Daniel Lee', kana: 'だにえる りー', cls: 'member', paidThrough: ymAdd(ym(t), -1) },
+    { id: 'r11', name: '小林 拓也', kana: 'こばやし たくや', cls: 'reg' },
+    { id: 'r12', name: '井上 さくら', kana: 'いのうえ さくら', cls: 'reg' },
+  ];
+  const g = (name, cls, startMin, segs, regId) => ({ id: uid(), name, cls, regId: regId || null, start: m(startMin), segs: segs.map(([sport, table, atMin]) => ({ sport, table, at: m(atMin) })) });
+  const guests = [
+    g('一般 1', 'general', 95, [['billiard', 1, 95]]),
+    g('一般 2', 'general', 95, [['billiard', 1, 95]]),
+    g('田中 誠', 'member', 52, [['billiard', 3, 52]], 'r1'),
+    g('佐藤 美咲', 'reg', 52, [['billiard', 3, 52]], 'r2'),
+    g('Mike Johnson', 'member', 128, [['billiard', 5, 128], ['darts', 1, 40]], 'r3'),
+    g('Chris Walker', 'reg', 128, [['billiard', 5, 128], ['darts', 1, 40]], 'r4'),
+    g('一般 3', 'general', 34, [['darts', 2, 34]]),
+    g('一般 4', 'general', 34, [['darts', 2, 34]]),
+    g('一般 5', 'general', 34, [['darts', 2, 34]]),
+  ];
+  const sales = [];
+  const pastTime = (name, cls, mins, sports, atMin) => {
+    const c = calc(mins, cls, 5);
+    sales.push({ id: uid(), at: m(atMin), type: 'time', total: c.yen, lines: [{ label: name + '（' + RATES[cls].ja + '） ' + hm(mins), en: '', yen: c.yen, desc: c.desc }], people: [{ cls, sports }] });
+  };
+  pastTime('一般 A', 'general', 72, ['billiard'], 300);
+  pastTime('一般 B', 'general', 72, ['billiard'], 300);
+  pastTime('Ashley Brown', 'reg', 150, ['billiard', 'darts'], 260);
+  pastTime('松尾 大輔', 'member', 180, ['darts'], 220);
+  pastTime('一般 C', 'general', 55, ['darts'], 200);
+  pastTime('一般 D', 'general', 55, ['darts'], 200);
+  pastTime('中村 翔', 'reg', 100, ['billiard'], 150);
+  sales.push({ id: uid(), at: m(280), type: 'drink', total: 300, lines: [{ label: 'コーラ ×2', en: 'Coke ×2', yen: 300 }], people: [] });
+  sales.push({ id: uid(), at: m(180), type: 'drink', total: 400, lines: [{ label: '缶コーヒー ×1', en: 'Coffee ×1', yen: 150 }, { label: 'エナジードリンク ×1', en: 'Energy Drink ×1', yen: 250 }], people: [] });
+  sales.push({ id: uid(), at: m(60), type: 'drink', total: 270, lines: [{ label: 'ウーロン茶 ×1', en: 'Oolong Tea ×1', yen: 150 }, { label: 'ミネラルウォーター ×1', en: 'Water ×1', yen: 120 }], people: [] });
+  sales.push({ id: uid(), at: m(240), type: 'fee', total: 3000, lines: [{ label: '月会費 ' + monthLabel(ym(t)) + ' 松尾 大輔', en: 'Monthly fee', yen: 3000 }], people: [] });
+  return { guests, sales, regulars, offsetMin: 0, generalSeq: 6, fee: 3000, regSeq: 13 };
+}
+if (!S) { S = seed(); save(); }
+
+/* ---------- 料金計算（純関数） ----------
+   1時間までは1時間料金。超えたら30分ごとに延長。
+   超過 grace 分以内は延長にしない（grace=5 → 超過6分から延長）。 */
+function calc(minutes, cls, grace) {
+  const r = RATES[cls];
+  if (cls === 'member') return { yen: 0, desc: '月額会員', en: 'Monthly Member', ext: 0 };
+  const over = Math.max(0, minutes - 60);
+  const ext = over <= grace ? 0 : Math.ceil((over - grace) / 30);
+  const yenv = r.hour + r.ext * ext;
+  const desc = '1時間 ' + r.hour + '円' + (ext ? ' ＋ 延長30分×' + ext + ' ' + r.ext * ext + '円' : '');
+  const en = '1 hr' + (ext ? ' + ' + ext + ' × 30 min ext.' : '');
+  return { yen: yenv, desc, en, ext };
+}
+const elapsed = (g) => Math.max(0, (now() - g.start) / 60000);
+const curSeg = (g) => g.segs[g.segs.length - 1];
+const sportsOf = (g) => [...new Set(g.segs.map((s) => s.sport))];
+const guestCharge = (g) => calc(Math.floor(elapsed(g)), gcls(g), GRACE);
+const regOf = (g) => S.regulars.find((r) => r.id === g.regId);
+function isMember(reg) { return !!reg && reg.cls === 'member'; }
+function ym(t) { const d = new Date(t); return d.getFullYear() + '-' + pad(d.getMonth() + 1); }
+function ymAdd(v, n) { const [y, m] = v.split('-').map(Number); const d = new Date(y, m - 1 + n, 1); return d.getFullYear() + '-' + pad(d.getMonth() + 1); }
+function monthLabel(v) { return Number(v.split('-')[1]) + '月分'; }
+/* 月額会員の状態。今月分まで払っていれば有効 */
+function memberStatus(reg) {
+  if (!isMember(reg)) return null;
+  const cur = ym(now());
+  const paid = !!reg.paidThrough && reg.paidThrough >= cur;
+  return { paid, text: paid ? monthLabel(reg.paidThrough) + 'まで支払済' : (reg.paidThrough ? monthLabel(reg.paidThrough) + 'まで・今月未払い' : '未払い') };
+}
+/* お客様の料金区分。常連は入店時に固定せず、その時点の会員状態から決める
+   （月会費が未払いの月額会員は会員料金。プレイ中に払えば0円になる） */
+function gcls(g) {
+  const r = regOf(g);
+  if (!r) return g.cls;
+  if (isMember(r)) return memberStatus(r).paid ? 'member' : 'reg';
+  return r.cls;
+}
+const unpaidMember = (g) => { const st = memberStatus(regOf(g)); return !!st && !st.paid; };
+function occupied(sport, table) { return S.guests.filter((g) => { const s = curSeg(g); return s.sport === sport && s.table === table; }); }
+
+/* ---------- 画面: メイン ---------- */
+function render() {
+  if (location.hash === '#display') { renderDisplay(); return; }
+  const today = S.sales.reduce((a, s) => a + s.total, 0);
+  const playing = S.guests.length;
+  $('#app').innerHTML = `
+  <div class="bar">
+    <div class="brand"><small>受付・会計</small><b>${esc(STORE)}<span class="demo-tag">デモ</span></b></div>
+    <div class="stat"><small>現在時刻</small><b class="num" id="clock">${clock(now())}</b></div>
+    <div class="stat"><small>プレイ中</small><b class="num">${playing}人</b></div>
+    <div class="stat"><small>本日売上</small><b class="num">${yen(today)}</b></div>
+    <button class="btn pri big" onclick="openCheckin()">＋ 入店</button>
+    <button class="btn big" onclick="openDrink()">ドリンク会計</button>
+    <button class="btn" onclick="openMembers()">会員管理</button>
+    <button class="btn" onclick="openReport()">日報・集計</button>
+    <button class="btn" onclick="openMonth()">月レポート</button>
+    <button class="btn ghost" onclick="openDisplay()">客面表示 ↗</button>
+  </div>
+  <div class="demobar">
+    <b>デモ操作</b>
+    <span>時間を進める</span>
+    <button class="chipbtn" onclick="advance(10)">＋10分</button>
+    <button class="chipbtn" onclick="advance(30)">＋30分</button>
+    <button class="chipbtn" onclick="advance(60)">＋1時間</button>
+    <span class="sep"></span>
+    <button class="chipbtn" onclick="resetDemo()">最初からやり直す</button>
+  </div>
+  <main>
+    ${zone('billiard')}
+    ${zone('darts')}
+  </main>`;
+}
+
+function zone(sport) {
+  const sp = SPORTS[sport];
+  const n = S.guests.filter((g) => curSeg(g).sport === sport).length;
+  let cards = '';
+  for (let i = 1; i <= sp.tables; i++) cards += tableCard(sport, i);
+  return `<section class="zone"><h2><span class="sport ${sport}">${sp.ja}</span> 台一覧 <span class="cnt">${n}人プレイ中</span></h2><div class="tables">${cards}</div></section>`;
+}
+
+function tableCard(sport, no) {
+  const gs = occupied(sport, no);
+  const label = tableLabel(sport, no);
+  if (!gs.length) return `<div class="tcard empty"><div class="thead"><span class="tno">${label}</span><span class="note">空き</span><button class="empty-add" onclick="openCheckin('${sport}',${no})">＋ 入店</button></div></div>`;
+  const rows = gs.map((g) => {
+    const c = guestCharge(g);
+    const moved = g.segs.length > 1 ? `<span class="moved">${g.segs.map((s) => tableLabel(s.sport, s.table)).join(' → ')}</span>` : '';
+    return `<div class="guest">
+      <div class="gname">${esc(g.name)} <span class="cls ${gcls(g)}">${RATES[gcls(g)].ja}</span>${unpaidMember(g) ? '<span class="cls unpaid">月額・今月未払い</span>' : ''}</div>
+      <div class="gyen num">${yen(c.yen)}</div>
+      <div class="gsub num">${clock(g.start)}〜 ・ ${hm(elapsed(g))} ${moved}</div>
+      <div class="gsub r">${esc(c.desc)}</div>
+      <div class="gact">
+        <button onclick="openMove('${g.id}')">移動</button>
+        ${unpaidMember(g) ? `<button onclick="openFee('${g.regId}')">月会費を受け取る</button>` : ''}
+        <button class="pay" onclick="openSettle('${g.id}')">この人を精算</button>
+      </div>
+    </div>`;
+  }).join('');
+  const foot = gs.length > 1 ? `<div class="tfoot"><button class="btn" onclick="openCheckin('${sport}',${no})">＋ 追加</button><button class="btn pri" onclick="openSettle('${gs[0].id}', true)">${gs.length}人まとめて精算</button></div>` : `<div class="tfoot"><button class="btn" onclick="openCheckin('${sport}',${no})">＋ 追加</button></div>`;
+  return `<div class="tcard"><div class="thead"><span class="tno">${label}</span><span class="sport ${sport}">${SPORTS[sport].ja}</span><span class="sp note">${gs.length}人</span></div>${rows}${foot}</div>`;
+}
+
+/* ---------- デモ操作 ---------- */
+function advance(min) { S.offsetMin += min; save(); render(); toast(min + '分 進めました（' + clock(now()) + '）'); }
+function resetDemo() { S = seed(); save(); closeModal(); render(); toast('デモを最初の状態に戻しました'); }
+function openDisplay() { window.open(location.pathname + '#display', 'ks-display'); }
+
+/* ---------- 入店 ---------- */
+let CI = null;
+function openCheckin(sport, table) {
+  CI = { sport: sport || 'billiard', table: table || firstFree(sport || 'billiard'), mode: 'general', count: 2, picked: [], q: '' };
+  renderCheckin();
+}
+function firstFree(sport) { for (let i = 1; i <= SPORTS[sport].tables; i++) if (!occupied(sport, i).length) return i; return 1; }
+function renderCheckin() {
+  const sp = SPORTS[CI.sport];
+  const tbtn = []; for (let i = 1; i <= sp.tables; i++) { const n = occupied(CI.sport, i).length; tbtn.push(`<button class="${CI.table === i ? 'on ' + CI.sport : ''}" onclick="CI.table=${i};renderCheckin()">${tableLabel(CI.sport, i)}<span class="busy">${n ? n + '人使用中' : '空き'}</span></button>`); }
+  const q = CI.q.trim().toLowerCase();
+  const regs = S.regulars.filter((r) => !q || r.name.toLowerCase().includes(q) || r.kana.includes(q));
+  const inStore = new Set(S.guests.map((g) => g.regId));
+  const who = CI.mode === 'general'
+    ? `<div><div class="label">人数</div><div class="stepper"><button onclick="CI.count=Math.max(1,CI.count-1);renderCheckin()">−</button><b class="num">${CI.count}</b><button onclick="CI.count=Math.min(10,CI.count+1);renderCheckin()">＋</button><span class="note">一般 1時間700円・延長30分350円 ／ 1人ずつ時間を管理します</span></div></div>`
+    : `<div><div class="label">常連のお客様を選ぶ（複数可）</div>
+        <input type="search" id="regq" placeholder="名前・よみがなで検索" value="${esc(CI.q)}" oninput="CI.q=this.value;renderCheckinList()">
+        <div class="reglist" id="reglist" style="margin-top:8px">${regList(regs, inStore)}</div></div>
+       ${pickedView()}`;
+  const ok = CI.mode === 'general' ? true : CI.picked.length > 0;
+  showModal(`
+    <div class="mhead"><h3>入店受付</h3><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <div><div class="label">種目</div><div class="seg">
+        ${Object.keys(SPORTS).map((k) => `<button class="${CI.sport === k ? 'on ' + k : ''}" onclick="CI.sport='${k}';CI.table=firstFree('${k}');renderCheckin()">${SPORTS[k].ja}</button>`).join('')}
+      </div></div>
+      <div><div class="label">台</div><div class="seg">${tbtn.join('')}</div></div>
+      <div><div class="label">お客様</div><div class="seg">
+        <button class="${CI.mode === 'general' ? 'on' : ''}" onclick="CI.mode='general';renderCheckin()">一般（名前なし）</button>
+        <button class="${CI.mode === 'reg' ? 'on' : ''}" onclick="CI.mode='reg';renderCheckin()">常連（会員・月額会員）</button>
+      </div></div>
+      ${who}
+    </div>
+    <div class="mfoot"><span class="sp note">${tableLabel(CI.sport, CI.table)}（${sp.ja}）に入店</span>
+      <button class="btn" onclick="closeModal()">やめる</button>
+      <button class="btn pri big" ${ok ? '' : 'disabled'} onclick="doCheckin()">入店する</button></div>`);
+  if (CI.mode === 'reg' && CI.focus) { const el = $('#regq'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); CI.focus = false; }
+}
+function regList(regs, inStore) {
+  if (!regs.length) return '<div class="note">見つかりません</div>';
+  return regs.map((r) => {
+    const st = memberStatus(r);
+    const on = CI.picked.includes(r.id);
+    const here = inStore.has(r.id);
+    return `<button class="regrow ${on ? 'on' : ''}" ${here ? 'disabled style="opacity:.45"' : ''} onclick="togglePick('${r.id}')">
+      <span><b>${esc(r.name)}</b><br><span class="kana">${esc(r.kana)}</span></span>
+      <span class="right">${here ? '<span class="note">プレイ中</span>' : ''}${st ? `<span class="cls member">月額会員</span><span class="note" style="${st.paid ? '' : 'color:var(--alert);font-weight:700'}">${st.text}</span>` : '<span class="cls reg">会員</span>'}</span>
+    </button>`;
+  }).join('');
+}
+function renderCheckinList() {
+  const q = CI.q.trim().toLowerCase();
+  const regs = S.regulars.filter((r) => !q || r.name.toLowerCase().includes(q) || r.kana.includes(q));
+  $('#reglist').innerHTML = regList(regs, new Set(S.guests.map((g) => g.regId)));
+}
+function pickedView() {
+  if (!CI.picked.length) return '';
+  const boxes = CI.picked.map((id) => {
+    const r = S.regulars.find((x) => x.id === id);
+    const st = memberStatus(r);
+    if (st && st.paid) return `<div class="membox"><b>★ 月額会員</b><span>${esc(r.name)}</span><span class="st">${st.text}・時間料金 0円</span></div>`;
+    if (st) return `<div class="membox warn"><b>★ 月額会員</b><span>${esc(r.name)}</span><span class="st">${st.text}</span></div><div class="note" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">未払いのままだと会員の料金（1時間600円）で計算します。<button class="btn" onclick="openFee('${r.id}','checkin')">今月分 ${yen(S.fee)} を受け取る</button></div>`;
+    return `<div class="membox" style="border-color:var(--reg);background:var(--reg-sf);color:var(--reg)"><b>会員</b><span>${esc(r.name)}</span><span class="st">1時間600円</span></div>`;
+  }).join('');
+  return `<div><div class="label">選択中</div><div style="display:grid;gap:8px">${boxes}</div></div>`;
+}
+function togglePick(id) { const i = CI.picked.indexOf(id); if (i >= 0) CI.picked.splice(i, 1); else CI.picked.push(id); CI.focus = false; renderCheckin(); }
+function doCheckin() {
+  const t = now();
+  const seg = [{ sport: CI.sport, table: CI.table, at: t }];
+  if (CI.mode === 'general') {
+    for (let i = 0; i < CI.count; i++) S.guests.push({ id: uid(), name: '一般 ' + S.generalSeq++, cls: 'general', regId: null, start: t, segs: seg.map((s) => ({ ...s })) });
+  } else {
+    CI.picked.forEach((id) => { const r = S.regulars.find((x) => x.id === id); S.guests.push({ id: uid(), name: r.name, cls: r.cls === 'member' ? 'reg' : r.cls, regId: r.id, start: t, segs: seg.map((s) => ({ ...s })) }); });
+  }
+  const n = CI.mode === 'general' ? CI.count : CI.picked.length;
+  const where = tableLabel(CI.sport, CI.table);
+  save(); closeModal(); render(); toast(where + ' に ' + n + '人 入店しました');
+}
+
+/* ---------- 移動 ---------- */
+let MV = null;
+function openMove(gid) {
+  const g = S.guests.find((x) => x.id === gid); const c = curSeg(g);
+  const mates = occupied(c.sport, c.table);
+  MV = { gid, sport: c.sport === 'billiard' ? 'darts' : 'billiard', table: 0, all: mates.length > 1 };
+  MV.table = firstFree(MV.sport); renderMove();
+}
+function renderMove() {
+  const g = S.guests.find((x) => x.id === MV.gid); const c = curSeg(g);
+  const mates = occupied(c.sport, c.table);
+  const sp = SPORTS[MV.sport];
+  const tbtn = []; for (let i = 1; i <= sp.tables; i++) { const same = MV.sport === c.sport && i === c.table; const n = occupied(MV.sport, i).length; tbtn.push(`<button ${same ? 'disabled' : ''} class="${MV.table === i ? 'on ' + MV.sport : ''}" onclick="MV.table=${i};renderMove()">${tableLabel(MV.sport, i)}<span class="busy">${same ? '今の台' : n ? n + '人使用中' : '空き'}</span></button>`); }
+  showModal(`
+    <div class="mhead"><h3>移動　${esc(g.name)}（今：${tableLabel(c.sport, c.table)}）</h3><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <div><div class="label">移動先の種目</div><div class="seg">${Object.keys(SPORTS).map((k) => `<button class="${MV.sport === k ? 'on ' + k : ''}" onclick="MV.sport='${k}';MV.table=firstFree('${k}');renderMove()">${SPORTS[k].ja}</button>`).join('')}</div></div>
+      <div><div class="label">移動先の台</div><div class="seg">${tbtn.join('')}</div></div>
+      ${mates.length > 1 ? `<div><div class="label">誰が移動しますか</div><div class="seg"><button class="${MV.all ? 'on' : ''}" onclick="MV.all=true;renderMove()">同じ台の${mates.length}人全員</button><button class="${!MV.all ? 'on' : ''}" onclick="MV.all=false;renderMove()">${esc(g.name)} だけ</button></div></div>` : ''}
+      <p class="note" style="margin:0">料金はビリヤード・ダーツ共通なので、入店からの時間を通しで計算します。移動の記録は「両方利用」の集計に使います。</p>
+    </div>
+    <div class="mfoot"><span class="sp"></span><button class="btn" onclick="closeModal()">やめる</button><button class="btn pri big" ${MV.sport === c.sport && MV.table === c.table ? 'disabled' : ''} onclick="doMove()">移動する</button></div>`);
+}
+function doMove() {
+  const g = S.guests.find((x) => x.id === MV.gid); const c = curSeg(g);
+  const targets = MV.all ? occupied(c.sport, c.table) : [g];
+  const t = now();
+  const { sport, table } = MV;
+  targets.forEach((x) => x.segs.push({ sport, table, at: t }));
+  save(); closeModal(); render(); toast(targets.length + '人を ' + tableLabel(sport, table) + '（' + SPORTS[sport].ja + '）へ移動しました');
+}
+
+/* ---------- 精算 ---------- */
+let ST = null;
+function openSettle(gid, all) {
+  const g = S.guests.find((x) => x.id === gid); const c = curSeg(g);
+  const mates = occupied(c.sport, c.table);
+  ST = { table: [c.sport, c.table], sel: all ? mates.map((x) => x.id) : [gid], paid: null };
+  renderSettle();
+}
+function settleLines() {
+  return ST.sel.map((id) => { const g = S.guests.find((x) => x.id === id); const mins = Math.floor(elapsed(g)); return { g, mins, cls: gcls(g), c: calc(mins, gcls(g), GRACE) }; });
+}
+function renderSettle() {
+  const mates = occupied(ST.table[0], ST.table[1]);
+  const lines = settleLines();
+  const total = lines.reduce((a, l) => a + l.c.yen, 0);
+  const change = ST.paid != null ? ST.paid - total : null;
+  pushCheckout({ title: '時間料金', lines: lines.map((l) => ({ ja: l.g.name + '　' + hm(l.mins), en: RATES[l.cls].en + ' · ' + l.c.en, yen: l.c.yen })), total, paid: ST.paid });
+  showModal(`
+    <div class="mhead"><h3>精算　${tableLabel(ST.table[0], ST.table[1])}</h3><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <div><div class="label">精算するお客様（チェックで個別／まとめて を切り替え）</div>
+      <div class="lines">${mates.map((g) => {
+        const mins = Math.floor(elapsed(g)); const k = gcls(g); const c = calc(mins, k, GRACE); const on = ST.sel.includes(g.id);
+        return `<label class="line"><input type="checkbox" ${on ? 'checked' : ''} onchange="toggleSel('${g.id}')">
+          <span><b>${esc(g.name)}</b> <span class="cls ${k}">${RATES[k].ja}</span>${unpaidMember(g) ? ' <span class="cls unpaid">月額・今月未払い</span>' : ''} <span class="num note">${clock(g.start)}〜 ${hm(mins)}</span></span>
+          <span class="yen num">${yen(c.yen)}</span>
+          <span class="desc">${esc(c.desc)}${g.segs.length > 1 ? '　／　' + g.segs.map((s) => tableLabel(s.sport, s.table)).join(' → ') : ''}${unpaidMember(g) ? `　<button class="btn" style="min-height:0;padding:4px 10px;font-size:12px" onclick="event.preventDefault();openFee('${g.regId}','settle')">月会費を受け取って0円にする</button>` : ''}</span>
+        </label>`; }).join('')}</div></div>
+      <div class="total"><span>合計</span><b class="num">${yen(total)}</b><span class="note">${ST.sel.length}人</span></div>
+      <div><div class="label">お預かり</div><div class="seg">
+        ${[['ぴったり', total], ['1,000円', 1000], ['2,000円', 2000], ['5,000円', 5000], ['10,000円', 10000]].map(([l, v]) => `<button class="${ST.paid === v ? 'on' : ''}" ${v < total ? 'disabled' : ''} onclick="ST.paid=${v};renderSettle()">${l}</button>`).join('')}
+      </div>
+      ${change != null ? `<p class="change">お釣り <b class="num">${yen(change)}</b></p>` : ''}</div>
+    </div>
+    <div class="mfoot"><span class="sp note">確定するとレシート印刷とドロワが開きます</span>
+      <button class="btn" onclick="closeModal()">やめる</button>
+      <button class="btn pri big" ${ST.sel.length && (ST.paid != null || total === 0) ? '' : 'disabled'} onclick="doSettle()">会計する</button></div>`);
+}
+function toggleSel(id) { const i = ST.sel.indexOf(id); if (i >= 0) ST.sel.splice(i, 1); else ST.sel.push(id); ST.paid = null; renderSettle(); }
+function doSettle() {
+  const lines = settleLines();
+  const total = lines.reduce((a, l) => a + l.c.yen, 0);
+  const sale = { id: uid(), at: now(), type: 'time', total, paid: ST.paid ?? total,
+    lines: lines.map((l) => ({ label: l.g.name + '（' + RATES[l.cls].ja + '） ' + hm(l.mins), en: RATES[l.cls].en + ' · ' + l.c.en, yen: l.c.yen, desc: l.c.desc })),
+    people: lines.map((l) => ({ cls: l.cls, sports: sportsOf(l.g) })) };
+  S.sales.push(sale);
+  S.guests = S.guests.filter((g) => !ST.sel.includes(g.id));
+  save(); render(); showReceipt(sale);
+}
+
+/* ---------- ドリンク（都度会計） ---------- */
+let DR = null;
+function openDrink() { DR = { cart: {}, paid: null }; renderDrink(); }
+function drinkLines() { return Object.entries(DR.cart).filter(([, q]) => q > 0).map(([id, q]) => { const it = ITEMS.find((x) => x.id === id); return { it, q, yen: it.yen * q }; }); }
+function renderDrink() {
+  const lines = drinkLines();
+  const total = lines.reduce((a, l) => a + l.yen, 0);
+  const change = DR.paid != null ? DR.paid - total : null;
+  pushCheckout(total ? { title: 'ドリンク', lines: lines.map((l) => ({ ja: l.it.name + ' ×' + l.q, en: l.it.en + ' ×' + l.q, yen: l.yen })), total, paid: DR.paid } : null);
+  showModal(`
+    <div class="mhead"><h3>ドリンク会計（その場で精算）</h3><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <div class="items">${ITEMS.map((it) => `<button class="item" onclick="DR.cart['${it.id}']=(DR.cart['${it.id}']||0)+1;DR.paid=null;renderDrink()"><b>${esc(it.name)}</b><small class="num">${yen(it.yen)}</small></button>`).join('')}</div>
+      <p class="note" style="margin:0">商品名・価格はデモ用の仮です。導入時にお店の価格表で登録します。</p>
+      ${lines.length ? `<div class="cart">${lines.map((l) => `<div class="cartrow"><b>${esc(l.it.name)}</b><span class="q"><button onclick="DR.cart['${l.it.id}']--;DR.paid=null;renderDrink()">−</button><b class="num">${l.q}</b><button onclick="DR.cart['${l.it.id}']++;DR.paid=null;renderDrink()">＋</button></span><span class="num" style="min-width:64px;text-align:right">${yen(l.yen)}</span></div>`).join('')}</div>
+      <div class="total"><span>合計</span><b class="num">${yen(total)}</b></div>
+      <div><div class="label">お預かり</div><div class="seg">${[['ぴったり', total], ['500円', 500], ['1,000円', 1000], ['5,000円', 5000], ['10,000円', 10000]].map(([l, v]) => `<button class="${DR.paid === v ? 'on' : ''}" ${v < total ? 'disabled' : ''} onclick="DR.paid=${v};renderDrink()">${l}</button>`).join('')}</div>
+      ${change != null ? `<p class="change">お釣り <b class="num">${yen(change)}</b></p>` : ''}</div>` : '<p class="note" style="margin:0">商品を押すと追加されます</p>'}
+    </div>
+    <div class="mfoot"><span class="sp"></span><button class="btn" onclick="closeModal()">やめる</button><button class="btn pri big" ${total && DR.paid != null ? '' : 'disabled'} onclick="doDrink()">会計する</button></div>`);
+}
+function doDrink() {
+  const lines = drinkLines();
+  const total = lines.reduce((a, l) => a + l.yen, 0);
+  const sale = { id: uid(), at: now(), type: 'drink', total, paid: DR.paid, lines: lines.map((l) => ({ label: l.it.name + ' ×' + l.q, en: l.it.en + ' ×' + l.q, yen: l.yen })), people: [] };
+  S.sales.push(sale); save(); render(); showReceipt(sale);
+}
+
+/* ---------- レシート ---------- */
+function showReceipt(sale) {
+  const d = new Date(sale.at);
+  const paid = sale.paid ?? sale.total;
+  pushCheckout({ thanks: true });
+  showModal(`
+    <div class="mhead"><h3>会計しました</h3><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <p class="drawer" style="margin:0">レシートを印刷し、キャッシュドロワを開きました（デモ）</p>
+      <div class="receipt">
+        <h4>${esc(RECEIPT.name)}</h4>
+        <div class="c">${esc(RECEIPT.addr)}<br>${esc(RECEIPT.tel)}<br>${esc(RECEIPT.regNo)}</div>
+        <hr>
+        <div class="c"><b>領収書</b></div>
+        <div class="c">${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${clock(sale.at)}</div>
+        <hr>
+        ${sale.lines.map((l) => `<div class="row"><span>${esc(l.label)}</span><span>${yen(l.yen)}</span></div>${l.desc ? `<div style="color:#666;font-size:11px">${esc(l.desc)}</div>` : ''}`).join('')}
+        <hr>
+        <div class="row tot"><span>合計</span><span>${yen(sale.total)}</span></div>
+        <div class="row"><span>（内消費税等 10%）</span><span>${yen(Math.floor(sale.total * 10 / 110))}</span></div>
+        <div class="row"><span>お預かり（現金）</span><span>${yen(paid)}</span></div>
+        <div class="row"><span>お釣り</span><span>${yen(paid - sale.total)}</span></div>
+        <hr>
+        <div class="c">ありがとうございました<br>Thank you!</div>
+      </div>
+    </div>
+    <div class="mfoot"><span class="sp"></span><button class="btn pri big" onclick="afterReceipt()">閉じる</button></div>`);
+  toast('会計 ' + yen(sale.total) + ' を記録しました');
+}
+
+/* ---------- 月会費の受け取り ----------
+   back: 受け取ったあとに戻る画面（checkin / settle / members） */
+let FE = null;
+function feeStart(r) { const cur = ym(now()); return r.paidThrough && r.paidThrough >= cur ? ymAdd(r.paidThrough, 1) : cur; }
+function openFee(regId, back) { FE = { regId, back: back || null, months: 1, paid: null }; renderFee(); }
+function renderFee() {
+  const r = S.regulars.find((x) => x.id === FE.regId);
+  const start = feeStart(r);
+  const end = ymAdd(start, FE.months - 1);
+  const total = S.fee * FE.months;
+  const range = FE.months > 1 ? monthLabel(start) + '〜' + monthLabel(end) : monthLabel(start);
+  const change = FE.paid != null ? FE.paid - total : null;
+  pushCheckout({ title: '月会費', lines: [{ ja: '月会費 ' + range + '　' + r.name, en: 'Monthly membership fee × ' + FE.months, yen: total }], total, paid: FE.paid });
+  showModal(`
+    <div class="mhead"><h3>月会費の受け取り</h3><button class="x" onclick="feeBack()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <div class="membox"><b>★ ${esc(r.name)}</b><span class="st">${r.paidThrough ? '現在 ' + monthLabel(r.paidThrough) + 'まで支払済' : '支払い記録なし'}</span></div>
+      <div><div class="label">何か月分</div><div class="stepper">
+        <button onclick="FE.months=Math.max(1,FE.months-1);FE.paid=null;renderFee()">−</button><b class="num">${FE.months}</b>
+        <button onclick="FE.months=Math.min(12,FE.months+1);FE.paid=null;renderFee()">＋</button>
+        <span>${range}（1か月 ${yen(S.fee)}）</span></div></div>
+      <div class="total"><span>合計</span><b class="num">${yen(total)}</b></div>
+      <div><div class="label">お預かり（現金）</div><div class="seg">
+        ${[['ぴったり', total], ['5,000円', 5000], ['10,000円', 10000], ['20,000円', 20000]].map(([l, v]) => `<button class="${FE.paid === v ? 'on' : ''}" ${v < total ? 'disabled' : ''} onclick="FE.paid=${v};renderFee()">${l}</button>`).join('')}
+      </div>${change != null ? `<p class="change">お釣り <b class="num">${yen(change)}</b></p>` : ''}</div>
+    </div>
+    <div class="mfoot"><span class="sp note">受け取ると ${monthLabel(end)}まで月額会員料金（0円）になります</span>
+      <button class="btn" onclick="feeBack()">やめる</button>
+      <button class="btn pri big" ${FE.paid != null ? '' : 'disabled'} onclick="doFee()">受け取る</button></div>`);
+}
+function doFee() {
+  const r = S.regulars.find((x) => x.id === FE.regId);
+  const start = feeStart(r);
+  const end = ymAdd(start, FE.months - 1);
+  const total = S.fee * FE.months;
+  const range = FE.months > 1 ? monthLabel(start) + '〜' + monthLabel(end) : monthLabel(start);
+  r.cls = 'member';
+  r.paidThrough = end;
+  const sale = { id: uid(), at: now(), type: 'fee', total, paid: FE.paid, regId: r.id, months: FE.months,
+    lines: [{ label: '月会費 ' + range + ' ' + r.name, en: 'Monthly fee', yen: total }], people: [] };
+  S.sales.push(sale);
+  RECEIPT_BACK = FE.back;
+  FE = null;
+  save(); render(); showReceipt(sale);
+}
+function feeBack() { const b = FE && FE.back; FE = null; goBack(b); }
+let RECEIPT_BACK = null;
+function afterReceipt() { const b = RECEIPT_BACK; RECEIPT_BACK = null; goBack(b); }
+function goBack(b) {
+  if (b === 'checkin' && CI) { pushCheckout(null); renderCheckin(); }
+  else if (b === 'settle' && ST) { ST.paid = null; renderSettle(); }
+  else if (b === 'members' && MB) { pushCheckout(null); renderMembers(); }
+  else closeModal();
+}
+
+/* ---------- 会員管理 ---------- */
+let MB = null;
+function openMembers() { MB = { filter: 'all', q: '', adding: false, form: { name: '', kana: '', cls: 'member' } }; renderMembers(); }
+function memberRows() {
+  const q = MB.q.trim().toLowerCase();
+  return S.regulars
+    .filter((r) => !q || r.name.toLowerCase().includes(q) || r.kana.includes(q))
+    .filter((r) => MB.filter === 'all' || (MB.filter === 'member' && isMember(r)) || (MB.filter === 'unpaid' && isMember(r) && !memberStatus(r).paid) || (MB.filter === 'reg' && !isMember(r)))
+    .sort((a, b) => (isMember(b) - isMember(a)) || a.kana.localeCompare(b.kana, 'ja'));
+}
+function memberListHtml() {
+  const rows = memberRows();
+  if (!rows.length) return '<div class="note" style="padding:14px">該当するお客様はいません</div>';
+  return rows.map((r) => {
+    const st = memberStatus(r);
+    const badge = st ? `<span class="cls member">月額会員</span> <span class="note" style="${st.paid ? '' : 'color:var(--alert);font-weight:700'}">${st.text}</span>` : '<span class="cls reg">会員</span>';
+    const acts = st
+      ? `<button class="${st.paid ? '' : 'pri'}" onclick="openFee('${r.id}','members')">${st.paid ? '先の月分を受け取る' : '月会費を受け取る'}</button><button onclick="toReg('${r.id}')">会員に戻す</button>`
+      : `<button class="pri" onclick="toMember('${r.id}')">月額会員にする</button>`;
+    return `<div class="mrow"><div><b>${esc(r.name)}</b> <span class="note">${esc(r.kana)}</span><br>${badge}</div><div class="acts">${acts}</div></div>`;
+  }).join('');
+}
+function renderMemberList() { $('#mlist').innerHTML = memberListHtml(); }
+function renderMembers() {
+  const members = S.regulars.filter(isMember);
+  const paid = members.filter((r) => memberStatus(r).paid).length;
+  const feeToday = S.sales.filter((s) => s.type === 'fee').reduce((a, s) => a + s.total, 0);
+  const f = MB.form;
+  showModal(`
+    <div class="mhead"><h3>会員管理</h3><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <div class="kpis">
+        <div class="kpi"><small>月額会員</small><b class="num">${members.length}人</b></div>
+        <div class="kpi"><small>今月 支払済</small><b class="num">${paid}人</b></div>
+        <div class="kpi" style="${members.length - paid ? 'background:var(--alert-sf);color:var(--alert)' : ''}"><small>今月 未払い</small><b class="num">${members.length - paid}人</b></div>
+        <div class="kpi"><small>本日の月会費受取</small><b class="num">${yen(feeToday)}</b></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <div class="seg">${[['all', 'すべて'], ['member', '月額会員'], ['unpaid', '未払いの月額会員'], ['reg', '会員']].map(([k, l]) => `<button class="${MB.filter === k ? 'on' : ''}" onclick="MB.filter='${k}';renderMembers()">${l}</button>`).join('')}</div>
+        <button class="btn pri" style="margin-left:auto" onclick="MB.adding=!MB.adding;renderMembers()">${MB.adding ? '登録をやめる' : '＋ 常連を登録'}</button>
+      </div>
+      ${MB.adding ? `<div style="display:grid;gap:10px;border:1px solid var(--line);border-radius:var(--r);padding:14px">
+        <div class="label" style="margin:0">常連の新規登録</div>
+        <input type="text" id="nm-name" placeholder="お名前（例：John Smith／山田 太郎）" value="${esc(f.name)}" oninput="MB.form.name=this.value">
+        <input type="text" id="nm-kana" placeholder="よみがな（検索用）" value="${esc(f.kana)}" oninput="MB.form.kana=this.value">
+        <div class="seg"><button class="${f.cls === 'member' ? 'on' : ''}" onclick="MB.form.cls='member';renderMembers()">月額会員</button><button class="${f.cls === 'reg' ? 'on' : ''}" onclick="MB.form.cls='reg';renderMembers()">会員</button></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="note">${f.cls === 'member' ? '登録後、そのまま月会費の受け取りに進みます' : '1時間600円の料金になります'}</span><button class="btn pri" style="margin-left:auto" onclick="addRegular()">登録する</button></div>
+      </div>` : ''}
+      <input type="search" id="mq" placeholder="名前・よみがなで検索" value="${esc(MB.q)}" oninput="MB.q=this.value;renderMemberList()">
+      <div class="lines" id="mlist">${memberListHtml()}</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="label" style="margin:0">月会費の金額</span>
+        <input type="text" inputmode="numeric" id="feeamt" style="width:120px" value="${S.fee}" onchange="setFee(this.value)"><span class="note">円／月（デモ用の仮の金額。導入時にお店の金額を設定します）</span></div>
+    </div>
+    <div class="mfoot"><span class="sp note">月会費は月単位（毎月1日から新しい月）で管理します</span><button class="btn pri" onclick="closeModal()">閉じる</button></div>`);
+}
+function setFee(v) { const n = parseInt(String(v).replace(/[^0-9]/g, ''), 10); if (n > 0) { S.fee = n; save(); toast('月会費を ' + yen(n) + ' にしました'); } renderMembers(); }
+function toMember(id) { const r = S.regulars.find((x) => x.id === id); r.cls = 'member'; save(); openFee(id, 'members'); }
+function toReg(id) { const r = S.regulars.find((x) => x.id === id); r.cls = 'reg'; save(); render(); renderMembers(); toast(r.name + ' さんを会員に戻しました（支払い記録は残ります）'); }
+function addRegular() {
+  const f = MB.form;
+  if (!f.name.trim()) { toast('お名前を入れてください'); return; }
+  const r = { id: 'r' + S.regSeq++, name: f.name.trim(), kana: (f.kana || f.name).trim(), cls: f.cls };
+  S.regulars.push(r);
+  MB.adding = false; MB.form = { name: '', kana: '', cls: 'member' };
+  save();
+  if (r.cls === 'member') openFee(r.id, 'members');
+  else { renderMembers(); toast(r.name + ' さんを登録しました'); }
+}
+
+/* ---------- 月レポート ----------
+   今日より前の日はデモ用の架空データ（日付から決まる乱数なので毎回同じ）。
+   今日の行だけは、このデモで実際に会計した記録を使う。 */
+function rng(seed) { return () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const DOW = ['日', '月', '火', '水', '木', '金', '土'];
+const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+function dayData(date) {
+  const today = new Date(now());
+  if (sameDay(date, today)) {
+    const r = report();
+    return { date, today: true, n: r.people.length, cat: r.cat, cls: r.cls, timeYen: r.timeYen, drinkYen: r.drinkYen, feeYen: r.feeYen, feeCount: r.feeCount };
+  }
+  const R = rng(date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate());
+  const base = [36, 18, 20, 22, 24, 38, 44][date.getDay()];
+  const n = Math.round(base * (0.8 + 0.4 * R()));
+  const d = { date, today: false, n, cat: { billiard: 0, darts: 0, both: 0 }, cls: { general: 0, reg: 0, member: 0 }, timeYen: 0, drinkYen: 0, feeYen: 0, feeCount: 0 };
+  for (let i = 0; i < n; i++) {
+    const a = R(); const cls = a < 0.55 ? 'general' : a < 0.94 ? 'reg' : 'member';
+    const b = R(); const cat = b < 0.55 ? 'billiard' : b < 0.85 ? 'darts' : 'both';
+    const mins = 40 + Math.floor(R() * R() * 240);
+    d.cls[cls]++; d.cat[cat]++;
+    d.timeYen += calc(mins, cls, GRACE).yen;
+    if (R() < 0.6) d.drinkYen += [120, 150, 150, 160, 250][Math.floor(R() * 5)];
+  }
+  if (date.getDate() <= 10) { d.feeCount = R() < 0.45 ? 1 : 0; d.feeYen = d.feeCount * S.fee; }
+  return d;
+}
+function monthData(offset) {
+  const t = new Date(now());
+  const first = new Date(t.getFullYear(), t.getMonth() + offset, 1);
+  const last = offset === 0 ? t.getDate() : new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+  const days = [];
+  for (let i = 1; i <= last; i++) days.push(dayData(new Date(first.getFullYear(), first.getMonth(), i)));
+  return { first, days, partial: offset === 0 };
+}
+const sumBy = (days, f) => days.reduce((a, d) => a + f(d), 0);
+const totalOf = (d) => d.timeYen + d.drinkYen + d.feeYen;
+// グラフは月会費を含めない（日々の営業の売上だけを見る）
+const chartOf = (d) => d.timeYen + d.drinkYen;
+function niceMax(v) { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); for (const m of [1, 1.2, 1.6, 2, 2.4, 3, 4, 5, 6, 8, 10]) if (m * p >= v) return m * p; return 10 * p; }
+function pct(a, b) { if (!b) return ''; const x = Math.round((a / b - 1) * 100); return `<span class="delta ${x >= 0 ? 'up' : 'down'}">前月同期比 ${x >= 0 ? '+' : ''}${x}%</span>`; }
+
+let MR = null;
+function openMonth() { MR = { offset: 0 }; renderMonth(); }
+function renderMonth() {
+  const M = monthData(MR.offset);
+  const days = M.days;
+  const prev = monthData(MR.offset - 1).days.slice(0, M.partial ? days.length : undefined);
+  const tot = sumBy(days, totalOf), ptot = sumBy(prev, totalOf);
+  const ppl = sumBy(days, (d) => d.n), pppl = sumBy(prev, (d) => d.n);
+  const cat = { billiard: sumBy(days, (d) => d.cat.billiard), darts: sumBy(days, (d) => d.cat.darts), both: sumBy(days, (d) => d.cat.both) };
+  const cls = { general: sumBy(days, (d) => d.cls.general), reg: sumBy(days, (d) => d.cls.reg), member: sumBy(days, (d) => d.cls.member) };
+  const title = M.first.getFullYear() + '年' + (M.first.getMonth() + 1) + '月';
+
+  // 日別売上（積み上げ棒）
+  const W = 920, H = 250, L = 56, B = 26, T = 12;
+  const max = niceMax(Math.max(...days.map(chartOf), 1));
+  const nDays = new Date(M.first.getFullYear(), M.first.getMonth() + 1, 0).getDate();
+  const bw = (W - L - 8) / nDays;
+  const y = (v) => T + (H - T - B) * (1 - v / max);
+  let svg = '';
+  for (let i = 0; i <= 4; i++) { const v = max * i / 4; svg += `<line x1="${L}" x2="${W - 4}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)" stroke-width="1"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" style="fill:var(--ink-3)" font-size="11">${v >= 10000 ? (v / 10000) + '万' : v.toLocaleString()}</text>`; }
+  days.forEach((d, i) => {
+    const x = L + i * bw + bw * 0.15, w = bw * 0.7;
+    let base = 0;
+    const seg = (v, color) => { if (!v) return ''; const r = `<rect x="${x}" y="${y(base + v)}" width="${w}" height="${y(base) - y(base + v)}" style="fill:${color}"/>`; base += v; return r; };
+    svg += `<g><title>${d.date.getMonth() + 1}/${d.date.getDate()}(${DOW[d.date.getDay()]}) 売上 ${yen(chartOf(d))}\n時間料金 ${yen(d.timeYen)} / ドリンク ${yen(d.drinkYen)}${d.feeYen ? '\n（月会費 ' + yen(d.feeYen) + ' はグラフに含めていません）' : ''}\n来店 ${d.n}人${d.today ? '（本日・デモで操作した実績）' : ''}</title>${seg(d.timeYen, 'var(--accent)')}${seg(d.drinkYen, 'var(--dar)')}${d.today ? `<rect x="${x - 2}" y="${y(chartOf(d)) - 2}" width="${w + 4}" height="${y(0) - y(chartOf(d)) + 2}" fill="none" style="stroke:var(--ink)" stroke-width="1.5"/>` : ''}</g>`;
+  });
+  for (let i = 1; i <= nDays; i++) {
+    const dow = new Date(M.first.getFullYear(), M.first.getMonth(), i).getDay();
+    if (i === 1 || i % 5 === 0) svg += `<text x="${L + (i - 0.5) * bw}" y="${H - 8}" text-anchor="middle" font-size="11" style="fill:${dow === 0 ? 'var(--alert)' : dow === 6 ? 'var(--accent)' : 'var(--ink-3)'}">${i}</text>`;
+  }
+
+  // 曜日別の平均来店人数
+  const byDow = [1, 2, 3, 4, 5, 6, 0].map((w) => { const ds = days.filter((d) => d.date.getDay() === w); return { w, avg: ds.length ? sumBy(ds, (d) => d.n) / ds.length : 0 }; });
+  const dmax = Math.max(1, ...byDow.map((x) => x.avg));
+  const cmax = Math.max(1, cat.billiard, cat.darts, cat.both);
+  const bar = (label, n, max, color, unit) => `<div class="barrow"><span>${label}</span><span class="track"><i style="width:${n / max * 100}%;background:${color}"></i></span><b class="num" style="text-align:right">${unit(n)}</b></div>`;
+  const share = (n) => ppl ? Math.round(n / ppl * 100) + '%' : '';
+  const members = S.regulars.filter(isMember);
+  const paid = members.filter((r) => memberStatus(r).paid).length;
+
+  pushCheckout(null);
+  showModal(`
+    <div class="mhead"><button class="chipbtn" onclick="MR.offset--;renderMonth()" ${MR.offset <= -2 ? 'disabled' : ''} aria-label="前の月">‹</button><h3>月レポート　${title}${M.partial ? '（' + days.length + '日まで）' : ''}</h3><button class="chipbtn" onclick="MR.offset++;renderMonth()" ${MR.offset >= 0 ? 'disabled' : ''} aria-label="次の月">›</button><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <p class="note" style="margin:0">デモ用の架空データです。本日分だけは、このデモで操作した会計がそのまま入ります。</p>
+      <div class="kpis">
+        <div class="kpi"><small>売上合計</small><b class="num">${yen(tot)}</b>${pct(tot, ptot)}</div>
+        <div class="kpi"><small>来店人数</small><b class="num">${ppl.toLocaleString()}人</b>${pct(ppl, pppl)}</div>
+        <div class="kpi"><small>1日平均 売上</small><b class="num">${yen(Math.round(tot / days.length))}</b></div>
+        <div class="kpi"><small>1日平均 来店</small><b class="num">${(ppl / days.length).toFixed(1)}人</b></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><small><i class="sw" style="background:var(--accent)"></i>時間料金</small><b class="num">${yen(sumBy(days, (d) => d.timeYen))}</b></div>
+        <div class="kpi"><small><i class="sw" style="background:var(--dar)"></i>ドリンク</small><b class="num">${yen(sumBy(days, (d) => d.drinkYen))}</b></div>
+        <div class="kpi"><small>月会費（${sumBy(days, (d) => d.feeCount)}件）</small><b class="num">${yen(sumBy(days, (d) => d.feeYen))}</b></div>
+      </div>
+      <div><div class="label">日別の売上（時間料金＋ドリンク。月会費は含めない）</div><div class="scroll-x"><svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:560px;display:block" role="img" aria-label="日別の売上">${svg}</svg></div>
+        <p class="note" style="margin:4px 0 0">棒にカーソルを合わせると内訳が出ます。枠つきの棒が本日です。日付の青は土曜、赤は日曜。</p></div>
+      <div class="cols2">
+        <div><div class="label">種目別の人数</div><div style="display:grid;gap:8px">
+          ${bar('ビリヤードのみ', cat.billiard, cmax, 'var(--bil)', (n) => n + '人 ' + share(n))}
+          ${bar('ダーツのみ', cat.darts, cmax, 'var(--dar)', (n) => n + '人 ' + share(n))}
+          ${bar('両方利用', cat.both, cmax, 'var(--accent)', (n) => n + '人 ' + share(n))}
+        </div></div>
+        <div><div class="label">曜日別の平均来店人数</div><div style="display:grid;gap:6px">
+          ${byDow.map((x) => bar(DOW[x.w] + '曜', x.avg, dmax, x.w === 0 || x.w === 6 ? 'var(--accent)' : 'var(--ink-3)', (n) => n.toFixed(1) + '人')).join('')}
+        </div></div>
+      </div>
+      <div><div class="label">区分別の人数</div><div class="kpis">
+        <div class="kpi"><small>一般</small><b class="num">${cls.general}人</b><span class="note">${share(cls.general)}</span></div>
+        <div class="kpi"><small>会員</small><b class="num">${cls.reg}人</b><span class="note">${share(cls.reg)}</span></div>
+        <div class="kpi"><small>月額会員</small><b class="num">${cls.member}人</b><span class="note">${share(cls.member)}</span></div>
+        <div class="kpi"><small>月額会員の今月支払い</small><b class="num">${paid} / ${members.length}人</b><span class="note">未払い ${members.length - paid}人</span></div>
+      </div></div>
+      <div><div class="label">日別の明細</div><div class="scroll-x"><table class="hist"><thead><tr><th>日付</th><th class="r">来店</th><th class="r">ビリヤード</th><th class="r">ダーツ</th><th class="r">両方</th><th class="r">時間料金</th><th class="r">ドリンク</th><th class="r">月会費</th><th class="r">合計</th></tr></thead><tbody>
+        ${days.slice().reverse().map((d) => `<tr${d.today ? ' style="font-weight:700"' : ''}><td class="num">${d.date.getMonth() + 1}/${d.date.getDate()}（${DOW[d.date.getDay()]}）${d.today ? ' 本日' : ''}</td><td class="r num">${d.n}</td><td class="r num">${d.cat.billiard}</td><td class="r num">${d.cat.darts}</td><td class="r num">${d.cat.both}</td><td class="r num">${yen(d.timeYen)}</td><td class="r num">${yen(d.drinkYen)}</td><td class="r num">${yen(d.feeYen)}</td><td class="r num">${yen(totalOf(d))}</td></tr>`).join('')}
+      </tbody></table></div></div>
+    </div>
+    <div class="mfoot"><span class="sp"></span><button class="btn" onclick="monthCsv()">CSVを出力</button><button class="btn pri" onclick="closeModal()">閉じる</button></div>`, 'wide');
+}
+function monthCsv() {
+  const M = monthData(MR.offset);
+  const rows = [['日付', '曜日', '来店人数', 'ビリヤードのみ', 'ダーツのみ', '両方', '一般', '会員', '月額会員', '時間料金', 'ドリンク', '月会費', '合計']];
+  M.days.forEach((d) => rows.push([d.date.getFullYear() + '/' + (d.date.getMonth() + 1) + '/' + d.date.getDate(), DOW[d.date.getDay()], d.n, d.cat.billiard, d.cat.darts, d.cat.both, d.cls.general, d.cls.reg, d.cls.member, d.timeYen, d.drinkYen, d.feeYen, totalOf(d)]));
+  const csv = '﻿' + rows.map((r) => r.map((v) => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = 'ynsys-pos-' + M.first.getFullYear() + pad(M.first.getMonth() + 1) + '.csv'; a.click();
+}
+
+/* ---------- 日報・集計 ---------- */
+function report() {
+  const time = S.sales.filter((s) => s.type === 'time');
+  const drink = S.sales.filter((s) => s.type === 'drink');
+  const fee = S.sales.filter((s) => s.type === 'fee');
+  const people = time.flatMap((s) => s.people);
+  const cat = { billiard: 0, darts: 0, both: 0 };
+  people.forEach((p) => { if (p.sports.length > 1) cat.both++; else cat[p.sports[0]]++; });
+  const cls = { general: 0, reg: 0, member: 0 };
+  people.forEach((p) => cls[p.cls]++);
+  return { time, drink, people, cat, cls,
+    timeYen: time.reduce((a, s) => a + s.total, 0), drinkYen: drink.reduce((a, s) => a + s.total, 0), feeYen: fee.reduce((a, s) => a + s.total, 0), feeCount: fee.length };
+}
+function openReport() {
+  const r = report();
+  const max = Math.max(1, r.cat.billiard, r.cat.darts, r.cat.both);
+  const bar = (label, n, color) => `<div class="barrow"><span>${label}</span><span class="track"><i style="width:${n / max * 100}%;background:${color}"></i></span><b class="num" style="text-align:right">${n}人</b></div>`;
+  const hist = [...S.sales].sort((a, b) => b.at - a.at);
+  pushCheckout(null);
+  showModal(`
+    <div class="mhead"><h3>日報・集計（本日）</h3><button class="x" onclick="closeModal()" aria-label="閉じる">×</button></div>
+    <div class="mbody">
+      <div class="kpis">
+        <div class="kpi"><small>売上合計</small><b class="num">${yen(r.timeYen + r.drinkYen + r.feeYen)}</b></div>
+        <div class="kpi"><small>時間料金</small><b class="num">${yen(r.timeYen)}</b></div>
+        <div class="kpi"><small>ドリンク</small><b class="num">${yen(r.drinkYen)}</b></div>
+        <div class="kpi"><small>月会費（${r.feeCount}件）</small><b class="num">${yen(r.feeYen)}</b></div>
+        <div class="kpi"><small>来店人数（精算済み）</small><b class="num">${r.people.length}人</b></div>
+      </div>
+      <div><div class="label">種目別の人数</div><div style="display:grid;gap:8px">
+        ${bar('ビリヤードのみ', r.cat.billiard, 'var(--bil)')}
+        ${bar('ダーツのみ', r.cat.darts, 'var(--dar)')}
+        ${bar('両方利用', r.cat.both, 'var(--accent)')}
+      </div><p class="note">途中で移動したお客様は「両方利用」に数えます。プレイ中の ${S.guests.length}人 は精算後に加わります。</p></div>
+      <div><div class="label">区分別の人数</div><div class="kpis">
+        <div class="kpi"><small>一般</small><b class="num">${r.cls.general}人</b></div>
+        <div class="kpi"><small>会員</small><b class="num">${r.cls.reg}人</b></div>
+        <div class="kpi"><small>月額会員</small><b class="num">${r.cls.member}人</b></div>
+      </div></div>
+      <div><div class="label">会計履歴</div><div class="scroll-x"><table class="hist"><thead><tr><th>時刻</th><th>種類</th><th>内容</th><th class="r">金額</th></tr></thead><tbody>
+        ${hist.map((s) => `<tr><td class="num">${clock(s.at)}</td><td>${TYPE_JA[s.type]}</td><td>${s.lines.map((l) => esc(l.label)).join('<br>')}</td><td class="r num">${yen(s.total)}</td></tr>`).join('')}
+      </tbody></table></div></div>
+    </div>
+    <div class="mfoot"><span class="sp"></span><button class="btn" onclick="openMonth()">月レポートを見る</button><button class="btn" onclick="downloadCsv()">CSVを出力</button><button class="btn pri" onclick="closeModal()">閉じる</button></div>`);
+}
+function downloadCsv() {
+  const rows = [['時刻', '種類', '内容', '区分', '種目', '金額']];
+  S.sales.forEach((s) => {
+    if (s.type === 'time') s.lines.forEach((l, i) => { const p = s.people[i] || {}; rows.push([clock(s.at), '時間料金', l.label, RATES[p.cls]?.ja || '', (p.sports || []).length > 1 ? '両方' : SPORTS[(p.sports || [])[0]]?.ja || '', l.yen]); });
+    else s.lines.forEach((l) => rows.push([clock(s.at), TYPE_JA[s.type], l.label, '', '', l.yen]));
+  });
+  const csv = '﻿' + rows.map((r) => r.map((v) => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = 'ynsys-pos-demo.csv'; a.click();
+}
+
+/* ---------- モーダル・トースト ---------- */
+function showModal(html, cls) { $('#modal').innerHTML = `<div class="scrim" onclick="if(event.target===this)closeModal()"><div class="modal ${cls || ''}" role="dialog" aria-modal="true">${html}</div></div>`; }
+function closeModal() { $('#modal').innerHTML = ''; ST = DR = MV = FE = MB = CI = MR = null; pushCheckout(null); }
+let toastTimer;
+function toast(msg) { $('#toast').innerHTML = `<div class="toast">${esc(msg)}</div>`; clearTimeout(toastTimer); toastTimer = setTimeout(() => ($('#toast').innerHTML = ''), 2600); }
+
+/* ---------- 客面表示（別タブ・英語併記） ---------- */
+let checkout = null;
+function pushCheckout(c) { checkout = c; pushDisplay(); }
+function pushDisplay() { try { localStorage.setItem(DISP_KEY, JSON.stringify({ checkout, t: Date.now() })); } catch (e) {} }
+
+function renderDisplay() {
+  document.title = "BILLIARD POCKET — Display";
+  let co = null; try { co = JSON.parse(localStorage.getItem(DISP_KEY) || '{}').checkout; } catch (e) {}
+  const rows = S.guests.slice().sort((a, b) => a.start - b.start).map((g) => {
+    const s = curSeg(g); // 金額は客面に出さない（利用時間だけ）
+    return `<tr><td>${tableLabel(s.sport, s.table)}</td><td>${esc(g.name)}</td><td>${SPORTS[s.sport].ja} <span class="en">${SPORTS[s.sport].en}</span></td><td class="num">${clock(g.start)}〜</td><td class="r num" style="font-weight:800;font-size:1.15em">${hm(elapsed(g))}</td></tr>`;
+  }).join('');
+  const rate = (k) => { const r = RATES[k]; return `<div class="rate ${k === 'member' ? 'm' : ''}"><span class="t">${r.ja} <span class="en">/ ${r.en}</span></span>${k === 'member' ? `<span class="p">0<small>円 / Free</small></span><span class="x">月会費でご利用いただけます<br><span class="en">Included in your monthly fee</span></span>` : `<span class="p num">${r.hour}<small>円 / 1 hour</small></span><span class="x">延長30分 ${r.ext}円<br><span class="en">Extension: ¥${r.ext} per 30 min</span></span>`}</div>`; };
+  let overlay = '';
+  if (co && co.thanks) overlay = `<div class="co"><div class="cobox"><div class="thanks">ありがとうございました<br><span class="en">Thank you!</span></div></div></div>`;
+  else if (co) overlay = `<div class="co"><div class="cobox">
+      <h2>お会計 <span class="en">/ Your Bill</span></h2>
+      ${co.lines.map((l) => `<div class="coline"><span>${esc(l.ja)}<br><span class="en" style="font-size:.8em">${esc(l.en)}</span></span><span class="num">${yen(l.yen)}</span></div>`).join('')}
+      <div class="cotot"><span>合計 <span class="en">Total</span></span><b class="num">${yen(co.total)}</b></div>
+      ${co.paid != null ? `<div class="coline"><span>お預かり <span class="en">Paid</span></span><span class="num">${yen(co.paid)}</span></div><div class="coline"><span>お釣り <span class="en">Change</span></span><span class="num">${yen(co.paid - co.total)}</span></div>` : ''}
+    </div></div>`;
+  $('#app').innerHTML = `<div class="disp">
+    <div class="disp-head"><h1>${esc(STORE)} <span class="en">Billiards &amp; Darts</span></h1><span class="clock num">${clock(now())}</span></div>
+    <section><h2>料金 <span class="en">/ Rates</span></h2><div class="rates">${rate('general')}${rate('reg')}${rate('member')}</div>
+      <p class="en" style="margin:10px 0 0">ビリヤード・ダーツ共通 / Same rate for Billiards and Darts. 1時間未満も1時間分、その後は30分ごとの延長料金（超過6分から） / Minimum 1 hour, then charged per 30 min (from 6 min over).</p></section>
+    <section><h2>ご利用中 <span class="en">/ Now Playing</span></h2>
+      <div style="overflow-x:auto"><table><thead><tr><th>台 Table</th><th>お名前 Name</th><th>種目 Game</th><th>開始 Start</th><th class="r">利用時間 Time</th></tr></thead><tbody>${rows || '<tr><td colspan="5" class="en">—</td></tr>'}</tbody></table></div></section>
+    ${overlay}
+    <a class="disp-back" href="#" onclick="location.hash='';return false">受付画面に戻る</a>
+  </div>`;
+}
+window.addEventListener('storage', (e) => {
+  if (e.key === KEY) { S = load() || S; if (location.hash === '#display') renderDisplay(); else if (!$('#modal').innerHTML) render(); }
+  if (e.key === DISP_KEY && location.hash === '#display') renderDisplay();
+});
+window.addEventListener('hashchange', () => { $('#modal').innerHTML = ''; render(); });
+
+/* 30秒ごとに料金と時刻を更新（モーダルを開いている間は裏の一覧だけ） */
+setInterval(() => { if (location.hash === '#display') renderDisplay(); else render(); }, 30000);
+render();
+</script>
+</body>
+</html>
