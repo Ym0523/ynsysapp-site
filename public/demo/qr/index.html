@@ -235,9 +235,25 @@ input{font-family:inherit;font-size:16px}
   .r-tbl.free{min-height:0}
   .call-chip{font-size:10px;padding:1px 5px}
 }
+
+/* ===== 画面の分離（#customer＝お客様だけ／#store＝お店だけ） ===== */
+.view-switch{display:none;font-size:13px;margin-top:6px}
+.view-switch a{color:#f3c9a0;font-weight:700}
+html[data-view="customer"] .view-switch, html[data-view="store"] .view-switch{display:block}
+html[data-view="customer"] .tabs, html[data-view="customer"] .top-actions, html[data-view="customer"] .auto-hint{display:none !important}
+html[data-view="customer"] .layout{display:block !important;max-width:430px;margin:0 auto}
+html[data-view="customer"] #paneCustomer{display:block !important;position:static}
+html[data-view="customer"] #paneHandy, html[data-view="customer"] #paneKitchen, html[data-view="customer"] #paneRegister{display:none !important}
+html[data-view="store"] #paneCustomer, html[data-view="store"] .tab[data-tab="customer"]{display:none !important}
+html[data-view="store"] .layout{display:block !important}
 </style>
 </head>
 <body>
+<script>
+var VIEW = location.hash==='#customer' ? 'customer' : location.hash==='#store' ? 'store' : 'all';
+document.documentElement.setAttribute('data-view', VIEW);
+window.addEventListener('hashchange', function(){ location.reload(); });
+</script>
 
 <header class="top">
   <div class="top-in">
@@ -250,6 +266,7 @@ input{font-family:inherit;font-size:16px}
         <button class="btn-reset" data-act="reset" type="button" id="btnReset">データ初期化</button>
       </div>
     </div>
+    <div class="view-switch" id="viewSwitch"></div>
     <div class="auto-hint" id="autoHint"></div>
     <nav class="tabs" id="tabs" aria-label="画面切替">
       <button class="tab" data-act="tab" data-arg="customer" data-tab="customer" type="button">お客様（スマホ）</button>
@@ -362,7 +379,11 @@ var ui = {
   resetArmed: false
 };
 var isWide = window.matchMedia('(min-width:1100px)');
-if(isWide.matches) ui.tab = 'kitchen';
+if(VIEW==='customer') ui.tab = 'customer';
+else if(VIEW==='store' || isWide.matches) ui.tab = 'kitchen';
+document.getElementById('viewSwitch').innerHTML = VIEW==='customer'
+  ? 'お客様のスマホ画面です。<a href="#store" target="_blank" rel="noopener">お店の画面（ハンディ・厨房・レジ）を別タブで開く ↗</a>'
+  : VIEW==='store' ? 'お店の画面です。<a href="#customer" target="_blank" rel="noopener">お客様のスマホ画面を別タブで開く ↗</a>' : '';
 
 /* ================= ユーティリティ ================= */
 function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
@@ -471,7 +492,8 @@ function autoStep(){
 }
 function goStoreTab(t){
   // スマホ幅では今見ている画面を勝手に変えすぎないよう、店側タブのときだけ切り替える
-  if(isWide.matches || ui.tab!=='customer') ui.tab = t;
+  if(VIEW==='customer') return;
+  if(VIEW==='store' || isWide.matches || ui.tab!=='customer') ui.tab = t;
 }
 
 /* ================= 描画：お客様 ================= */
@@ -731,7 +753,8 @@ function updateChange(){
 /* ================= 全体描画 ================= */
 function render(){
   // タブ
-  if(isWide.matches && ui.tab==='customer') ui.tab='kitchen';
+  if(VIEW==='customer') ui.tab='customer';
+  else if((VIEW==='store' || isWide.matches) && ui.tab==='customer') ui.tab='kitchen';
   var pc = pendingCount(), cl = callingCount();
   document.querySelectorAll('.tab').forEach(function(b){
     var t = b.getAttribute('data-tab');

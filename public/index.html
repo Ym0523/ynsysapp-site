@@ -118,8 +118,22 @@
   .log-link::after { content: " ↗"; }
   .log-link:hover { text-decoration: underline; }
   .log-demo { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 16px; }
-  .log-demo a { font-size: 13px; font-weight: 700; text-decoration: none; color: var(--brand); border: 1.5px solid var(--brand); padding: 5px 14px; border-radius: 999px; transition: background .2s, color .2s; }
-  .log-demo a:hover { background: var(--brand); color: #fff; }
+  .log-demo button { font: inherit; cursor: pointer; background: #fff; font-size: 13px; font-weight: 700; color: var(--brand); border: 1.5px solid var(--brand); padding: 5px 14px; border-radius: 999px; transition: background .2s, color .2s; }
+  .log-demo button:hover { background: var(--brand); color: #fff; }
+  /* デモの画面選択 */
+  .demo-dlg { border: 0; border-radius: var(--radius); padding: 0; width: min(480px, calc(100% - 32px)); box-shadow: 0 24px 60px rgba(28,36,48,.25); color: var(--ink); }
+  .demo-dlg::backdrop { background: rgba(28,36,48,.45); }
+  .demo-dlg .dlg-in { padding: 28px 26px 22px; }
+  .demo-dlg h3 { font-size: 19px; margin: 0 0 4px; }
+  .demo-dlg .dlg-lead { margin: 0 0 18px; font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .demo-choice { display: block; text-decoration: none; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; transition: border-color .2s, background .2s; }
+  .demo-choice:hover { border-color: var(--brand); background: #f3f9f7; }
+  .demo-choice b { display: block; font-size: 15px; color: var(--brand-deep); }
+  .demo-choice b::after { content: " ↗"; }
+  .demo-choice span { display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.7; margin-top: 2px; }
+  .demo-choice.sub { padding: 10px 16px; }
+  .demo-choice.sub b { font-size: 13px; }
+  .demo-dlg .dlg-close { display: block; margin: 8px auto 0; font: inherit; font-size: 14px; background: none; border: 0; color: var(--ink-soft); cursor: pointer; padding: 6px 12px; }
   .log-note { margin: 20px 0 0; font-size: 13px; color: var(--ink-soft); }
 
   /* ---------- Flow ---------- */
@@ -325,7 +339,7 @@
           <div class="log-cat">業務アプリ</div>
           <h3>サロン様のLINE予約システム</h3>
           <p>リラクゼーションサロン様の予約をLINEで完結できるようにしました。Googleカレンダーとも連携しています。</p>
-          <div class="log-demo"><a href="demo/salon/index.html" target="_blank" rel="noopener">▶ お客様の予約画面</a><a href="demo/salon/index.html#store" target="_blank" rel="noopener">▶ お店の管理画面</a></div>
+          <div class="log-demo"><button type="button" data-demo="salon">▶ デモを触ってみる</button></div>
           <div class="log-price"><span>費用目安</span>初期 0円 ／ 月額 3,000円〜</div>
         </div>
       </article>
@@ -335,7 +349,7 @@
           <div class="log-cat">業務アプリ</div>
           <h3>ビリヤード店様の会計（POS）システム</h3>
           <p>卓ごとの時間課金と会計をタブレットひとつで。複数店舗での運用に対応しています。</p>
-          <div class="log-demo"><a href="demo/pos/index.html" target="_blank" rel="noopener">▶ 受付・会計画面</a><a href="demo/pos/index.html#display" target="_blank" rel="noopener">▶ お客様向け表示</a></div>
+          <div class="log-demo"><button type="button" data-demo="pos">▶ デモを触ってみる</button></div>
           <div class="log-price"><span>費用目安</span>初期 10万円〜 ／ 月額 5,000円〜</div>
         </div>
       </article>
@@ -345,7 +359,7 @@
           <div class="log-cat">業務アプリ</div>
           <h3>飲食店様のQRオーダー＋レジ</h3>
           <p>席のQRコードからスマホで注文、厨房とレジへそのまま連携。注文の聞き間違いと二度手間をなくします。</p>
-          <div class="log-demo"><a href="demo/qr/index.html" target="_blank" rel="noopener">▶ デモを触ってみる</a></div>
+          <div class="log-demo"><button type="button" data-demo="qr">▶ デモを触ってみる</button></div>
           <div class="log-price"><span>費用目安</span>初期 10万円〜（機器代込み） ／ 月額 6,000円〜</div>
         </div>
       </article>
@@ -365,7 +379,7 @@
           <div class="log-cat">業務アプリ</div>
           <h3>便利屋様の現場配置・シフト管理</h3>
           <p>受付から見積、人とトラックの配置、シフト、人件費までを一つの画面でつなげました。</p>
-          <div class="log-demo"><a href="demo/genba/index.html" target="_blank" rel="noopener">▶ デモを触ってみる</a></div>
+          <div class="log-demo"><button type="button" data-demo="genba">▶ デモを触ってみる</button></div>
           <div class="log-price"><span>費用目安</span>個別にお見積り</div>
         </div>
       </article>
@@ -467,6 +481,15 @@
 
 </main>
 
+<dialog class="demo-dlg" id="demoDlg" aria-labelledby="demoDlgTitle">
+  <div class="dlg-in">
+    <h3 id="demoDlgTitle"></h3>
+    <p class="dlg-lead" id="demoDlgLead"></p>
+    <div id="demoDlgList"></div>
+    <button type="button" class="dlg-close" id="demoDlgClose">閉じる</button>
+  </div>
+</dialog>
+
 <!-- ===== Footer ===== -->
 <footer>
   <div class="wrap">
@@ -496,6 +519,33 @@
     entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  // デモの画面選択（お客様の画面／お店の画面を分けて開く）
+  const DEMOS = {
+    salon: { title: 'サロン様のLINE予約（デモ）', lead: '同じブラウザで両方を別タブで開くと、予約が店側に届く流れを体験できます。', items: [
+      { href: 'demo/salon/index.html', name: 'お客様の画面', desc: 'LINEから開く予約画面。コース・日時を選んで予約します。' },
+      { href: 'demo/salon/index.html#store', name: 'お店の画面', desc: '予約の承認、会計、売上、カルテ、営業時間の設定。' } ] },
+    pos: { title: 'ビリヤード店様の会計（デモ）', lead: '同じブラウザで両方を別タブで開くと、受付の操作が店内表示に反映されます。', items: [
+      { href: 'demo/pos/index.html#display', name: 'お客様の画面', desc: '店内モニターに出す料金表と、お客様ごとの利用時間。' },
+      { href: 'demo/pos/index.html', name: 'お店の画面', desc: '入店受付、台の移動、時間料金の精算、日報・月レポート。' } ] },
+    qr: { title: '飲食店様のQRオーダー（デモ）', lead: '同じブラウザで両方を別タブで開くと、スマホの注文が厨房・レジに届く流れを体験できます。', items: [
+      { href: 'demo/qr/index.html#customer', name: 'お客様の画面', desc: '卓のQRコードから開くスマホの注文画面。' },
+      { href: 'demo/qr/index.html#store', name: 'お店の画面', desc: 'ハンディ（代理注文）、厨房の伝票、レジの会計。' },
+      { href: 'demo/qr/index.html', name: 'パソコンで両方を並べて見る', desc: '', sub: true } ] },
+    genba: { href: 'demo/genba/index.html' }
+  };
+  const dlgEl = document.getElementById('demoDlg');
+  document.querySelectorAll('[data-demo]').forEach((b) => b.addEventListener('click', () => {
+    const d = DEMOS[b.dataset.demo];
+    if (d.href) { window.open(d.href, '_blank', 'noopener'); return; }
+    document.getElementById('demoDlgTitle').textContent = d.title;
+    document.getElementById('demoDlgLead').textContent = d.lead;
+    document.getElementById('demoDlgList').innerHTML = d.items.map((it) =>
+      `<a class="demo-choice${it.sub ? ' sub' : ''}" href="${it.href}" target="_blank" rel="noopener"><b>${it.name}</b>${it.desc ? `<span>${it.desc}</span>` : ''}</a>`).join('');
+    dlgEl.showModal();
+  }));
+  document.getElementById('demoDlgClose').addEventListener('click', () => dlgEl.close());
+  dlgEl.addEventListener('click', (e) => { if (e.target === dlgEl) dlgEl.close(); });
 
   // 送信：今はメールソフトを開く（公開時は Formspree 等のフォームサービスに差し替え）
   document.getElementById('contact-form').addEventListener('submit', (ev) => {
