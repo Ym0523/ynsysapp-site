@@ -3,6 +3,19 @@
 name = "ynsysapp-site"
 compatibility_date = "2026-08-28"
 
+# ドメインによる振り分け（yodakiya.com＝会社HP／ynsysapp.com＝学校向け案内・規約）は src/worker.js
+main = "src/worker.js"
+
 # public/ の中だけを配信する。README や設定ファイルは公開されない
 [assets]
 directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# このWorkerにつなぐドメイン
+routes = [
+  { pattern = "yodakiya.com", custom_domain = true },
+  { pattern = "www.yodakiya.com", custom_domain = true },
+  { pattern = "ynsysapp.com", custom_domain = true },
+  { pattern = "www.ynsysapp.com", custom_domain = true },
+]

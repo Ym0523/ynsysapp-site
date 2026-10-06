@@ -1,4 +1,11 @@
-# ynsysapp.com（ルートページ）
+# yodakiya.com ／ ynsysapp.com
+
+2026-10-06〜：会社ホームページ（屋号「よだき屋」）は **https://yodakiya.com/**。ynsysapp.com は学校向け案内・利用規約・プライバシーポリシーだけを置き、それ以外は yodakiya.com へ301転送する。振り分けは `src/worker.js`、つなぐドメインは `wrangler.toml` の routes。
+
+- `public/robots.txt` `public/sitemap.xml` — yodakiya.com 用
+- `public/robots-app.txt` `public/sitemap-app.xml` — ynsysapp.com 用（worker が /robots.txt・/sitemap.xml として返す）
+
+## 旧メモ（ynsysapp.com ルートページ）
 
 `https://ynsysapp.com/` に置く、運営者とサービスの案内ページ。ビルド不要の静的サイト。
 
