@@ -4,6 +4,8 @@
 //   （Google の同意画面や学校のフィルタリングにこのURLで登録しているため動かさない）
 const HP_HOST = 'yodakiya.com';
 const APP_HOST = 'ynsysapp.com';
+// yodakiya.com がこのWorkerにつながって表示できるようになるまで false（true にすると ynsysapp.com のトップ・デモを転送する）
+const HP_LIVE = false;
 const APP_PATHS = ['/school/', '/terms/', '/privacy/', '/shukketsu/'];
 // どちらのドメインでもそのまま返すもの（アイコン）
 const SHARED = ['/favicon.ico', '/favicon.svg', '/favicon-48.png', '/apple-touch-icon.png'];
@@ -29,9 +31,10 @@ export default {
       return env.ASSETS.fetch(new Request(url.toString(), request));
     }
     if (host === 'www.' + HP_HOST) return moveTo(url, HP_HOST);
-    if ((host === APP_HOST || host === 'www.' + APP_HOST) && !isAppPath) return moveTo(url, HP_HOST);
+    if (HP_LIVE && (host === APP_HOST || host === 'www.' + APP_HOST) && !isAppPath) return moveTo(url, HP_HOST);
     if (host === 'www.' + APP_HOST && isAppPath) return moveTo(url, APP_HOST);
     if (host === HP_HOST && isAppPath) return moveTo(url, APP_HOST);
+    if (!HP_LIVE && host === 'www.' + APP_HOST) return moveTo(url, APP_HOST);
 
     return env.ASSETS.fetch(request);
   },
