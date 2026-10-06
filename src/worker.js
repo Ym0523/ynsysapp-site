@@ -4,8 +4,8 @@
 //   （Google の同意画面や学校のフィルタリングにこのURLで登録しているため動かさない）
 const HP_HOST = 'yodakiya.com';
 const APP_HOST = 'ynsysapp.com';
-// yodakiya.com がこのWorkerにつながって表示できるようになるまで false（true にすると ynsysapp.com のトップ・デモを転送する）
-const HP_LIVE = false;
+// true＝ynsysapp.com のトップ・デモを yodakiya.com へ転送する（2026-10-06 yodakiya.com 接続確認後に有効化）
+const HP_LIVE = true;
 const APP_PATHS = ['/school/', '/terms/', '/privacy/', '/shukketsu/'];
 // どちらのドメインでもそのまま返すもの（アイコン）
 const SHARED = ['/favicon.ico', '/favicon.svg', '/favicon-48.png', '/apple-touch-icon.png'];
