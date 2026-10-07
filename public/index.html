@@ -3,234 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>よだき屋｜宮崎の、顔が見えるシステム屋。</title>
-<meta name="description" content="よだきいを、減らしましょう。宮崎の小さな会社・お店のための、業務アプリ開発・ホームページ作成。契約縛りなし、データは全部お渡しします。">
+<title>よだき屋｜宮崎のホームページ制作・業務システム開発</title>
+<meta name="description" content="よだきいを、減らしましょう。宮崎県全域の小さな会社・お店のための、ホームページ制作（5万円〜）と、LINE予約・レジ（POS）・QRオーダーなどの業務システム開発。契約縛りなし、データは全部お渡しします。">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[
- {"@type":"WebSite","name":"よだき屋","alternateName":["ynsys","ynsysapp"],"url":"https://yodakiya.com/"},
- {"@type":"Organization","name":"よだき屋","alternateName":"ynsys","url":"https://yodakiya.com/","logo":"https://yodakiya.com/apple-touch-icon.png","email":"info@yodakiya.com","areaServed":"宮崎県"}
-]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://yodakiya.com/#website","name":"よだき屋","alternateName":["ynsys","ynsysapp"],"url":"https://yodakiya.com/","inLanguage":"ja","publisher":{"@id":"https://yodakiya.com/#org"}},{"@type":"Organization","@id":"https://yodakiya.com/#org","name":"よだき屋","alternateName":"ynsys","url":"https://yodakiya.com/","logo":"https://yodakiya.com/apple-touch-icon.png","image":"https://yodakiya.com/assets/og.png","email":"info@yodakiya.com","slogan":"よだきいを、減らしましょう。","description":"宮崎県全域の小さな会社・お店のためのホームページ制作と業務システム開発。","areaServed":{"@type":"AdministrativeArea","name":"宮崎県"},"sameAs":["https://lin.ee/w3bAPYd"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","email":"info@yodakiya.com","areaServed":"JP","availableLanguage":"Japanese"},"knowsAbout":["ホームページ制作","LINE予約システム","POSレジ","QRオーダー","業務システム開発","Googleビジネスプロフィール"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"よだき屋のサービス","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"ホームページ制作","url":"https://yodakiya.com/homepage/"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"LINE予約システム","url":"https://yodakiya.com/line-yoyaku/"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"レジ（POS）・QRオーダー","url":"https://yodakiya.com/pos/"}}]}}]}
 </script>
 <link rel="canonical" href="https://yodakiya.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yodakiya.com/">
-<meta property="og:title" content="よだき屋｜宮崎の、顔が見えるシステム屋。">
-<meta property="og:description" content="よだきいを、減らしましょう。宮崎の小さな会社・お店のための、業務アプリ開発・ホームページ作成。契約縛りなし、データは全部お渡しします。">
+<meta property="og:title" content="よだき屋｜宮崎のホームページ制作・業務システム開発">
+<meta property="og:description" content="よだきいを、減らしましょう。宮崎県全域の小さな会社・お店のための、ホームページ制作（5万円〜）と、LINE予約・レジ（POS）・QRオーダーなどの業務システム開発。契約縛りなし、データは全部お渡しします。">
+<meta property="og:image" content="https://yodakiya.com/assets/og.png">
+<meta property="og:site_name" content="よだき屋">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Inter:wght@500;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #1c2430;
-    --ink-soft: #4a5565;
-    --line: #e4e8ee;
-    --bg: #ffffff;
-    --bg-soft: #f5f7fa;
-    --brand: #1f6f5c;      /* 宮崎の山と海の深緑 */
-    --brand-deep: #154f42;
-    --accent: #f2a541;     /* 日向の日差し */
-    --radius: 18px;
-    --wrap: 1120px;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-  body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font-family: "Zen Kaku Gothic New", system-ui, sans-serif;
-    line-height: 1.9; font-size: 16px; -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; }
-  img, svg { display: block; max-width: 100%; }
-  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
-
-  /* ---------- Header ---------- */
-  header {
-    position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.92);
-    backdrop-filter: blur(8px); box-shadow: 0 1px 0 var(--line);
-  }
-  .nav { display: flex; align-items: center; gap: 32px; height: 76px; }
-  .nav .logo, .nav .btn { flex-shrink: 0; white-space: nowrap; }
-  .logo-text, .nav ul a { white-space: nowrap; }
-  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .logo-mark { width: 38px; height: 38px; }
-  .logo-text { font-weight: 900; font-size: 23px; letter-spacing: .06em; }
-  .nav ul { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; font-size: 14px; font-weight: 500; }
-  .nav ul a { text-decoration: none; color: var(--ink-soft); }
-  .nav ul a:hover { color: var(--brand); }
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px; text-decoration: none; border: 0; cursor: pointer;
-    background: var(--brand); color: #fff; font: inherit; font-weight: 700; font-size: 14px;
-    padding: 12px 26px; border-radius: 999px; transition: background .2s, transform .2s;
-  }
-  .btn:hover { background: var(--brand-deep); transform: translateY(-1px); }
-  .btn svg { width: 16px; height: 16px; }
-
-
-  .btn-line { background: #06c755; }
-  .btn-line:hover { background: #05a847; }
-  .btn-line svg { width: 18px; height: 18px; }
-  .nav .btn-line { margin-left: auto; }
-  .nav .btn-line + .btn { margin-left: 10px; }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-  .hero-cta .btn { padding: 14px 26px; font-size: 15px; }
-  .btn-ghost { background: #fff; color: var(--brand); border: 1.5px solid var(--brand); }
-  .btn-ghost:hover { background: #f3f9f7; }
-  .line-box { margin-top: 28px; padding: 22px; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
-  .line-box p { margin: 0 0 14px; font-size: 14px; color: var(--ink-soft); }
-  .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-  .form-status { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.7; }
-  .form-status.ok { color: var(--brand); }
-  .form-status.ng { color: #c8423b; }
-  form .btn[disabled] { opacity: .6; cursor: wait; }
-
-  /* 幅が足りないときは LINE ボタン → メニューの順に引っ込める（お問い合わせボタンは常に出す） */
-  @media (max-width: 1039px) { .nav .nav-line { display: none; } .nav .nav-line + .btn { margin-left: auto; } }
-  @media (max-width: 899px) { .nav ul { display: none; } }
-
-  /* ---------- Section common ---------- */
-  section { padding: 110px 0; }
-  .eyebrow { font-family: Inter, sans-serif; font-size: 13px; font-weight: 700; color: var(--brand); letter-spacing: .14em; text-transform: uppercase; }
-  h1, h2, h3 { line-height: 1.4; margin: 0; font-weight: 900; }
-  h2 { font-size: clamp(28px, 4vw, 38px); margin: 6px 0 48px; }
-
-  /* ---------- Concept (hero) ---------- */
-  .hero { padding: 80px 0 110px; }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
-  .hero h1 { font-size: clamp(34px, 5.4vw, 56px); margin: 8px 0 32px; }
-  .hero h1 em { font-style: normal; color: var(--brand); }
-  .hero h1 .nw { display: inline-block; }
-  .hero h1 { margin-bottom: 18px; }
-  .hero .catch { font-size: clamp(18px, 2.4vw, 22px); font-weight: 700; color: var(--ink); margin: 0 0 28px; padding-left: 14px; border-left: 4px solid var(--accent); line-height: 1.6; }
-  .hero .catch small { display: block; font-size: 12px; font-weight: 500; color: var(--ink-soft); }
-  .hero p { margin: 0 0 4px; color: var(--ink-soft); font-size: 17px; }
-  .hero .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
-  .badge { font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: var(--bg-soft); border: 1px solid var(--line); }
-  .badge::before { content: "✓ "; color: var(--brand); }
-  .hero-visual {
-    aspect-ratio: 1; border-radius: 50%; border: 10px solid var(--brand);
-    display: grid; place-items: center; background: radial-gradient(circle at 50% 65%, #eef6f3, #fff 70%);
-    max-width: 460px; justify-self: end; width: 100%;
-  }
-  .hero-visual svg { width: 72%; }
-
-  /* ---------- Work (services) ---------- */
-  #work { background: var(--bg-soft); }
-  .services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .service {
-    background: #fff; border-radius: var(--radius); padding: 36px 36px 32px; border: 1px solid var(--line);
-    display: flex; flex-direction: column;
-  }
-  .service-icon { width: 52px; height: 52px; border-radius: 14px; background: #e3f0ec; display: grid; place-items: center; margin-bottom: 18px; }
-  .service-icon svg { width: 28px; height: 28px; stroke: var(--brand); }
-  .service h3 { font-size: 22px; margin-bottom: 12px; }
-  .service p { margin: 0; color: var(--ink-soft); font-size: 15px; }
-  .service .tag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--brand-deep); background: #e3f0ec; padding: 3px 12px; border-radius: 999px; margin-bottom: 14px; }
-  .service-wide { grid-column: 1 / -1; }
-  .svc-price { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-weight: 700; font-size: 15px; }
-  .svc-price span { display: inline-block; font-size: 11px; color: var(--brand-deep); background: #e3f0ec; padding: 1px 8px; border-radius: 4px; margin: 0 8px 0 0; vertical-align: 2px; }
-  .svc-price span:not(:first-child) { margin-left: 14px; }
-  .stack { margin-top: 16px; font-family: Inter, sans-serif; font-size: 12px; color: var(--ink-soft); }
-
-  /* ---------- Work Log ---------- */
-  .logs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .log { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
-  .log:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(28,36,48,.08); }
-  .log-thumb { aspect-ratio: 16/9; display: grid; place-items: center; }
-  .log-thumb svg { width: 56px; height: 56px; stroke: #fff; opacity: .95; }
-  .log-body { padding: 22px 24px 26px; }
-  .log-cat { font-size: 12px; font-weight: 700; color: var(--brand); }
-  .log h3 { font-size: 17px; margin: 4px 0 10px; }
-  .log p { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
-  .log-body { flex: 1; display: flex; flex-direction: column; }
-  .log-price { margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 14px; font-weight: 700; }
-  .log-price span { display: inline-block; font-size: 11px; color: var(--brand-deep); background: #e3f0ec; padding: 1px 8px; border-radius: 4px; margin-right: 8px; vertical-align: 1px; }
-  .log-link { align-self: flex-start; margin: -4px 0 16px; font-family: Inter, sans-serif; font-size: 13px; font-weight: 700; color: var(--brand); text-decoration: none; word-break: break-all; }
-  .log-link::after { content: " ↗"; }
-  .log-link:hover { text-decoration: underline; }
-  .log-demo { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 16px; }
-  .log-demo a { text-decoration: none; background: #fff; font-size: 13px; font-weight: 700; color: var(--brand); border: 1.5px solid var(--brand); padding: 5px 14px; border-radius: 999px; transition: background .2s, color .2s; }
-  .log-demo a:hover { background: var(--brand); color: #fff; }
-  .log-note { margin: 20px 0 0; font-size: 13px; color: var(--ink-soft); }
-
-  /* ---------- Flow ---------- */
-  #flow { background: var(--bg-soft); }
-  .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: step; list-style: none; padding: 0; margin: 0; }
-  .flow li { background: #fff; border-radius: var(--radius); padding: 28px 24px; border: 1px solid var(--line); position: relative; }
-  .flow li::before { counter-increment: step; content: "0" counter(step); font-family: Inter, sans-serif; font-weight: 700; font-size: 28px; color: var(--accent); }
-  .flow h3 { font-size: 17px; margin: 4px 0 8px; }
-  .flow p { margin: 0; font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
-
-  /* ---------- Profile ---------- */
-  .profile { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: start; }
-  .profile p { margin: 0 0 14px; color: var(--ink-soft); }
-  .profile .profile-lead { font-size: 20px; font-weight: 700; color: var(--ink); }
-  .career { list-style: none; margin: 0; padding: 8px 0 0 24px; border-left: 3px solid var(--brand); }
-  .career li { position: relative; padding: 0 0 22px; font-size: 15px; }
-  .career li::before { content: ""; position: absolute; left: -32px; top: 9px; width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 3px solid var(--brand); }
-  .career span { display: block; font-family: Inter, sans-serif; font-weight: 700; font-size: 13px; color: var(--brand); }
-  @media (max-width: 900px) { .profile { grid-template-columns: 1fr; gap: 32px; } }
-
-  /* ---------- Contact ---------- */
-  #contact { background: var(--bg-soft); }
-  .contact-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; }
-  .contact-grid > div > p { color: var(--ink-soft); margin: 0 0 16px; }
-  .mail-link { font-family: Inter, sans-serif; font-weight: 700; color: var(--brand); }
-  form { display: grid; gap: 22px; }
-  label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
-  .req, .opt { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-right: 8px; vertical-align: 1px; }
-  .req { background: #c8423b; color: #fff; }
-  .opt { background: var(--line); color: var(--ink-soft); }
-  input, select, textarea {
-    width: 100%; font: inherit; font-size: 16px; padding: 13px 16px; border-radius: 10px;
-    border: 1px solid #cfd6df; background: #fff; color: var(--ink);
-  }
-  input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: transparent; }
-  textarea { min-height: 160px; resize: vertical; }
-  form .btn { justify-self: start; padding: 14px 40px; font-size: 15px; }
-
-  /* ---------- Footer ---------- */
-  footer { background: var(--ink); color: #c9d1db; padding: 56px 0 36px; font-size: 14px; }
-  .foot { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
-  footer .logo-text { color: #fff; }
-  footer ul { display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; }
-  footer ul a { text-decoration: none; }
-  footer ul a:hover { color: #fff; }
-  .copy a { color: #b8c2cf; }
-  .copy { margin-top: 32px; padding-top: 24px; border-top: 1px solid #2f3a48; font-size: 12px; color: #8a96a6; }
-
-  /* ---------- Reveal ---------- */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-  .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 900px) {
-    .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-    .hero-visual { justify-self: center; max-width: 320px; order: -1; }
-    .services { grid-template-columns: 1fr; }
-      .logs { grid-template-columns: 1fr 1fr; }
-    .flow { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 600px) {
-    .wrap { padding: 0 16px; }
-    section { padding: 72px 0; }
-    .hero { padding: 40px 0 72px; }
-    .nav { gap: 16px; height: 64px; }
-    .nav .btn { padding: 10px 18px; }
-    .service { padding: 28px 22px; }
-    .logs, .flow { grid-template-columns: 1fr; }
-  }
-</style>
+<link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
 
 <!-- ===== Header ===== -->
 <header>
   <div class="wrap nav">
-    <a class="logo" href="#top" aria-label="よだき屋 ホーム">
+    <a class="logo" href="/" aria-label="よだき屋 ホーム">
       <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
         <circle cx="20" cy="20" r="19" fill="#1f6f5c"/>
         <path d="M6 27 L15 16 L21 22 L26 17 L34 27 Z" fill="#fff" opacity=".95"/>
@@ -239,11 +39,11 @@
       <span class="logo-text">よだき屋</span>
     </a>
     <ul>
-      <li><a href="#top">ホーム</a></li>
-      <li><a href="#work">お仕事</a></li>
-      <li><a href="#log">実績</a></li>
-      <li><a href="#flow">ご依頼の流れ</a></li>
-      <li><a href="#profile">代表について</a></li>
+      <li><a href="/#top">ホーム</a></li>
+      <li><a href="/#work">お仕事</a></li>
+      <li><a href="/#log">実績</a></li>
+      <li><a href="/#flow">ご依頼の流れ</a></li>
+      <li><a href="/#profile">代表について</a></li>
     </ul>
     <a class="btn btn-line nav-line" href="https://lin.ee/w3bAPYd" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.8-3.4 7.9-5.8C21.4 14.4 22 12.8 22 11c0-4.4-4.5-8-10-8z"/></svg>LINEで相談</a>
     <a class="btn" href="#contact">お問い合わせ
@@ -261,7 +61,7 @@
       <div class="eyebrow">Concept</div>
       <h1>宮崎の、<br><span class="nw"><em>顔が見える</em></span><span class="nw">システム屋。</span></h1>
       <p class="catch">よだきいを、減らしましょう。<small>（よだきい＝宮崎弁で「面倒くさい」）</small></p>
-      <p>宮崎県を拠点に、小さな会社やお店の業務アプリやホームページづくり、ITの困りごとをお手伝いしています。</p>
+      <p>宮崎市・延岡市・都城市・日向市など宮崎県全域で、小さな会社やお店のホームページ制作や業務システムづくり、ITの困りごとをお手伝いしています。</p>
       <p>「ホームページを作りたいけど、高くて手が出ない」<br>「予約の電話に出られない」「Excelの転記で一日が終わる」</p>
       <p>そんな困りごとを、専門用語を使わずに一緒に整理し、改善案をご提案します。</p>
       <div class="badges">
@@ -299,12 +99,14 @@
   <div class="wrap">
     <div class="eyebrow reveal">Work</div>
     <h2 class="reveal">よだき屋のお仕事</h2>
+    <p class="section-lead reveal">宮崎県内のお店・会社からのご相談をお受けしています。打ち合わせは対面・オンラインのどちらでも大丈夫です。</p>
 
     <div class="services">
       <article class="service reveal">
         <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9l2 2-2 2M12 13h4"/></svg></div>
         <h3>業務アプリ開発</h3>
         <p>LINE予約、レジ（POS）、QRオーダー、シフト・配置表など、お店や現場で使うシステムをつくります。既製品では対応できない、それぞれのお店のやり方に合わせて、必要な機能だけを開発します。</p>
+        <div class="more-links"><a href="/line-yoyaku/">LINE予約システム →</a><a href="/pos/">レジ・QRオーダー →</a></div>
         <div class="stack">STACK — LINE (LIFF) / Firebase / React / Cloudflare</div>
       </article>
 
@@ -313,6 +115,7 @@
         <h3>ホームページ作成・保守</h3>
         <p>お店や会社のホームページを、スマホで見やすい形でつくります。公開後の更新やGoogleマップ（Googleビジネスプロフィール）の整備もお手伝いします。契約の縛りはなく、サイトのデータは全部お渡しします。</p>
         <div class="svc-price"><span>作成</span>50,000円〜<span>保守</span>月額 3,000円〜</div>
+        <div class="more-links"><a href="/homepage/">ホームページ制作の詳細 →</a></div>
       </article>
 
       <article class="service reveal">
@@ -495,7 +298,7 @@
 <footer>
   <div class="wrap">
     <div class="foot">
-      <a class="logo" href="#top">
+      <a class="logo" href="/">
         <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
           <circle cx="20" cy="20" r="19" fill="#1f6f5c"/>
           <path d="M6 27 L15 16 L21 22 L26 17 L34 27 Z" fill="#fff" opacity=".95"/>
@@ -504,24 +307,24 @@
         <span class="logo-text">よだき屋</span>
       </a>
       <ul>
-        <li><a href="#top">ホーム</a></li>
-        <li><a href="#work">お仕事</a></li>
-        <li><a href="#log">実績</a></li>
-        <li><a href="#contact">お問い合わせ</a></li>
+        <li><a href="/#top">ホーム</a></li>
+        <li><a href="/#work">お仕事</a></li>
+        <li><a href="/#log">実績</a></li>
+        <li><a href="/#contact">お問い合わせ</a></li>
       </ul>
     </div>
+    <ul class="foot-services">
+      <li><a href="/homepage/">宮崎のホームページ制作</a></li>
+      <li><a href="/line-yoyaku/">LINE予約システム</a></li>
+      <li><a href="/pos/">レジ（POS）・QRオーダー</a></li>
+      <li><a href="/faq/">よくある質問</a></li>
+    </ul>
     <div class="copy"><a href="https://lin.ee/w3bAPYd" target="_blank" rel="noopener">公式LINE</a> ・ <a href="https://ynsysapp.com/school/">学校のネットワーク担当の方へ</a> ・ <a href="https://ynsysapp.com/terms/">利用規約</a> ・ <a href="https://ynsysapp.com/privacy/">プライバシーポリシー</a><br>© 2026 よだき屋 — 宮崎県</div>
   </div>
 </footer>
 
+<script src="/assets/site.js" defer></script>
 <script>
-  // スクロールでふわっと表示
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
-
-
   // 送信：フォームの内容を /api/contact に送る（サーバー側でメールにして info@yodakiya.com へ届ける）
   const formOpenedAt = Date.now();
   const contactForm = document.getElementById('contact-form');

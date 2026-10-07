@@ -25,6 +25,16 @@
   Cache-Control: no-cache
 /demo/*
   Cache-Control: no-cache
+/homepage/*
+  Cache-Control: no-cache
+/line-yoyaku/*
+  Cache-Control: no-cache
+/pos/*
+  Cache-Control: no-cache
+/faq/*
+  Cache-Control: no-cache
+/assets/*
+  Cache-Control: public, max-age=300
 /shukketsu/
   Cache-Control: no-cache
 /shukketsu/index.html
