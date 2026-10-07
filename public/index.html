@@ -51,11 +51,13 @@
     position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.92);
     backdrop-filter: blur(8px); box-shadow: 0 1px 0 var(--line);
   }
-  .nav { display: flex; align-items: center; gap: 40px; height: 76px; }
+  .nav { display: flex; align-items: center; gap: 32px; height: 76px; }
+  .nav .logo, .nav .btn { flex-shrink: 0; white-space: nowrap; }
+  .logo-text, .nav ul a { white-space: nowrap; }
   .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .logo-mark { width: 38px; height: 38px; }
   .logo-text { font-weight: 900; font-size: 23px; letter-spacing: .06em; }
-  .nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 14px; font-weight: 500; }
+  .nav ul { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; font-size: 14px; font-weight: 500; }
   .nav ul a { text-decoration: none; color: var(--ink-soft); }
   .nav ul a:hover { color: var(--brand); }
   .btn {
@@ -84,7 +86,9 @@
   .form-status.ng { color: #c8423b; }
   form .btn[disabled] { opacity: .6; cursor: wait; }
 
-  @media (max-width: 1099px) { .nav .nav-line { display: none; } .nav .nav-line + .btn { margin-left: auto; } }
+  /* 幅が足りないときは LINE ボタン → メニューの順に引っ込める（お問い合わせボタンは常に出す） */
+  @media (max-width: 1039px) { .nav .nav-line { display: none; } .nav .nav-line + .btn { margin-left: auto; } }
+  @media (max-width: 899px) { .nav ul { display: none; } }
 
   /* ---------- Section common ---------- */
   section { padding: 110px 0; }
@@ -204,7 +208,6 @@
 
   /* ---------- Responsive ---------- */
   @media (max-width: 900px) {
-    .nav ul { display: none; }
     .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
     .hero-visual { justify-self: center; max-width: 320px; order: -1; }
     .services { grid-template-columns: 1fr; }
@@ -241,7 +244,6 @@
       <li><a href="#log">実績</a></li>
       <li><a href="#flow">ご依頼の流れ</a></li>
       <li><a href="#profile">代表について</a></li>
-      <li><a href="#contact">お問い合わせ</a></li>
     </ul>
     <a class="btn btn-line nav-line" href="https://lin.ee/w3bAPYd" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.8-3.4 7.9-5.8C21.4 14.4 22 12.8 22 11c0-4.4-4.5-8-10-8z"/></svg>LINEで相談</a>
     <a class="btn" href="#contact">お問い合わせ
