@@ -65,7 +65,26 @@
   }
   .btn:hover { background: var(--brand-deep); transform: translateY(-1px); }
   .btn svg { width: 16px; height: 16px; }
-  .nav .btn { margin-left: auto; }
+
+
+  .btn-line { background: #06c755; }
+  .btn-line:hover { background: #05a847; }
+  .btn-line svg { width: 18px; height: 18px; }
+  .nav .btn-line { margin-left: auto; }
+  .nav .btn-line + .btn { margin-left: 10px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .hero-cta .btn { padding: 14px 26px; font-size: 15px; }
+  .btn-ghost { background: #fff; color: var(--brand); border: 1.5px solid var(--brand); }
+  .btn-ghost:hover { background: #f3f9f7; }
+  .line-box { margin-top: 28px; padding: 22px; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
+  .line-box p { margin: 0 0 14px; font-size: 14px; color: var(--ink-soft); }
+  .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .form-status { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.7; }
+  .form-status.ok { color: var(--brand); }
+  .form-status.ng { color: #c8423b; }
+  form .btn[disabled] { opacity: .6; cursor: wait; }
+
+  @media (max-width: 1099px) { .nav .nav-line { display: none; } .nav .nav-line + .btn { margin-left: auto; } }
 
   /* ---------- Section common ---------- */
   section { padding: 110px 0; }
@@ -238,6 +257,7 @@
       <li><a href="#profile">代表について</a></li>
       <li><a href="#contact">お問い合わせ</a></li>
     </ul>
+    <a class="btn btn-line nav-line" href="https://lin.ee/w3bAPYd" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.8-3.4 7.9-5.8C21.4 14.4 22 12.8 22 11c0-4.4-4.5-8-10-8z"/></svg>LINEで相談</a>
     <a class="btn" href="#contact">お問い合わせ
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
@@ -260,6 +280,10 @@
         <span class="badge">契約縛りなし</span>
         <span class="badge">データは全部お渡し</span>
         <span class="badge">対面で相談OK</span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-line" href="https://lin.ee/w3bAPYd" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.8-3.4 7.9-5.8C21.4 14.4 22 12.8 22 11c0-4.4-4.5-8-10-8z"/></svg>LINEで気軽に相談する</a>
+        <a class="btn btn-ghost" href="#contact">フォームでお問い合わせ</a>
       </div>
     </div>
     <div class="hero-visual reveal" aria-hidden="true">
@@ -438,8 +462,12 @@
     <div class="reveal">
       <div class="eyebrow">Contact</div>
       <h2>お問い合わせ</h2>
-      <p>ご相談やご質問など、お気軽にどうぞ。<br>メールで折り返しご連絡いたします。</p>
+      <p>ご相談やご質問など、お気軽にどうぞ。<br>フォームからのお問い合わせには、メールで折り返しご連絡いたします。</p>
       <p>メール：<a class="mail-link" href="mailto:info@yodakiya.com">info@yodakiya.com</a></p>
+      <div class="line-box">
+        <p>LINEなら、写真や画面のスクリーンショットを送りながら気軽にご相談いただけます。</p>
+        <a class="btn btn-line" href="https://lin.ee/w3bAPYd" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.8-3.4 7.9-5.8C21.4 14.4 22 12.8 22 11c0-4.4-4.5-8-10-8z"/></svg>LINEで相談する</a>
+      </div>
     </div>
     <form class="reveal" id="contact-form">
       <div>
@@ -463,7 +491,12 @@
         <label for="f-body"><span class="opt">任意</span>お問い合わせ内容</label>
         <textarea id="f-body" name="body"></textarea>
       </div>
-      <button class="btn" type="submit">送信する</button>
+      <div class="hp-field" aria-hidden="true">
+        <label for="f-website">（入力しないでください）</label>
+        <input id="f-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+      <button class="btn" type="submit" id="f-submit">送信する</button>
+      <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
     </form>
   </div>
 </section>
@@ -498,7 +531,7 @@
         <li><a href="#contact">お問い合わせ</a></li>
       </ul>
     </div>
-    <div class="copy"><a href="https://ynsysapp.com/school/">学校のネットワーク担当の方へ</a> ・ <a href="https://ynsysapp.com/terms/">利用規約</a> ・ <a href="https://ynsysapp.com/privacy/">プライバシーポリシー</a><br>© 2026 よだき屋 — 宮崎県</div>
+    <div class="copy"><a href="https://lin.ee/w3bAPYd" target="_blank" rel="noopener">公式LINE</a> ・ <a href="https://ynsysapp.com/school/">学校のネットワーク担当の方へ</a> ・ <a href="https://ynsysapp.com/terms/">利用規約</a> ・ <a href="https://ynsysapp.com/privacy/">プライバシーポリシー</a><br>© 2026 よだき屋 — 宮崎県</div>
   </div>
 </footer>
 
@@ -536,13 +569,54 @@
   document.getElementById('demoDlgClose').addEventListener('click', () => dlgEl.close());
   dlgEl.addEventListener('click', (e) => { if (e.target === dlgEl) dlgEl.close(); });
 
-  // 送信：今はメールソフトを開く（公開時は Formspree 等のフォームサービスに差し替え）
-  document.getElementById('contact-form').addEventListener('submit', (ev) => {
+  // 送信：フォームの内容を /api/contact に送る（サーバー側でメールにして info@yodakiya.com へ届ける）
+  const formOpenedAt = Date.now();
+  const contactForm = document.getElementById('contact-form');
+  const statusEl = document.getElementById('f-status');
+  const submitBtn = document.getElementById('f-submit');
+  const mailtoFallback = (f) => {
+    const subject = `【HPお問い合わせ】${f.type.value}`;
+    const body = `お名前：${f.name.value}
+メール：${f.email.value}
+
+${f.body.value}`;
+    return `mailto:info@yodakiya.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+  contactForm.addEventListener('submit', async (ev) => {
     ev.preventDefault();
     const f = ev.target;
-    const subject = `【HPお問い合わせ】${f.type.value}`;
-    const body = `お名前：${f.name.value}\nメール：${f.email.value}\n\n${f.body.value}`;
-    location.href = `mailto:info@yodakiya.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中…';
+    statusEl.className = 'form-status';
+    statusEl.textContent = '';
+    try {
+      const r = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ name: f.name.value, email: f.email.value, type: f.type.value, body: f.body.value, website: f.website.value, elapsed: Date.now() - formOpenedAt }),
+      });
+      const res = await r.json().catch(() => ({}));
+      if (res.error === 'not_configured') {
+        // 送信の仕組みの準備前は、これまでどおりメールソフトで送ってもらう
+        location.href = mailtoFallback(f);
+        statusEl.className = 'form-status ok';
+        statusEl.textContent = 'メールソフトが開きます。そのまま送信してください。';
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送信する';
+        return;
+      }
+      if (!r.ok || !res.ok) throw new Error(res.error || 'failed');
+      f.reset();
+      statusEl.className = 'form-status ok';
+      statusEl.textContent = '送信しました。内容を確認のうえ、メールでご連絡いたします。';
+      submitBtn.textContent = '送信しました';
+    } catch (e) {
+      statusEl.className = 'form-status ng';
+      statusEl.innerHTML = '送信できませんでした。お手数ですが、<a href="#">メールで送る</a>か、LINEからご連絡ください。';
+      statusEl.querySelector('a').href = mailtoFallback(f);
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送信する';
+    }
   });
 </script>
 </body>
