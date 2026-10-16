@@ -249,3 +249,14 @@ footer ul a:hover { color: #fff; }
   .price-table th { border-bottom: 0; padding-bottom: 4px; }
   .cta-band { padding: 26px 20px; }
 }
+
+/* 業務アプリ開発カード：作ったシステムの一覧（名前＋一言＋料金） */
+.pl-head { margin: 18px 0 8px; font-size: 12px; font-weight: 700; color: var(--ink-soft); letter-spacing: .06em; }
+.product-links { display: grid; gap: 8px; }
+.product-links a { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "name price" "desc price"; column-gap: 12px; align-items: center; text-decoration: none; color: var(--ink); background: var(--bg-soft); border: 1px solid var(--line); border-left: 4px solid var(--brand); border-radius: 12px; padding: 12px 40px 12px 14px; position: relative; transition: border-color .2s, background .2s, transform .2s; }
+.product-links a::after { content: "→"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--brand); font-weight: 700; }
+.product-links a:hover { background: #eef6f3; border-color: var(--brand); transform: translateX(2px); }
+.pl-name { grid-area: name; font-weight: 700; font-size: 15px; color: var(--brand-deep); }
+.pl-desc { grid-area: desc; font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; }
+.pl-price { grid-area: price; font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+@media (max-width: 420px) { .product-links a { grid-template-columns: 1fr; grid-template-areas: "name" "desc" "price"; } .pl-price { margin-top: 2px; } }
