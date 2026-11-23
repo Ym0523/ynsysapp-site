@@ -6,7 +6,7 @@ const HP_HOST = 'yodakiya.com';
 const APP_HOST = 'ynsysapp.com';
 // true＝ynsysapp.com のトップ・デモを yodakiya.com へ転送する（2026-10-06 yodakiya.com 接続確認後に有効化）
 const HP_LIVE = true;
-const APP_PATHS = ['/school/', '/terms/', '/privacy/', '/shukketsu/'];
+const APP_PATHS = ['/school/', '/terms/', '/privacy/', '/shukketsu/', '/mimamori/'];
 // どちらのドメインでもそのまま返すもの（アイコン）
 const SHARED = ['/favicon.ico', '/favicon.svg', '/favicon-48.png', '/apple-touch-icon.png'];
 // ドメインごとに中身を変えるもの（検索エンジン向け）

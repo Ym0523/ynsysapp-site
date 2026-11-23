@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プライバシーポリシー｜みまもり日和</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="見守りアプリ「みまもり日和」のプライバシーポリシー。取得する情報、利用目的、外部サービス（Google Firebase、Anthropic の AI）への送信、削除の方法を説明します。">
+<link rel="canonical" href="https://ynsysapp.com/mimamori/privacy/">
+<meta name="robots" content="index,follow">
+<style>
+:root{
+  --bg:#f6f0e6; --card:#fff; --line:#e2d6c6; --fg:#2e2621; --muted:#665a50; --accent:#2f6656;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);line-height:1.85;
+  font-family:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+  font-size:16px;-webkit-text-size-adjust:100%}
+a{color:var(--accent)}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+header{background:#fff;border-bottom:1px solid var(--line)}
+header .wrap{padding:22px 20px}
+.home{font-size:14px;color:var(--muted);text-decoration:none}
+.home span{color:var(--accent)}
+h1{font-size:22px;margin:12px 0 4px}
+.lead{color:var(--muted);margin:0;font-size:14px}
+main .wrap{padding:8px 20px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:18px 0}
+h2{font-size:17px;margin:24px 0 8px}
+h2:first-child{margin-top:0}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+ul{margin:0 0 12px;padding-left:1.3em}
+li{margin-bottom:6px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:12px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;white-space:nowrap}
+code{background:#f1ebe1;border-radius:6px;padding:1px 6px;font-size:14px;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.note{background:#fbf7f0;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14px;color:var(--muted)}
+footer{color:var(--muted);font-size:13px;padding:24px 0 48px;text-align:center}
+footer a{color:var(--muted)}
+.lead{overflow-wrap:anywhere}
+@media(max-width:600px){
+  section{padding:18px 16px}body{font-size:15px}
+  th{white-space:normal}table{font-size:13px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="home" href="/mimamori/privacy/">みまもり<span>日和</span></a>
+    <h1>プライバシーポリシー</h1>
+    <p class="lead">見守りアプリ「みまもり日和」（以下「本アプリ」）に適用されます。</p>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <section>
+<p>本アプリは、離れて暮らすご家族（以下「ご家族」）が、見守る相手の方（以下「ご本人」）の毎日を見守るためのアプリです。ご本人はキャラクターと会話し、お薬を記録します。ご家族は、その記録と会話、毎晩の日報を見ることができます。</p>
+    <p>本アプリは、健康や暮らしに関わる大切な情報を扱います。この方針は、何を集め、何に使い、誰に渡すかを、できるだけ具体的に書いたものです。</p>
+
+    <h2>1. 取得する情報</h2>
+    <table>
+      <tr><th>アカウント</th><td>ご家族：Google または Apple のログインで受け取る、お名前・メールアドレス・利用者を区別する番号。<br>ご本人：ログイン不要。端末ごとに自動で作られる番号のみ。</td></tr>
+      <tr><th>見守りの設定</th><td>ご本人のお名前と呼び名、生まれ年、ふるさと、ご家族が書いた「キャラクターに伝えたいこと」</td></tr>
+      <tr><th>お薬</th><td>ご家族が登録したお薬の名前と時刻、「飲みました」の記録と押した時刻・押した人</td></tr>
+      <tr><th>会話</th><td>ご本人とキャラクターの会話の文字、話した時刻。会話から作る覚え書き（好きなもの、予定、体調など）</td></tr>
+      <tr><th>日報と至急のお知らせ</th><td>会話とお薬の記録から作る、その日のようす・話したこと・気になること・いつもとの違い</td></tr>
+      <tr><th>通知</th><td>お知らせを届けるための端末の通知用の番号と、端末の種類（iPhone/Android）</td></tr>
+    </table>
+    <p>声について：ご本人の声は、端末の音声認識（Apple または Google の機能）で文字にしてから送ります。<strong>録音した音声を当方が受け取ることはありません。</strong>端末の設定によっては、文字にする処理が Apple または Google のサーバーで行われます。</p>
+    <p>位置情報、連絡先、写真、広告用の識別子は取得しません。</p>
+
+    <h2>2. 利用目的</h2>
+    <ul>
+      <li>キャラクターがご本人と会話し、前に話したことを覚えておくため</li>
+      <li>お薬の時刻のお知らせと、記録をご家族と共有するため</li>
+      <li>毎晩の日報と、命や財産に関わる話（胸の痛み、転倒、振り込みなど）があったときの至急のお知らせを、ご家族に届けるため</li>
+      <li>不具合の調査と、本アプリの改善のため</li>
+    </ul>
+    <p>広告には使いません。情報を売ることもしません。</p>
+
+    <h2>3. 誰が見られるか</h2>
+    <p>ご本人の会話・お薬の記録・日報は、<strong>同じ見守りに招待されたご家族全員</strong>が見ることができます。招待は、見守りを作ったご家族が QR コードなどで行います。</p>
+    <p>当方（開発・運営者）は、不具合の調査など必要な場合に限り、データを確認することがあります。</p>
+
+    <h2>4. ご本人の同意について</h2>
+    <p>本アプリを使い始める前に、ご家族からご本人へ、会話やお薬の記録をご家族が見られることを説明し、了解を得てください。ご本人が判断に迷う場合は、ほかのご家族とも相談のうえでお使いください。</p>
+
+    <h2>5. 外部サービスへの送信</h2>
+    <p>本アプリは、次のサービスに処理を任せています（個人情報保護法上の「委託」）。</p>
+    <table>
+      <tr><th>Google Firebase<br>（Google LLC）</th><td>データの保存（東京リージョン）、ログイン、日報などの処理。保存したデータは通信時・保存時とも暗号化されます。</td></tr>
+      <tr><th>Anthropic の AI「Claude」<br>（Anthropic, PBC・米国）</th><td>キャラクターの返事、覚え書き、日報の文章を作るために、会話の文字と見守りの設定（呼び名、生まれ年など）、お薬の名前を送ります。Anthropic の商用規約により、送った内容が AI の学習に使われることはありません。</td></tr>
+      <tr><th>Expo の通知サービス<br>（650 Industries, Inc.・米国）</th><td>お知らせを端末に届けるため、通知の文面と端末の通知用の番号を送ります。</td></tr>
+      <tr><th>Apple / Google</th><td>ログイン、通知の配信、音声認識と読み上げ（端末の機能）</td></tr>
+    </table>
+    <p class="note">米国にある事業者への送信について：米国には、日本の個人情報保護法と同じ水準の包括的な個人情報保護の法律はありません（州ごとの法律があります）。上の各社は、それぞれのプライバシーポリシーと利用規約にもとづき、必要な安全管理を行っています。本アプリの利用を始めることで、これらの送信に同意いただいたものとします。</p>
+
+    <h2>6. 第三者提供</h2>
+    <p>上の委託先を除き、法令にもとづく場合や、ご本人の生命・身体を守るために必要で、同意を得るのが難しい場合を除いて、第三者に提供しません。</p>
+
+    <h2>7. 保存期間と削除</h2>
+    <ul>
+      <li>記録は、見守りを続けている間、保存します。</li>
+      <li>ご家族は、アプリの設定からアカウントを削除できます。見守りを作った方がアカウントを削除すると、その見守りの記録（会話、お薬、日報、覚え書き）もすべて削除されます。</li>
+      <li>アプリから削除できない場合や、一部だけ消したい場合は、下の連絡先までご連絡ください。</li>
+      <li>バックアップなどから完全に消えるまで、最大で30日ほどかかることがあります。</li>
+    </ul>
+
+    <h2>8. 安全管理</h2>
+    <p>データは、招待されたご家族とご本人の端末からしか読み書きできないよう、アクセスを制限しています。AI のキーなどの秘密情報はサーバー側にだけ置いています。</p>
+
+    <h2>9. 開示・訂正・削除の請求</h2>
+    <p>info@yodakiya.com までご連絡ください。平日2営業日以内に一次回答します。</p>
+
+    <h2>10. 事業者</h2>
+    <table>
+      <tr><th>運営</th><td>ynsysapp（よだき屋。個人による開発・運営）</td></tr>
+      <tr><th>連絡先</th><td>info@yodakiya.com</td></tr>
+      <tr><th>氏名・所在地</th><td>ご請求があれば遅滞なく開示します</td></tr>
+    </table>
+
+    <h2>11. 改定</h2>
+    <p>内容を変更する場合は、このページとアプリ内で告知します。有料の機能を始める際は、決済に関する項目を追加します。</p>
+    <p class="note">制定日：2026年11月23日</p>
+  </section>
+</div>
+</main>
+
+<footer><a href="/mimamori/privacy/">プライバシーポリシー</a> ・ <a href="/mimamori/terms/">利用規約</a> ・ © 2026 ynsysapp</footer>
+</body>
+</html>
